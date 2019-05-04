@@ -1,0 +1,59 @@
+#include "exti.h"
+#include "led.h"
+#include "key.h"
+#include "delay.h"
+#include "usart.h"
+
+//外部中断初始化函数
+
+
+void TIM5_IRQHandler(void)
+{
+	u16 IC2Value;
+	TIM_ClearITPendingBit(TIM5, TIM_IT_CC1);
+	IC2Value = TIM_GetCapture1(TIM5)+1;
+	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, DISABLE);
+	if (IC2Value != 0)
+	{
+		Frequency_REF = (double)1000000/IC2Value;
+		Period_REF=Period;
+		wave_measure_REF=1;
+		TIM_Cmd(TIM5,DISABLE);
+		if(wave_measure_F)
+			TIM_Cmd(TIM3,DISABLE);
+	}
+	else
+	{
+		Frequency_REF = 0;
+	}
+}
+
+void TIM2_IRQHandler(void)
+{
+	u16 IC2Value;
+	TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
+	IC2Value = TIM_GetCapture1(TIM2)+1;
+	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, DISABLE);
+	if (IC2Value != 0)
+	{
+		Frequency_F = (double)1000000/IC2Value;
+		Period_F=Period;
+		wave_measure_F=1;
+		TIM_Cmd(TIM2,DISABLE);
+		if(wave_measure_REF)
+			TIM_Cmd(TIM3,DISABLE);
+	}
+	else
+	{
+		Frequency_F = 0;
+	}
+}
+
+void TIM3_IRQHandler(void)   //TIM3中断
+{
+	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
+	{
+		Period++;
+		TIM_ClearITPendingBit(TIM3, TIM_IT_Update  );  //清除TIMx的中断待处理位:TIM 中断源 
+	}
+}
