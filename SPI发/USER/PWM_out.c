@@ -4,7 +4,7 @@
 void PWM_init(u16 arr,u16 ps)
 {
 	TIM8_PWM_Init(arr,ps);
-	delay_ms(1);
+	delay_ms(2);
 	TIM1_PWM_Init(arr,ps);
 	TIM_SetCompare1(TIM8,0);
 	TIM_SetCompare1(TIM1,0);

@@ -24,7 +24,7 @@ int main(void)
 {
 	delay_init();	    	 //延时函数初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	uart_init(9600);	 	//串口初始化为9600
+	uart_init(19200);	 	//串口初始化为9600
 	LED_Init();		  		//初始化与LED连接的硬件接口
 	PWM_input_Init();
 	PWM_init(3600-1,500-1);//20kHz

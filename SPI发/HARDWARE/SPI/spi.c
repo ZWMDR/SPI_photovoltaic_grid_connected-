@@ -80,7 +80,7 @@ void SPI1_DMA1(void)
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 	
-	DMA_Cmd(DMA1_Channel2, DISABLE);
+	DMA_Cmd(DMA1_Channel2, ENABLE);
 	DMA_Cmd(DMA1_Channel3, DISABLE);
 }
 void SPI1_Init(void)
