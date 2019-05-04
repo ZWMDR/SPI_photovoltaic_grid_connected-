@@ -14,6 +14,7 @@ u16 DMA_buff_TX[DMA_buff_len];
 u16 DMA_buff_RX[DMA_buff_len];
 u8 flag_REF;
 u8 flag_F;
+u8 send_flag;
 u16 Frequency_REF;
 u16 Frequency_F;
 u16 Period_REF;
@@ -30,11 +31,11 @@ int main(void)
 	PWM_init(3600-1,500-1);//20kHz
 	SPI1_Init();
 	t=0;
+	send_flag=0;
 
 	while(1)
 	{
-		//printf("F_REF=%d, F_F=%d\r\n",Frequency_REF,Frequency_F);
-		//printf("P_REF=%d, P_F=%d\r\n",Period_REF,Period_F);
+		
 	}
 }
 

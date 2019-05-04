@@ -116,8 +116,8 @@ void SPI1_Init(void)
 	NVIC_Init(&NVIC_InitStructure);
 	SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);
 	*/
-	TIM2_Int_Init(1000-1,7200-1);
 	SPI1_DMA1();
+	TIM2_Int_Init(1000-1,7200-1);
 	SPI_Cmd(SPI1, ENABLE); //使能SPI外设
 	
 	//SPI1_ReadWriteByte(0xff);//启动传输

@@ -33,7 +33,11 @@ void DMA1_Channel2_IRQHandler(void)
 		Frequency_REF=DMA_buff_RX[0];
 		Frequency_F=DMA_buff_RX[1];
 		Period_REF=DMA_buff_RX[2];
-		Period_REF=DMA_buff_RX[3];
+		Period_F=DMA_buff_RX[3];
+		
+		printf("F_REF=%d, F_F=%d\r\n",Frequency_REF,Frequency_F);
+		printf("P_REF=%d, P_F=%d\r\n",Period_REF,Period_F);
+		
 		LED1=~LED1;
 		DMA_Cmd(DMA1_Channel2,DISABLE);
 		DMA1_Channel2->CNDTR=4;

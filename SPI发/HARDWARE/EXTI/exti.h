@@ -17,6 +17,7 @@ extern u16 Period_REF;
 extern u16 Period_F;
 extern u8 flag_REF;
 extern u8 flag_F;
+extern u8 send_flag;
 
 void EXTIX_Init(void);//IO≥ı ºªØ
 void DMA_EXTI_Init(void);

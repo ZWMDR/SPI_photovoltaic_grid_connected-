@@ -23,21 +23,29 @@ void TIM5_IRQHandler(void)
 			if(!flag_F)
 			{
 				Period_REF=0;
+				TIM_SetCounter(TIM3,0);
 				TIM_Cmd(TIM3,ENABLE);
 			}
 			else
 			{
 				TIM_Cmd(TIM3,DISABLE);
 				Period_REF=TIM_GetCounter(TIM3);
-				TIM_SetCounter(TIM3,0);
 				
-				DMA_buff_TX[0]=Frequency_REF;
-				DMA_buff_TX[1]=Frequency_F;
-				DMA_buff_TX[2]=Period_REF;
-				DMA_buff_TX[3]=Period_F;
-				
-				DMA1_Channel3->CNDTR=4;
-				DMA_Cmd(DMA1_Channel3, ENABLE);
+				if(!send_flag)
+				{
+					DMA_buff_TX[0]=Frequency_REF;
+					DMA_buff_TX[1]=Frequency_F;
+					DMA_buff_TX[2]=Period_REF;
+					DMA_buff_TX[3]=Period_F;
+					
+					//printf("____F_REF=%d, F_F=%d\r\n",DMA_buff_TX[0],DMA_buff_TX[1]);
+					//printf("____P_REF=%d, P_F=%d\r\n\r\n",DMA_buff_TX[2],DMA_buff_TX[3]);
+					
+					send_flag=1;
+				}
+				flag_F=flag_REF=0;
+				//DMA1_Channel3->CNDTR=4;
+				//DMA_Cmd(DMA1_Channel3, ENABLE);
 				
 			}
 		}
@@ -59,21 +67,28 @@ void TIM4_IRQHandler(void)
 			if(!flag_REF)
 			{
 				Period_F=0;
+				TIM_SetCounter(TIM3,0);
 				TIM_Cmd(TIM3,ENABLE);
 			}
 			else
 			{
 				TIM_Cmd(TIM3,DISABLE);
 				Period_F=TIM_GetCounter(TIM3);
-				TIM_SetCounter(TIM3,0);
-				
-				DMA_buff_TX[0]=Frequency_REF;
-				DMA_buff_TX[1]=Frequency_F;
-				DMA_buff_TX[2]=Period_REF;
-				DMA_buff_TX[3]=Period_F;
-				
-				DMA1_Channel3->CNDTR=4;
-				DMA_Cmd(DMA1_Channel3, ENABLE);
+				if(!send_flag)
+				{
+					DMA_buff_TX[0]=Frequency_REF;
+					DMA_buff_TX[1]=Frequency_F;
+					DMA_buff_TX[2]=Period_REF;
+					DMA_buff_TX[3]=Period_F;
+					
+					//printf("____F_REF=%d, F_F=%d\r\n",DMA_buff_TX[0],DMA_buff_TX[1]);
+					//printf("____P_REF=%d, P_F=%d\r\n\r\n",DMA_buff_TX[2],DMA_buff_TX[3]);
+					
+					send_flag=1;
+				}
+				flag_F=flag_REF=0;
+				//DMA1_Channel3->CNDTR=4;
+				//DMA_Cmd(DMA1_Channel3, ENABLE);
 				
 			}
 		}
@@ -102,8 +117,7 @@ void DMA1_Channel3_IRQHandler(void)
 {
 	if (DMA_GetITStatus(DMA1_IT_TC3)!=RESET)
 	{
-		flag_F=flag_REF=0;
-		
+		send_flag=0;
 		DMA_Cmd(DMA1_Channel3, DISABLE);
 		
 		DMA_ClearITPendingBit(DMA1_IT_TC3);
@@ -116,7 +130,11 @@ void DMA1_Channel2_IRQHandler(void)
 	{
 		LED1=~LED1;
 		if(DMA_buff_RX[0]<5000 && DMA_buff_RX[0]>2000)
+		{
+			TIM_Cmd(TIM6,DISABLE);
 			TIM6->ARR=DMA_buff_RX[0];
+			TIM_Cmd(TIM6,ENABLE);
+		}
 		
 		DMA_Cmd(DMA1_Channel2,DISABLE);
 		DMA1_Channel2->CNDTR=4;
@@ -130,7 +148,8 @@ void TIM2_IRQHandler(void)
 {
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
 	{
-		
+		DMA1_Channel3->CNDTR=4;
+		DMA_Cmd(DMA1_Channel3, ENABLE);
 		//printf("F_REF=%d, F_F=%d\r\n",DMA_buff_TX[0],DMA_buff_TX[1]);
 		//printf("P_REF=%d, P_F=%d\r\n\r\n",DMA_buff_TX[2],DMA_buff_TX[3]);
 		
