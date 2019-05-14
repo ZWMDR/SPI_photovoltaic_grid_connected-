@@ -117,7 +117,7 @@ void NVIC_Init(NVIC_InitTypeDef* NVIC_InitStruct)
   assert_param(IS_FUNCTIONAL_STATE(NVIC_InitStruct->NVIC_IRQChannelCmd));
   assert_param(IS_NVIC_PREEMPTION_PRIORITY(NVIC_InitStruct->NVIC_IRQChannelPreemptionPriority));  
   assert_param(IS_NVIC_SUB_PRIORITY(NVIC_InitStruct->NVIC_IRQChannelSubPriority));
-    
+  
   if (NVIC_InitStruct->NVIC_IRQChannelCmd != DISABLE)
   {
     /* Compute the Corresponding IRQ Priority --------------------------------*/    

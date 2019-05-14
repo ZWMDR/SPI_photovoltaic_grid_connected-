@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\LCD;..\HARDWARE\FLASH;..\HARDWARE\SPI;..\HARDWARE\KEY;..\HARDWARE\EXTI;..\HARDWARE\TIMER</IncludePath>
+              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\LCD;..\HARDWARE\FLASH;..\HARDWARE\SPI;..\HARDWARE\KEY;..\HARDWARE\EXTI;..\HARDWARE\TIMER;..\HARDWARE\ADC</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -472,6 +472,11 @@
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\TIMER\timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\ADC\adc.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -33,4 +33,9 @@
 ..\obj\wave_tracking.o: ..\STM32F10x_FWLib\inc\misc.h
 ..\obj\wave_tracking.o: ..\HARDWARE\TIMER\timer.h
 ..\obj\wave_tracking.o: ..\HARDWARE\LED\led.h
+..\obj\wave_tracking.o: ..\HARDWARE\EXTI\exti.h
+..\obj\wave_tracking.o: ..\USER\PWM_out.h
 ..\obj\wave_tracking.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\obj\wave_tracking.o: ..\HARDWARE\SPI\spi.h
+..\obj\wave_tracking.o: ..\SYSTEM\usart\usart.h
+..\obj\wave_tracking.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

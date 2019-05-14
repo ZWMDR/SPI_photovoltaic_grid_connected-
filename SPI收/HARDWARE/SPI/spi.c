@@ -31,7 +31,7 @@ void SPI1_DMA1(void)
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI1->DR;
 	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)DMA_buff_RX;
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-	DMA_InitStructure.DMA_BufferSize = DMA_buff_len;
+	DMA_InitStructure.DMA_BufferSize = DMA_buff_len_SPI;
 	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
 	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
 	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
@@ -51,7 +51,7 @@ void SPI1_DMA1(void)
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI1->DR;
 	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)DMA_buff_TX;
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
-	DMA_InitStructure.DMA_BufferSize = DMA_buff_len;
+	DMA_InitStructure.DMA_BufferSize = DMA_buff_len_SPI;
 	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
 	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
 	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;

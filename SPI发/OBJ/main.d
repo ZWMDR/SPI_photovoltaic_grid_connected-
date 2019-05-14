@@ -41,3 +41,4 @@
 ..\obj\main.o: ..\USER\PWM_out.h
 ..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\obj\main.o: wave_tracking.h
+..\obj\main.o: ..\HARDWARE\EXTI\exti.h

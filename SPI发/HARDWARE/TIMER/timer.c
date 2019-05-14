@@ -120,6 +120,7 @@ void TIM6_Int_Init(u16 arr,u16 psc)
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  //TIM向上计数模式
 	TIM_TimeBaseInit(TIM6, &TIM_TimeBaseStructure); //根据TIM_TimeBaseInitStruct中指定的参数初始化TIMx的时间基数单位
 
+	TIM_ARRPreloadConfig(TIM6,ENABLE);
 	TIM_ITConfig(TIM6,TIM_IT_Update,ENABLE);
 
 	NVIC_InitStructure.NVIC_IRQChannel = TIM6_IRQn;  //TIM3中断

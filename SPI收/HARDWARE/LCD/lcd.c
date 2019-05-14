@@ -2760,38 +2760,123 @@ void LCD_Color_Fill(u16 sx,u16 sy,u16 ex,u16 ey,u16 *color)
 //x2,y2:终点坐标  
 void LCD_DrawLine(u16 x1, u16 y1, u16 x2, u16 y2)
 {
-	u16 t; 
-	int xerr=0,yerr=0,delta_x,delta_y,distance; 
-	int incx,incy,uRow,uCol; 
-	delta_x=x2-x1; //计算坐标增量 
-	delta_y=y2-y1; 
-	uRow=x1; 
-	uCol=y1; 
-	if(delta_x>0)incx=1; //设置单步方向 
-	else if(delta_x==0)incx=0;//垂直线 
-	else {incx=-1;delta_x=-delta_x;} 
-	if(delta_y>0)incy=1; 
-	else if(delta_y==0)incy=0;//水平线 
-	else{incy=-1;delta_y=-delta_y;} 
-	if( delta_x>delta_y)distance=delta_x; //选取基本增量坐标轴 
-	else distance=delta_y; 
-	for(t=0;t<=distance+1;t++ )//画线输出 
-	{  
-		LCD_DrawPoint(uRow,uCol);//画点 
-		xerr+=delta_x ; 
-		yerr+=delta_y ; 
-		if(xerr>distance) 
-		{ 
-			xerr-=distance; 
-			uRow+=incx; 
-		} 
-		if(yerr>distance) 
-		{ 
-			yerr-=distance; 
-			uCol+=incy; 
-		} 
-	}  
-}    
+	int dx,dy,e;
+	dx = x2-x1;
+	dy = y2-y1;
+	
+	if(dx>=0)	// dx>=0
+	{
+		if(dy>=0) // dy>=0
+		{
+			if(dx>=dy) // 1/8 octant
+			{
+				e=dy-dx/2;
+				while(x1<=x2)
+				{
+					LCD_DrawPoint(x1,y1);
+					if(e>0){y1+=1;e-=dx;}	
+					x1+=1;
+					e+=dy;
+				}
+			}
+			else	// 2/8 octant
+			{
+				e=dx-dy/2;
+				while(y1<=y2)
+				{
+					LCD_DrawPoint(x1,y1);
+					if(e>0){x1+=1;e-=dy;}	
+					y1+=1;
+					e+=dx;
+				}
+			}
+		}
+		else	// dy<0
+		{
+			dy=-dy;   // dy=abs(dy)
+
+			if(dx>=dy) // 8/8 octant
+			{
+				e=dy-dx/2;
+				while(x1<=x2)
+				{
+					LCD_DrawPoint(x1,y1);
+					if(e>0){y1-=1;e-=dx;}	
+					x1+=1;
+					e+=dy;
+				}
+			}
+			else		// 7/8 octant
+			{
+				e=dx-dy/2;
+				while(y1>=y2)
+				{
+					LCD_DrawPoint(x1,y1);
+					if(e>0){x1+=1;e-=dy;}	
+					y1-=1;
+					e+=dx;
+				}
+			}
+		}	
+	}
+	else	//dx<0
+	{
+		dx=-dx;		//dx=abs(dx)
+		
+		if(dy >= 0) // dy>=0
+		{
+			if(dx>=dy) // 4/8 octant
+			{
+				e=dy-dx/2;
+				while(x1>=x2)
+				{
+					LCD_DrawPoint(x1,y1);
+					if(e>0){y1+=1;e-=dx;}	
+					x1-=1;
+					e+=dy;
+				}
+			}
+			else		// 3/8 octant
+			{
+				e=dx-dy/2;
+				while(y1<=y2)
+				{
+					LCD_DrawPoint(x1,y1);
+					if(e>0){x1-=1;e-=dy;}	
+					y1+=1;
+					e+=dx;
+				}
+			}
+		}
+		else	// dy<0
+		{
+			dy=-dy;   // dy=abs(dy)
+
+			if(dx>=dy) // 5/8 octant
+			{
+				e=dy-dx/2;
+				while(x1>=x2)
+				{
+					LCD_DrawPoint(x1,y1);
+					if(e>0){y1-=1;e-=dx;}	
+					x1-=1;
+					e+=dy;
+				}
+			}
+			else		// 6/8 octant
+			{
+				e=dx-dy/2;
+				while(y1>=y2)
+				{
+					LCD_DrawPoint(x1,y1);
+					if(e>0){x1-=1;e-=dy;}	
+					y1-=1;
+					e+=dx;
+				}
+			}
+		}	
+	}
+}  
 //画矩形	  
 //(x1,y1),(x2,y2):矩形的对角坐标
 void LCD_DrawRectangle(u16 x1, u16 y1, u16 x2, u16 y2)

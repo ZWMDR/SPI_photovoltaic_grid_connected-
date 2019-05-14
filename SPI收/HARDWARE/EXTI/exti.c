@@ -35,9 +35,6 @@ void DMA1_Channel2_IRQHandler(void)
 		Period_REF=DMA_buff_RX[2];
 		Period_F=DMA_buff_RX[3];
 		
-		printf("F_REF=%d, F_F=%d\r\n",Frequency_REF,Frequency_F);
-		printf("P_REF=%d, P_F=%d\r\n",Period_REF,Period_F);
-		
 		LED1=~LED1;
 		DMA_Cmd(DMA1_Channel2,DISABLE);
 		DMA1_Channel2->CNDTR=4;
@@ -48,3 +45,14 @@ void DMA1_Channel2_IRQHandler(void)
 	}
 }
 
+void DMA1_Channel1_IRQHandler(void)
+{
+	if(DMA_GetITStatus(DMA1_IT_TC1)!=RESET)
+	{
+		LED0=1;
+		ADC_flag=1;
+		DMA_Cmd(DMA1_Channel1,DISABLE);
+		TIM_Cmd(TIM2,DISABLE);
+		DMA_ClearITPendingBit(DMA1_IT_TC1);
+	}
+}

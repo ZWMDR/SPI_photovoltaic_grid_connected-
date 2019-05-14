@@ -38,5 +38,6 @@
 ..\obj\main.o: ..\HARDWARE\KEY\key.h
 ..\obj\main.o: ..\HARDWARE\SPI\spi.h
 ..\obj\main.o: ..\HARDWARE\EXTI\exti.h
+..\obj\main.o: ..\HARDWARE\ADC\adc.h
 ..\obj\main.o: GUI.h
 ..\obj\main.o: caculate.h

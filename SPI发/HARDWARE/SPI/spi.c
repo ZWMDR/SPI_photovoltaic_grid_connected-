@@ -83,13 +83,13 @@ void SPI1_DMA1(void)
 	DMA_Cmd(DMA1_Channel2, ENABLE);
 	DMA_Cmd(DMA1_Channel3, DISABLE);
 }
-void SPI1_Init(void)
+void SPI1_Init(u16 arr,u16 psc)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	//NVIC_InitTypeDef NVIC_InitStructure;
   
 	RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOA|RCC_APB2Periph_SPI1,ENABLE);	
- 
+
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //复用推挽输出
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -108,16 +108,8 @@ void SPI1_Init(void)
 	SPI_InitStructure.SPI_CRCPolynomial = 7;	//CRC值计算的多项式
 	SPI_Init(SPI1, &SPI_InitStructure);  //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
  
- /*
-	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	NVIC_InitStructure.NVIC_IRQChannel = SPI1_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-	SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);
-	*/
 	SPI1_DMA1();
-	TIM2_Int_Init(1000-1,7200-1);
+	TIM2_Int_Init(arr,psc);
 	SPI_Cmd(SPI1, ENABLE); //使能SPI外设
 	
 	//SPI1_ReadWriteByte(0xff);//启动传输

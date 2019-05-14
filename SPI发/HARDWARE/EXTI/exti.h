@@ -19,6 +19,9 @@ extern u8 flag_REF;
 extern u8 flag_F;
 extern u8 send_flag;
 
+
+void MY_NVIC_PriorityGroupConfig(u8 NVIC_Group);
+void MY_NVIC_Init(u8 NVIC_PreemptionPriority,u8 NVIC_SubPriority,u8 NVIC_Channel,u8 NVIC_Group);
 void EXTIX_Init(void);//IO≥ı ºªØ
 void DMA_EXTI_Init(void);
 
