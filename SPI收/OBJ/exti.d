@@ -36,6 +36,7 @@
 ..\obj\exti.o: ..\SYSTEM\usart\usart.h
 ..\obj\exti.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\obj\exti.o: ..\HARDWARE\ADC\adc.h
+..\obj\exti.o: ..\USER\caculate.h
 ..\obj\exti.o: ..\HARDWARE\LED\led.h
 ..\obj\exti.o: ..\HARDWARE\KEY\key.h
 ..\obj\exti.o: ..\SYSTEM\delay\delay.h

@@ -12,11 +12,11 @@ extern u16 Period_REF;
 extern u16 Period_F;
 extern u16 DMA_buff_RX[DMA_buff_len_SPI];
 extern u16 DMA_buff_TX[DMA_buff_len_SPI];
+extern float frequency_REF;
+extern float frequency_F;
+extern float phase;
 
 void info_init(void);
 void info_show(void);
-
-
-
 
 #endif

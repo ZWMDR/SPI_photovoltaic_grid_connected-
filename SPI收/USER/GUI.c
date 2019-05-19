@@ -29,21 +29,21 @@ void info_show(void)
 	
 	if(recv_flag)
 	{
-		frequency=temp=1000000.0/Frequency_REF;
+		temp=frequency_REF;
 		adcx=temp;
 		LCD_ShowxNum(152,220,adcx,3,16,0);
 		temp-=adcx;
 		temp*=1000;
 		LCD_ShowxNum(184,220,temp,3,16,0x80);
 		
-		temp=1000000.0/Frequency_F;
+		temp=frequency_F;
 		adcx=temp;
 		LCD_ShowxNum(152,240,adcx,3,16,0);
 		temp-=adcx;
 		temp*=1000;
 		LCD_ShowxNum(184,240,temp,3,16,0x80);
 		
-		temp=(double)Period_REF/Frequency_REF;
+		temp=phase;
 		adcx=temp;
 		LCD_ShowxNum(152,260,adcx,3,16,0);
 		temp-=adcx;
@@ -57,7 +57,6 @@ void info_show(void)
 		temp*=1000;
 		LCD_ShowxNum(184,280,temp,3,16,0x80);
 		
-		resend();
 		recv_flag=0;
 	}
 	

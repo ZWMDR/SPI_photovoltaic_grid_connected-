@@ -35,3 +35,4 @@
 ..\obj\caculate.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\caculate.o: ..\SYSTEM\usart\usart.h
 ..\obj\caculate.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\obj\caculate.o: ..\HARDWARE\ADC\adc.h

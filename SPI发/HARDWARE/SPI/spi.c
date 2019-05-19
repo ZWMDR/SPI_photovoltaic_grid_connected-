@@ -107,7 +107,7 @@ void SPI1_Init(u16 arr,u16 psc)
 	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;	//指定数据传输从MSB位还是LSB位开始:数据传输从MSB位开始
 	SPI_InitStructure.SPI_CRCPolynomial = 7;	//CRC值计算的多项式
 	SPI_Init(SPI1, &SPI_InitStructure);  //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
- 
+	
 	SPI1_DMA1();
 	TIM2_Int_Init(arr,psc);
 	SPI_Cmd(SPI1, ENABLE); //使能SPI外设

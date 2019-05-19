@@ -12,7 +12,7 @@ void ADC_GPIO_Configuration(void)
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 }
 
-void TIM_Configuration(int frequency)
+void TIM_Configuration(u16 frequency)
 {
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	TIM_OCInitTypeDef TIM_OCInitStructure;
@@ -53,7 +53,7 @@ void ADC_DMA_Config(void)
 	DMA_ITConfig(DMA1_Channel1,DMA_IT_TC,ENABLE);
 }
 
-void PulseSenosrInit(int frequency)
+void PulseSenosrInit(u16 frequency)
 {
 	ADC_InitTypeDef ADC_InitStructure;
 	
@@ -62,15 +62,16 @@ void PulseSenosrInit(int frequency)
 	ADC_GPIO_Configuration();
 	TIM_Configuration(frequency);
 	ADC_DMA_Config();
-	//ADC1
+
 	ADC_InitStructure.ADC_Mode=ADC_Mode_Independent;
-	ADC_InitStructure.ADC_ScanConvMode=DISABLE;
+	ADC_InitStructure.ADC_ScanConvMode=ENABLE;
 	ADC_InitStructure.ADC_ContinuousConvMode=DISABLE;
 	ADC_InitStructure.ADC_ExternalTrigConv=ADC_ExternalTrigConv_T2_CC2;
 	ADC_InitStructure.ADC_DataAlign=ADC_DataAlign_Right;
 	ADC_InitStructure.ADC_NbrOfChannel=1;
 	ADC_Init(ADC1,&ADC_InitStructure);
 	ADC_RegularChannelConfig(ADC1,ADC_Channel_0,1,ADC_SampleTime_71Cycles5);
+	ADC_RegularChannelConfig(ADC1,ADC_Channel_1,2,ADC_SampleTime_71Cycles5);
 	ADC_DMACmd(ADC1,ENABLE);
 	ADC_Cmd(ADC1,ENABLE);
 	ADC_ResetCalibration(ADC1);
@@ -94,13 +95,13 @@ void DMA_EXTI_Init(void)
 	NVIC_Init(&NVIC_InitStructure);
 }
 
-void ADC1_TIM_Init(int frequency)
+void ADC1_TIM_Init(u16 frequency)
 {
 	PulseSenosrInit(frequency);
 	DMA_EXTI_Init();
 }
 
-void ADC_get(int count)
+void ADC_get(u16 count)
 {
 	if(count>0)
 	{

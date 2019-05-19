@@ -39,5 +39,5 @@
 ..\obj\main.o: ..\HARDWARE\SPI\spi.h
 ..\obj\main.o: ..\HARDWARE\EXTI\exti.h
 ..\obj\main.o: ..\HARDWARE\ADC\adc.h
+..\obj\main.o: ..\USER\caculate.h
 ..\obj\main.o: GUI.h
-..\obj\main.o: caculate.h
