@@ -8,7 +8,6 @@
 "..\obj\lcd.o"
 "..\obj\key.o"
 "..\obj\spi.o"
-"..\obj\flash.o"
 "..\obj\exti.o"
 "..\obj\pwm.o"
 "..\obj\timer.o"

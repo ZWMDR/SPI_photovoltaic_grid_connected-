@@ -31,7 +31,7 @@ void SPI1_DMA1(void)
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI1->DR;
 	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)DMA_buff_RX;
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-	DMA_InitStructure.DMA_BufferSize = DMA_buff_len;
+	DMA_InitStructure.DMA_BufferSize = DMA_buff_len_SPI;
 	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
 	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
 	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
@@ -51,7 +51,7 @@ void SPI1_DMA1(void)
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI1->DR;
 	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)DMA_buff_TX;
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
-	DMA_InitStructure.DMA_BufferSize = DMA_buff_len;
+	DMA_InitStructure.DMA_BufferSize = DMA_buff_len_SPI;
 	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
 	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
 	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
@@ -109,15 +109,7 @@ void SPI1_Init(void)
 	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;	//指定数据传输从MSB位还是LSB位开始:数据传输从MSB位开始
 	SPI_InitStructure.SPI_CRCPolynomial = 7;	//CRC值计算的多项式
 	SPI_Init(SPI1, &SPI_InitStructure);  //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
- 
- /*
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	NVIC_InitStructure.NVIC_IRQChannel = SPI1_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-	SPI_I2S_ITConfig(SPI1,SPI_I2S_IT_RXNE,ENABLE);
-	*/
+
 	SPI1_DMA1();
 	SPI_Cmd(SPI1, ENABLE); //使能SPI外设
 	//SPI1_ReadWriteByte(0xff);//启动传输
@@ -159,26 +151,4 @@ u8 SPI1_ReadWriteByte(u8 TxData)
 }
 
 
-void SPI1_IRQHandler(void)
-{
-	u16 data;
-	if(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) != RESET)
-	{
-		data=SPI_I2S_ReceiveData(SPI1);
-		printf("%d\r\n",data);
-		if(recv_flag==0)
-			LCD_ShowxNum(172,50,data,5,16,0);
-		else if(recv_flag==1)
-			LCD_ShowxNum(172,70,data,5,16,0);
-		else if(recv_flag==2)
-			LCD_ShowxNum(172,90,data,5,16,0);
-		else if(recv_flag==3)
-			LCD_ShowxNum(172,110,data,5,16,0);
-		
-		if(recv_flag==3)
-			recv_flag=0;
-		else
-			recv_flag++;
-	}
-}
 

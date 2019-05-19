@@ -5,6 +5,7 @@
 #include "sys.h"
 #include "led.h"
 #include "stm32f10x.h"
+#include "exti.h"
 #include <math.h>
 
 extern u16 Period_REF;
