@@ -30,8 +30,10 @@ int main(void)
 	PWM_input_Init();
 	PWM_init(3600-1,1-1);//20kHz
 	SPI1_Init(1000-1,7200-1);
+	
 	t=0;
 	send_flag=0;
+	Frequency_REF=Frequency_F=25000;
 
 	while(1)
 	{

@@ -31,8 +31,8 @@ u16 get_frequency(float *frequency_REF,float *frequency_F)
 {
 	int iError, iIncpid;                                   //当前误差
 	
-	*frequency_REF=1000000.0/DMA_buff_RX[0];
-	*frequency_F=1000000.0/DMA_buff_RX[1];
+	*frequency_REF=1000000.0/Frequency_REF;
+	*frequency_F=1000000.0/Frequency_F;
 	
 	PID_frequency.SetPoint=(*frequency_REF)*64;            //设置调整目标
 	iError = PID_frequency.SetPoint-(*frequency_F)*64;     //增量计算
@@ -49,7 +49,7 @@ u16 get_phase(float *phase)
 {
 	int iError, iIncpid;                                    //当前误差
 	
-	*phase=(float)(DMA_buff_RX[2]-DMA_buff_RX[3])/DMA_buff_RX[0];
+	*phase=(float)(Period_F-Period_REF)/Frequency_REF;
 	
 	iError = PID_phase.SetPoint - (*phase)*100;             //增量计算
 	iIncpid = PID_phase.Proportion * iError                 //E[k]项
@@ -96,7 +96,7 @@ u16 get_VCC_coef(float *VCC)
 		TIM_Cmd(TIM2,ENABLE);
 		ADC_flag=0;
 		
-		return (s16)iIncpid;
+		return (s16)((float)iIncpid/VCC_F*1000);
 	}
 	else
 		return 0;

@@ -1,13 +1,11 @@
 #include "adc.h"
 #include "timer.h"
 
-DMA_InitTypeDef DMA_InitStructure;
-
 void ADC_GPIO_Configuration(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);	  //使能始时钟
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_2;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;		//模拟输入引脚
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 }
@@ -36,6 +34,7 @@ void TIM_Configuration(u16 frequency)
 
 void ADC_DMA_Config(void)
 {
+	DMA_InitTypeDef DMA_InitStructure;
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1,ENABLE);
 	DMA_DeInit(DMA1_Channel1);
 	DMA_InitStructure.DMA_PeripheralBaseAddr=(u32)&ADC1->DR;
@@ -71,7 +70,7 @@ void PulseSenosrInit(u16 frequency)
 	ADC_InitStructure.ADC_NbrOfChannel=1;
 	ADC_Init(ADC1,&ADC_InitStructure);
 	ADC_RegularChannelConfig(ADC1,ADC_Channel_0,1,ADC_SampleTime_71Cycles5);
-	ADC_RegularChannelConfig(ADC1,ADC_Channel_1,2,ADC_SampleTime_71Cycles5);
+	ADC_RegularChannelConfig(ADC1,ADC_Channel_2,2,ADC_SampleTime_71Cycles5);
 	ADC_DMACmd(ADC1,ENABLE);
 	ADC_Cmd(ADC1,ENABLE);
 	ADC_ResetCalibration(ADC1);
@@ -99,15 +98,4 @@ void ADC1_TIM_Init(u16 frequency)
 {
 	PulseSenosrInit(frequency);
 	DMA_EXTI_Init();
-}
-
-void ADC_get(u16 count)
-{
-	if(count>0)
-	{
-		DMA_InitStructure.DMA_BufferSize=count;
-		DMA_Init(DMA1_Channel1,&DMA_InitStructure);
-	}
-	TIM_Cmd(TIM2,ENABLE);
-	DMA_Cmd(DMA1_Channel1,ENABLE);
 }

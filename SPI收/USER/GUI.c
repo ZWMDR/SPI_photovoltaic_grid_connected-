@@ -22,6 +22,32 @@ void info_init(void)
 	POINT_COLOR=MAGENTA;
 }
 
+void graph_init(void)
+{
+	LCD_Fill(0,190,240,192,RED);
+	LCD_Fill(0,98,240,99,RED);
+	LCD_Fill(0,90,240,91,RED);
+	
+	LCD_Fill(0,0,240,89,LIGHTBLUE);
+	LCD_Fill(0,100,240,189,LIGHTBLUE);
+	LCD_Fill(0,92,240,97,BLUE);
+	
+	POINT_COLOR=YELLOW;
+	LCD_DrawLine(0,GUID_LINE1,240,GUID_LINE1);
+	LCD_DrawLine(0,GUID_LINE2,240,GUID_LINE2);
+	LCD_DrawLine(0,GUID_LINE3,240,GUID_LINE3);
+	
+	LCD_DrawLine(0,GUID_LINE4,240,GUID_LINE4);
+	LCD_DrawLine(0,GUID_LINE5,240,GUID_LINE5);
+	LCD_DrawLine(0,GUID_LINE6,240,GUID_LINE6);
+	
+}
+
+void graph_show(void)
+{
+	
+}
+
 void info_show(void)
 {
 	float temp;
@@ -29,6 +55,8 @@ void info_show(void)
 	
 	if(recv_flag)
 	{
+		POINT_COLOR=BLUE;
+		
 		temp=frequency_REF;
 		adcx=temp;
 		LCD_ShowxNum(152,220,adcx,3,16,0);
@@ -62,7 +90,17 @@ void info_show(void)
 	
 	if(ADC_flag)
 	{
+		POINT_COLOR=MAGENTA;
 		
+		VCC=get_vcc(DMA_buff,DMA_buff_len,0)*0.00080566;
+		temp=VCC;
+		adcx=temp;
+		LCD_ShowxNum(152,200,adcx,3,16,0);
+		temp-=adcx;
+		temp*=1000;
+		LCD_ShowxNum(184,200,temp,3,16,0x80);
 		ADC_flag=0;
+		
+		graph_show();
 	}
 }

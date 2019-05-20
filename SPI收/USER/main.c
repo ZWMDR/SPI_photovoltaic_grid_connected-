@@ -40,6 +40,7 @@ int main(void)
 	SPI1_Init();
 	ADC1_TIM_Init(_5kHz);
 	info_init();
+	graph_init();
 	
 	while(1)
 	{
