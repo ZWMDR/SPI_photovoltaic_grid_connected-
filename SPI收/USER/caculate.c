@@ -61,7 +61,7 @@ u16 get_phase(float *phase)
 	return (s16)(iIncpid<<2);
 }
 
-u16 get_vcc(u16 *arr,u16 count,u8 status)
+u16 get_vcc(u16 *arr,u16 count,u8 status,u16 *VCC)
 {
 	u16 max=0,min=0xFFFF;
 	u16 i;
@@ -72,18 +72,15 @@ u16 get_vcc(u16 *arr,u16 count,u8 status)
 		else if(arr[i]>max)
 			max=arr[i];
 	}
-	return max-min;
+	*VCC=max-min;
+	return *VCC;
 }
 
-u16 get_VCC_coef(float *VCC)
+u16 get_VCC_coef(void)
 {
-	u16 VCC_REF,VCC_F;
 	int iError, iIncpid;                          //当前误差
 	if(ADC_flag)
 	{
-		VCC_REF=get_vcc(DMA_buff,DMA_buff_len,0);
-		VCC_F=get_vcc(DMA_buff,DMA_buff_len,1);
-		
 		PID_VCC.SetPoint=VCC_REF;                   //设置调整目标
 		iError = PID_VCC.SetPoint-VCC_F;            //增量计算
 		iIncpid = PID_VCC.Proportion * iError       //E[k]项

@@ -1,5 +1,8 @@
 #include "GUI.h"
 
+float vcc_REF_lst;
+float vcc_F_lst;
+float phase_lst;
 
 void info_init(void)
 {
@@ -22,30 +25,82 @@ void info_init(void)
 	POINT_COLOR=MAGENTA;
 }
 
-void graph_init(void)
+void graph_init(u8 mode)
 {
-	LCD_Fill(0,190,240,192,RED);
-	LCD_Fill(0,98,240,99,RED);
-	LCD_Fill(0,90,240,91,RED);
-	
-	LCD_Fill(0,0,240,89,LIGHTBLUE);
-	LCD_Fill(0,100,240,189,LIGHTBLUE);
-	LCD_Fill(0,92,240,97,BLUE);
-	
-	POINT_COLOR=YELLOW;
-	LCD_DrawLine(0,GUID_LINE1,240,GUID_LINE1);
-	LCD_DrawLine(0,GUID_LINE2,240,GUID_LINE2);
-	LCD_DrawLine(0,GUID_LINE3,240,GUID_LINE3);
-	
-	LCD_DrawLine(0,GUID_LINE4,240,GUID_LINE4);
-	LCD_DrawLine(0,GUID_LINE5,240,GUID_LINE5);
-	LCD_DrawLine(0,GUID_LINE6,240,GUID_LINE6);
-	
+	switch(mode)
+	{
+		case 0:
+		{
+			LCD_Fill(0,190,240,192,RED);
+			LCD_Fill(0,98,240,99,RED);
+			LCD_Fill(0,90,240,91,RED);
+		
+			LCD_Fill(0,0,240,89,LIGHTBLUE);
+			LCD_Fill(0,100,240,189,LIGHTBLUE);
+			LCD_Fill(0,92,240,97,BLUE);
+		
+			POINT_COLOR=YELLOW;
+			LCD_DrawLine(0,GUID_LINE1,240,GUID_LINE1);
+			LCD_DrawLine(0,GUID_LINE2,240,GUID_LINE2);
+			LCD_DrawLine(0,GUID_LINE3,240,GUID_LINE3);
+			
+			LCD_DrawLine(0,GUID_LINE4,240,GUID_LINE4);
+			break;
+		}
+		
+		case 1:
+		{
+			LCD_Fill(0,0,240,89,LIGHTBLUE);
+			POINT_COLOR=YELLOW;
+			LCD_DrawLine(0,GUID_LINE1,240,GUID_LINE1);
+			LCD_DrawLine(0,GUID_LINE2,240,GUID_LINE2);
+			LCD_DrawLine(0,GUID_LINE3,240,GUID_LINE3);
+			break;
+		}
+		case 2:
+		{
+			LCD_Fill(0,92,240,97,BLUE);
+			LCD_DrawLine(0,GUID_LINE4,240,GUID_LINE4);
+			break;
+		}
+	}
 }
 
-void graph_show(void)
+void vcc_graph_show(float vcc_REF,float vcc_F)
 {
+	if(x_coord_vcc>0)
+	{
+		POINT_COLOR=GREEN;
+		LCD_DrawLine(x_coord_vcc-1,89*(1-vcc_REF_lst*0.3030303),x_coord_vcc,89*(1-vcc_REF*0.3030303));
+		POINT_COLOR=RED;
+		LCD_DrawLine(x_coord_vcc-1,89*(1-vcc_F_lst*0.3030303),x_coord_vcc,89*(1-vcc_F*0.3030303));
+	}
 	
+	vcc_REF_lst=vcc_REF;
+	vcc_F_lst=vcc_F;
+	
+	if((++x_coord_vcc)>=240)
+	{
+		x_coord_vcc=0;
+		graph_init(1);
+	}
+}
+
+void phase_graph_show(float phase)
+{
+	if(x_coord_phs>0)
+	{
+		POINT_COLOR=BLUE;
+		LCD_DrawLine(x_coord_phs-1,GUID_LINE4-45*phase_lst,x_coord_phs,GUID_LINE4-45*phase);
+	}
+	
+	phase_lst=phase;
+	
+	if((++x_coord_phs)>=240)
+	{
+		x_coord_phs=0;
+		graph_init(2);
+	}
 }
 
 void info_show(void)
@@ -85,15 +140,16 @@ void info_show(void)
 		temp*=1000;
 		LCD_ShowxNum(184,280,temp,3,16,0x80);
 		
+		phase_graph_show(phase);
 		recv_flag=0;
 	}
 	
-	if(ADC_flag)
+	if(ADC_show_flag)
 	{
 		POINT_COLOR=MAGENTA;
 		
-		VCC=get_vcc(DMA_buff,DMA_buff_len,0)*0.00080566;
-		temp=VCC;
+		//VCC=get_vcc(DMA_buff,DMA_buff_len,0)*0.00080566;
+		temp=vcc_F;
 		adcx=temp;
 		LCD_ShowxNum(152,200,adcx,3,16,0);
 		temp-=adcx;
@@ -101,6 +157,7 @@ void info_show(void)
 		LCD_ShowxNum(184,200,temp,3,16,0x80);
 		ADC_flag=0;
 		
-		graph_show();
+		vcc_graph_show(vcc_REF,vcc_F);
+		ADC_show_flag=0;
 	}
 }

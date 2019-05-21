@@ -12,6 +12,8 @@ extern u16 Period_F;
 extern u16 DMA_buff_RX[DMA_buff_len_SPI];
 extern u16 DMA_buff_TX[DMA_buff_len_SPI];
 extern u16 DMA_buff[DMA_buff_len];
+extern u16 VCC_REF;
+extern u16 VCC_F;
 
 typedef struct PID
 {
@@ -29,7 +31,7 @@ extern PID PID_frequency,PID_phase,PID_VCC;
 void PID_init(void);
 u16 get_frequency(float *frequency_REF,float *frequency_F);
 u16 get_phase(float *phase);
-u16 get_vcc(u16 *arr,u16 count,u8 status);
-u16 get_VCC_coef(float *VCC);
+u16 get_vcc(u16 *arr,u16 count,u8 status,u16 *VCC);
+u16 get_VCC_coef(void);
 
 #endif

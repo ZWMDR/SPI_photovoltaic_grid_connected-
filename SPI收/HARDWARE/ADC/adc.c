@@ -98,4 +98,6 @@ void ADC1_TIM_Init(u16 frequency)
 {
 	PulseSenosrInit(frequency);
 	DMA_EXTI_Init();
+	DMA_Cmd(DMA1_Channel1,ENABLE);
+	TIM_Cmd(TIM2,ENABLE);
 }
