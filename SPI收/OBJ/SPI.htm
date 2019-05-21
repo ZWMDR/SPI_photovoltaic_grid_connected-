@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\OBJ\SPI.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\OBJ\SPI.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Tue May 21 13:15:45 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Tue May 21 13:30:28 2019
 <BR><P>
 <H3>Maximum Stack Usage =        184 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -311,7 +311,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[67]"></a>graph_init</STRONG> (Thumb, 278 bytes, Stack size 16 bytes, gui.o(.text))
+<P><STRONG><a name="[67]"></a>graph_init</STRONG> (Thumb, 288 bytes, Stack size 16 bytes, gui.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = graph_init &rArr; LCD_Fill &rArr;  LCD_Fill (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Fill
@@ -322,7 +322,7 @@ Global Symbols
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[6e]"></a>vcc_graph_show</STRONG> (Thumb, 308 bytes, Stack size 56 bytes, gui.o(.text))
+<P><STRONG><a name="[6e]"></a>vcc_graph_show</STRONG> (Thumb, 312 bytes, Stack size 56 bytes, gui.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = vcc_graph_show &rArr; graph_init &rArr; LCD_Fill &rArr;  LCD_Fill (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
@@ -347,7 +347,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;info_show
 </UL>
 
-<P><STRONG><a name="[68]"></a>info_show</STRONG> (Thumb, 766 bytes, Stack size 48 bytes, gui.o(.text))
+<P><STRONG><a name="[68]"></a>info_show</STRONG> (Thumb, 760 bytes, Stack size 48 bytes, gui.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = info_show &rArr; vcc_graph_show &rArr; graph_init &rArr; LCD_Fill &rArr;  LCD_Fill (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_ShowxNum

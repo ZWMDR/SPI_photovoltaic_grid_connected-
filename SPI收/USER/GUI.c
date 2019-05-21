@@ -59,7 +59,8 @@ void graph_init(u8 mode)
 		}
 		case 2:
 		{
-			LCD_Fill(0,92,240,97,BLUE);
+			LCD_Fill(0,100,240,189,LIGHTBLUE);
+			POINT_COLOR=YELLOW;
 			LCD_DrawLine(0,GUID_LINE4,240,GUID_LINE4);
 			break;
 		}
