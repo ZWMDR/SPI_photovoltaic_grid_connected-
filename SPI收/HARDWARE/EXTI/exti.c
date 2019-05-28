@@ -27,6 +27,8 @@ void DMA1_Channel2_IRQHandler(void)//SPIΩ” ’÷–∂œ
 		Period_REF=DMA_buff_RX[2];
 		Period_F=DMA_buff_RX[3];
 		
+		printf("REF:%d,F:%d\r\n",Frequency_REF,Frequency_F);
+		
 		if(Frequency_REF==0xFFFF && Frequency_F==0xFFFF)
 		{
 			DMA_buff_TX[0]=DMA_buff_TX[1]=DMA_buff_TX[2]=DMA_buff_TX[3]=0;

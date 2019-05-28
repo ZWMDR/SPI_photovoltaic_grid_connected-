@@ -33,7 +33,7 @@ u16 get_frequency(float *frequency_REF,float *frequency_F)
 	
 	*frequency_REF=1000000.0/Frequency_REF;
 	*frequency_F=1000000.0/Frequency_F;
-	
+	//printf("REF:%lf,F:%lf\r\t",*frequency_REF,*frequency_F);
 	PID_frequency.SetPoint=(*frequency_REF)*1000;            //设置调整目标
 	iError = PID_frequency.SetPoint-(*frequency_F)*1000;     //增量计算
 	iIncpid = PID_frequency.Proportion * iError             //E[k]项

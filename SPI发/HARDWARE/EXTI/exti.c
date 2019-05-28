@@ -38,7 +38,6 @@ void TIM5_IRQHandler(void)
 		t=0;
 		TIM_ClearITPendingBit(TIM5,TIM_IT_CC1);
 		IC1Value = TIM5->CCR1+1;
-		//if((IC1Value != 0) && (!(flag_REF && flag_F)))
 		if(IC1Value != 0)
 		{
 			Frequency_REF = IC1Value;
@@ -77,7 +76,6 @@ void TIM4_IRQHandler(void)
 		LED1=~LED1;
 		TIM_ClearITPendingBit(TIM4,TIM_IT_CC1);
 		IC1Value = TIM4->CCR1+1;
-		//if((IC1Value != 0) && (!(flag_REF && flag_F)))
 		if(IC1Value != 0)
 		{
 			Frequency_F = IC1Value;
@@ -143,7 +141,6 @@ void DMA1_Channel2_IRQHandler(void)//SPI接收完成
 		if(DMA_buff_RX[0]<5000 && DMA_buff_RX[0]>2000)
 		{
 			TIM6->ARR=DMA_buff_RX[0];
-			//TIM_Cmd(TIM6,ENABLE);
 		}
 		/*
 		t+=(s16)DMA_buff_RX[1];
@@ -162,12 +159,14 @@ void TIM2_IRQHandler(void)//SPI发送
 {
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
 	{
+		//printf("REF:%d,F:%d\r\n",DMA_buff_TX[0],DMA_buff_TX[1]);
 		if(!send_flag)
 		{
 			DMA_buff_TX[0]=DMA_buff_TX[1]=0xFFFF;
 			DMA_buff_TX[2]=DMA_buff_TX[3]=0;
 			send_flag=1;
 		}
+
 		DMA1_Channel3->CNDTR=4;
 		DMA_Cmd(DMA1_Channel3, ENABLE);
 		
