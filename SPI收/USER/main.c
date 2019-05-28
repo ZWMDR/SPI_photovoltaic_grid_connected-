@@ -41,7 +41,7 @@ int main(void)
 	frequency_REF=frequency_F=phase=vcc_REF=vcc_F=0;
 	delay_init();	    	 //延时函数初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-	uart_init(19200);	 	//串口初始化
+	//uart_init(19200);	 	//串口初始化
 	LED_Init();		  		//初始化与LED连接的硬件接口
  	LCD_Init();
 	KEY_Init();				//按键初始化

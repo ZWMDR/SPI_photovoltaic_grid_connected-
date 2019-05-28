@@ -114,15 +114,22 @@ void TIM6_IRQHandler(void)
 	}
 }
 
-void TIM7_IRQHandler(void)
+void DMA1_Channel1_IRQHandler(void)//ADC1中断
 {
-	if (TIM_GetITStatus(TIM7, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
+	if(DMA_GetITStatus(DMA1_IT_TC1)!=RESET)
 	{
+		LED0=~LED0;
+		ADC_flag=1;
 		
-		TIM_ClearITPendingBit(TIM7, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 
+		DMA_Cmd(DMA1_Channel1,DISABLE);
+		TIM_Cmd(TIM2,DISABLE);
+		
+		DMA_ClearITPendingBit(DMA1_IT_TC1);
 	}
 }
 
+
+/*
 void DMA1_Channel3_IRQHandler(void)//SPI发送完成
 {
 	if (DMA_GetITStatus(DMA1_IT_TC3)!=RESET)
@@ -142,11 +149,9 @@ void DMA1_Channel2_IRQHandler(void)//SPI接收完成
 		{
 			TIM6->ARR=DMA_buff_RX[0];
 		}
-		/*
 		t+=(s16)DMA_buff_RX[1];
 		if(t>=400)
 			t=0;
-		*/
 		DMA_Cmd(DMA1_Channel2,DISABLE);
 		DMA1_Channel2->CNDTR=4;
 		DMA_Cmd(DMA1_Channel2,ENABLE);
@@ -159,7 +164,6 @@ void TIM2_IRQHandler(void)//SPI发送
 {
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
 	{
-		//printf("REF:%d,F:%d\r\n",DMA_buff_TX[0],DMA_buff_TX[1]);
 		if(!send_flag)
 		{
 			DMA_buff_TX[0]=DMA_buff_TX[1]=0xFFFF;
@@ -173,3 +177,4 @@ void TIM2_IRQHandler(void)//SPI发送
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 
 	}
 }
+*/

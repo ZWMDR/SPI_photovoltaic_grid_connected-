@@ -1,0 +1,12 @@
+#ifndef __ADC_H
+#define __ADC_H	
+#include "sys.h"
+#include "stm32f10x.h"
+
+#define ADC1_DR_Address ((u32)0x4001244C)
+
+extern u16 DMA_buff[100];
+
+void ADC1_TIM_Init(void);
+
+#endif 

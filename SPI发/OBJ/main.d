@@ -42,3 +42,5 @@
 ..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\obj\main.o: wave_tracking.h
 ..\obj\main.o: ..\HARDWARE\EXTI\exti.h
+..\obj\main.o: ..\HARDWARE\ADC\adc.h
+..\obj\main.o: caculate.h

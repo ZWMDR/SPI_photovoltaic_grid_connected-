@@ -11,6 +11,7 @@
 "..\obj\exti.o"
 "..\obj\pwm.o"
 "..\obj\timer.o"
+"..\obj\adc.o"
 "..\obj\delay.o"
 "..\obj\sys.o"
 "..\obj\usart.o"

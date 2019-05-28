@@ -36,7 +36,7 @@ void DMA1_Channel2_IRQHandler(void)//SPIΩ” ’÷–∂œ
 		}
 		else
 		{
-			DMA_buff_TX[0]=get_frequency(&frequency_REF,&frequency_F);
+			//DMA_buff_TX[0]=get_frequency(&frequency_REF,&frequency_F);
 			DMA_buff_TX[1]=get_phase(&phase);
 			DMA_buff_TX[2]=get_VCC_coef();
 			DMA_buff_TX[3]=0;
