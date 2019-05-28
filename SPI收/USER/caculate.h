@@ -17,12 +17,12 @@ extern u16 VCC_F;
 
 typedef struct PID
 {
-    int SetPoint; //设定目标 Desired Value
+    s16 SetPoint; //设定目标 Desired Value
     float Proportion; //比例常数 Proportional Const
     float Integral; //积分常数 Integral Const
     float Derivative; //微分常数 Derivative Const
-    int LastError; //Error[-1]
-    int PrevError; //Error[-2]
+    s16 LastError; //Error[-1]
+    s16 PrevError; //Error[-2]
 }PID;
 
 extern PID PID_frequency,PID_phase,PID_VCC;

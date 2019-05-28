@@ -6,14 +6,6 @@
 
 //外部中断初始化函数
 
-void TIM7_IRQHandler(void)
-{
-	if (TIM_GetITStatus(TIM7, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
-	{
-		
-		TIM_ClearITPendingBit(TIM7, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 
-	}
-}
 
 void DMA1_Channel3_IRQHandler(void)//SPI发送完成中断
 {

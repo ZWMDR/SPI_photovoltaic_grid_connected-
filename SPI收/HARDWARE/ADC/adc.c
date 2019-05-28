@@ -67,7 +67,7 @@ void PulseSenosrInit(u16 frequency)
 	ADC_InitStructure.ADC_ContinuousConvMode=DISABLE;
 	ADC_InitStructure.ADC_ExternalTrigConv=ADC_ExternalTrigConv_T2_CC2;
 	ADC_InitStructure.ADC_DataAlign=ADC_DataAlign_Right;
-	ADC_InitStructure.ADC_NbrOfChannel=1;
+	ADC_InitStructure.ADC_NbrOfChannel=2;
 	ADC_Init(ADC1,&ADC_InitStructure);
 	ADC_RegularChannelConfig(ADC1,ADC_Channel_0,1,ADC_SampleTime_71Cycles5);
 	ADC_RegularChannelConfig(ADC1,ADC_Channel_2,2,ADC_SampleTime_71Cycles5);

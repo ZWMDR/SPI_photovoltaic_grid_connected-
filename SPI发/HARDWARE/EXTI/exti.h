@@ -18,6 +18,7 @@ extern u16 Period_F;
 extern u8 flag_REF;
 extern u8 flag_F;
 extern u8 send_flag;
+extern float rate;
 
 
 void MY_NVIC_PriorityGroupConfig(u8 NVIC_Group);

@@ -35,8 +35,9 @@ void TIM5_IRQHandler(void)
 	if(TIM_GetITStatus(TIM5,TIM_IT_CC1)==SET)
 	{
 		LED0=~LED0;
+		t=0;
 		TIM_ClearITPendingBit(TIM5,TIM_IT_CC1);
-		IC1Value = TIM5->CCR1;
+		IC1Value = TIM5->CCR1+1;
 		//if((IC1Value != 0) && (!(flag_REF && flag_F)))
 		if(IC1Value != 0)
 		{
@@ -75,7 +76,7 @@ void TIM4_IRQHandler(void)
 	{
 		LED1=~LED1;
 		TIM_ClearITPendingBit(TIM4,TIM_IT_CC1);
-		IC1Value = TIM4->CCR1;
+		IC1Value = TIM4->CCR1+1;
 		//if((IC1Value != 0) && (!(flag_REF && flag_F)))
 		if(IC1Value != 0)
 		{
@@ -110,7 +111,7 @@ void TIM6_IRQHandler(void)
 {
 	if (TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
 	{
-		PWM_Set_duty();
+		PWM_Set_duty(rate);
 		TIM_ClearITPendingBit(TIM6, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 
 	}
 }
@@ -139,16 +140,16 @@ void DMA1_Channel2_IRQHandler(void)//SPI接收完成
 {
 	if (DMA_GetITStatus(DMA1_IT_TC2)!=RESET)
 	{
-		//LED1=~LED1;
-
 		if(DMA_buff_RX[0]<5000 && DMA_buff_RX[0]>2000)
 		{
 			TIM6->ARR=DMA_buff_RX[0];
-			t+=(s16)DMA_buff_RX[1];
-			
 			//TIM_Cmd(TIM6,ENABLE);
 		}
-		
+		/*
+		t+=(s16)DMA_buff_RX[1];
+		if(t>=400)
+			t=0;
+		*/
 		DMA_Cmd(DMA1_Channel2,DISABLE);
 		DMA1_Channel2->CNDTR=4;
 		DMA_Cmd(DMA1_Channel2,ENABLE);
