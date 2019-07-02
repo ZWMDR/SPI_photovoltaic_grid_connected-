@@ -40,7 +40,9 @@ int main(void)
 	delay_init();	    	 //延时函数初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	LED_Init();		  		 //初始化与LED连接的硬件接口
-	
+	delay_ms(100);
+	LED0=0;
+
 	//输入捕获初始化
 	init_typedef1.TIMx=TIM5;
 	init_typedef1.RCC_APB1Periph_TIMx=RCC_APB1Periph_TIM5;
@@ -58,6 +60,9 @@ int main(void)
 	MY_NVIC_Init(1,0,TIM4_IRQn,2);
 	MY_NVIC_Init(1,0,TIM5_IRQn,2);
 	
+	delay_ms(100);
+	LED0=~LED0;
+	
 	//正弦调制输出初始化
 	spwm_init_typedef.TIMx=TIM8;
 	spwm_init_typedef.RCC_APB2Periph_TIMx=RCC_APB2Periph_TIM8;
@@ -65,6 +70,9 @@ int main(void)
 	spwm_init_typedef.Pin=GPIO_Pin_6|GPIO_Pin_7;
 	spwm_init_typedef.RCC_APB2Periph_GPIOx=RCC_APB2Periph_GPIOC;
 	SPWM_output_Init(&spwm_init_typedef,3600-1,1-1);//20kHz
+	
+	delay_ms(100);
+	LED0=~LED0;
 	
 	//ADC采样初始化
 	ADC_cs.channel_num=2;//通道数
@@ -83,15 +91,25 @@ int main(void)
 	
 	ADC_continuous_sampling_Init(&ADC_cs,_5kHz);
 	
+	delay_ms(100);
+	LED0=~LED0;
+	
 	//PID调控初始化
 	PID_Init(&vcc_PID,0.45,0.1,0.09,0x0FFF);
 	PID_Init(&phase_PID,0.45,0.1,0.09,0x0FFF);
+	
+	delay_ms(100);
+	LED0=~LED0;
 	
 	//SPI初始化
 	SPI1_DMA1_Init(1000-1,7200-1,1,1);
 	
 	DMA_Cmd(DMA1_Channel1,ENABLE);
 	ADC_Cmd(ADC1,ENABLE);
+	
+	delay_ms(100);
+	LED0=1;
+	LED1=0;
 	
 	t=0;
 	send_flag=0;

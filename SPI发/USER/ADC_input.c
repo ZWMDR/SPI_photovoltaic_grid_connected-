@@ -90,8 +90,6 @@ void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16 frequency)
 	
 	DMA_Cmd(DMA1_Channel1,DISABLE);
 	TIM_Cmd(TIM2,DISABLE);
-	
-	free(ADC_cs);
 }
 
 void ADC_Single_Sample_Init(ADC_ss_InitTypeDef *ADC_ss,u8 interrupt_mode)
