@@ -114,6 +114,7 @@ void DMA1_Channel3_IRQHandler(void)//SPI发送完成
 {
 	if (DMA_GetITStatus(DMA1_IT_TC3)!=RESET)
 	{
+		send_flag=0;
 		//do something
 		
 		DMA_Cmd(DMA1_Channel3, DISABLE);
@@ -140,6 +141,7 @@ void TIM2_IRQHandler(void)//SPI发送
 {
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
 	{
+		send_flag=1;
 		//do something
 
 		DMA1_Channel3->CNDTR=4;

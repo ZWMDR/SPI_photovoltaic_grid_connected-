@@ -19,6 +19,7 @@ u16 DMA_buff[DMA_buff_len_ADC];
 u8 flag_REF;
 u8 flag_F;
 u8 send_flag;
+u8 capture_flag;
 u8 ADC_flag;
 u16 Frequency_REF;
 u16 Frequency_F;
@@ -26,6 +27,13 @@ u16 Period_REF;
 u16 Period_F;
 u16 t;
 float voltage_scale_rate;
+u16 working_mode;
+/* ----------------------
+	working mode:
+	10: 幅度跟踪模式
+	20: 限幅限流模式
+---------------------- */
+
 
 int main(void)
 {
@@ -112,7 +120,9 @@ int main(void)
 	LED1=0;
 	
 	t=0;
+	working_mode=0;
 	send_flag=0;
+	capture_flag=0;
 	ADC_flag=0;
 	voltage_scale_rate=1;
 	flag_REF=flag_F=0;
@@ -121,13 +131,13 @@ int main(void)
 
 	while(1)
 	{
-		if(send_flag)
+		if(capture_flag)
 		{
 			if(DMA_SPI_buff_TX[0]<50000 && DMA_SPI_buff_TX[0]>10000)
 			{
 				TIM6->ARR=(u16)(DMA_SPI_buff_TX[0]*0.18)-1;
 			}
-			send_flag=0;
+			capture_flag=0;
 		}
 		if(ADC_flag)
 		{

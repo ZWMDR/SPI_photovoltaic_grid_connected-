@@ -17,6 +17,7 @@ extern u16 Period_F;
 extern u8 flag_REF;
 extern u8 flag_F;
 extern u8 send_flag;
+extern u8 capture_flag;
 extern u8 ADC_flag;
 extern u16 t;
 extern float rate;
