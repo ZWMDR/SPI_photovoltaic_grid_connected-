@@ -4,6 +4,7 @@
 #include "stm32f10x_adc.h"
 #include "stdlib.h"
 #include "led.h"
+#include "usart.h"
 
 #define DMA_buff_len_ADC 200
 #define _5kHz 5000

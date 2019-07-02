@@ -3,7 +3,7 @@
 
 void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16 frequency)
 {
-	int i;
+	u16 i;
 	ADC_InitTypeDef          ADC_InitStructure;
 	GPIO_InitTypeDef         GPIO_InitStructure;
 	DMA_InitTypeDef          DMA_InitStructure;
@@ -11,10 +11,10 @@ void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16 frequency)
 	TIM_OCInitTypeDef        TIM_OCInitStructure;
 	NVIC_InitTypeDef         NVIC_InitStructure;
 	
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1,ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1,ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1,ENABLE);
 	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
 	
 	TIM_TimeBaseStructure.TIM_Period = (frequency==_5kHz)?199:399;
@@ -25,14 +25,13 @@ void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16 frequency)
 	
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = (frequency==_5kHz)?59:159;
+	TIM_OCInitStructure.TIM_Pulse = (frequency==_5kHz)?99:199;
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
 	TIM_OC2Init(TIM2,&TIM_OCInitStructure);
 	TIM_InternalClockConfig(TIM2);
-	TIM_OC2PreloadConfig(TIM2, TIM_OCPreload_Enable);
-	TIM_UpdateDisableConfig(TIM2, DISABLE);
+	TIM_OC2PreloadConfig(TIM2,TIM_OCPreload_Enable);
+	TIM_UpdateDisableConfig(TIM2,DISABLE);
 	
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1,ENABLE);
 	DMA_DeInit(DMA1_Channel1);
 	DMA_InitStructure.DMA_PeripheralBaseAddr=(u32)&ADC1->DR;
 	DMA_InitStructure.DMA_MemoryBaseAddr=(uint32_t)DMA_buff;
@@ -48,8 +47,6 @@ void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16 frequency)
 	DMA_Init(DMA1_Channel1,&DMA_InitStructure);
 	DMA_ITConfig(DMA1_Channel1,DMA_IT_TC,ENABLE);
 	
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1,ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
 	NVIC_InitStructure.NVIC_IRQChannel=DMA1_Channel1_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;
@@ -58,7 +55,7 @@ void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16 frequency)
 	NVIC_Init(&NVIC_InitStructure);
 	
 	ADC_InitStructure.ADC_Mode=ADC_Mode_Independent;
-	ADC_InitStructure.ADC_ScanConvMode=(ADC_cs->ScanConvMode)?ENABLE:DISABLE;
+	ADC_InitStructure.ADC_ScanConvMode=(ADC_cs->ScanConvMode==1)?ENABLE:DISABLE;
 	ADC_InitStructure.ADC_ContinuousConvMode=DISABLE;
 	ADC_InitStructure.ADC_ExternalTrigConv=ADC_ExternalTrigConv_T2_CC2;
 	ADC_InitStructure.ADC_DataAlign=ADC_DataAlign_Right;
@@ -76,7 +73,8 @@ void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16 frequency)
 	}
 	
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;		//模拟输入引脚
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	GPIO_Init(GPIOA,&GPIO_InitStructure);
+	ADC_DMACmd(ADC1,ENABLE);
 	
 	//ADC校准
 	ADC_Cmd(ADC1, ENABLE);
@@ -85,11 +83,10 @@ void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16 frequency)
 	ADC_StartCalibration(ADC1);
 	while(ADC_GetCalibrationStatus(ADC1) == SET);
 	ADC_ExternalTrigConvCmd(ADC1,ENABLE);
-	ADC_DMACmd(ADC1,ENABLE);
-	ADC_Cmd(ADC1,ENABLE);
+	ADC_Cmd(ADC1,DISABLE);
 	
-	DMA_Cmd(DMA1_Channel1,DISABLE);
 	TIM_Cmd(TIM2,DISABLE);
+	DMA_Cmd(DMA1_Channel1,DISABLE);
 }
 
 void ADC_Single_Sample_Init(ADC_ss_InitTypeDef *ADC_ss,u8 interrupt_mode)
@@ -128,11 +125,10 @@ void DMA1_Channel1_IRQHandler(void)//ADC1中断
 {
 	if(DMA_GetITStatus(DMA1_IT_TC1)!=RESET)
 	{
-		LED0=~LED0;
+		LED1=~LED1;
 		ADC_flag=1;
-		
-		DMA_Cmd(DMA1_Channel1,DISABLE);
-		TIM_Cmd(TIM2,DISABLE);
+		//printf("%d\r\n",1);
+		ADC_continuous_sampling_disable();
 		
 		DMA_ClearITPendingBit(DMA1_IT_TC1);
 	}

@@ -86,9 +86,9 @@ void SPI1_DMA1_Init(u16 arr,u16 psc,u8 master_slaver,u8 open_scheduled_transmiti
 	//定时发送
 	if(open_scheduled_transmition)
 	{
-		TIM2_Int_Init(arr,psc);
-		TIM2->CNT=0;
-		TIM_Cmd(TIM2,ENABLE);
+		TIM3_Int_Init(arr,psc);
+		TIM3->CNT=0;
+		TIM_Cmd(TIM3,ENABLE);
 	}
 	
 	DMA_Cmd(DMA1_Channel2, ENABLE);
@@ -137,9 +137,9 @@ void DMA1_Channel2_IRQHandler(void)//SPI接收完成
 	}
 }
 
-void TIM2_IRQHandler(void)//SPI发送
+void TIM3_IRQHandler(void)//SPI发送
 {
-	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
+	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
 	{
 		send_flag=1;
 		//do something

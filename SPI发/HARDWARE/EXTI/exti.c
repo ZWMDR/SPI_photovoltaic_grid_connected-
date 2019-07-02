@@ -22,13 +22,13 @@ void TIM5_IRQHandler(void)
 			if(!flag_F)
 			{
 				Period_REF=0;
-				TIM_SetCounter(TIM3,0);
-				TIM_Cmd(TIM3,ENABLE);
+				TIM_SetCounter(TIM7,0);
+				TIM_Cmd(TIM7,ENABLE);
 			}
 			else
 			{
-				TIM_Cmd(TIM3,DISABLE);
-				Period_REF=TIM_GetCounter(TIM3);
+				TIM_Cmd(TIM7,DISABLE);
+				Period_REF=TIM_GetCounter(TIM7);
 				
 				if(!capture_flag)
 				{
@@ -61,13 +61,13 @@ void TIM4_IRQHandler(void)
 			if(!flag_REF)
 			{
 				Period_F=0;
-				TIM_SetCounter(TIM3,0);
-				TIM_Cmd(TIM3,ENABLE);
+				TIM_SetCounter(TIM7,0);
+				TIM_Cmd(TIM7,ENABLE);
 			}
 			else
 			{
-				TIM_Cmd(TIM3,DISABLE);
-				Period_F=TIM_GetCounter(TIM3);
+				TIM_Cmd(TIM7,DISABLE);
+				Period_F=TIM_GetCounter(TIM7);
 				if((!capture_flag) && (!send_flag))
 				{
 					LED0=~LED0;

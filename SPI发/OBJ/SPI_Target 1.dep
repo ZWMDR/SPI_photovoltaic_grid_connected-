@@ -1,5 +1,5 @@
 Dependencies for Project 'SPI', Target 'Target 1': (DO NOT MODIFY !)
-F (.\main.c)(0x5D1AC884)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
+F (.\main.c)(0x5D1ADA4E)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
 I (..\HARDWARE\LED\led.h)(0x532ACAF6)
 I (..\SYSTEM\sys\sys.h)(0x550F951C)
 I (..\USER\stm32f10x.h)(0x4D783CB4)
@@ -34,16 +34,16 @@ I (..\SYSTEM\delay\delay.h)(0x55CC2E5A)
 I (..\SYSTEM\usart\usart.h)(0x50517A82)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
 I (..\HARDWARE\KEY\key.h)(0x532ADF6A)
-I (SPI_DMA.h)(0x5D1AC630)
+I (SPI_DMA.h)(0x5D1ACB6A)
 I (..\HARDWARE\TIMER\timer.h)(0x5CE3DA99)
-I (..\HARDWARE\EXTI\exti.h)(0x5D1AC630)
-I (PWM_input_capture.h)(0x5D1AC630)
+I (..\HARDWARE\EXTI\exti.h)(0x5D1ACB6A)
+I (PWM_input_capture.h)(0x5D1ACB6A)
 I (..\HARDWARE\PWM\pwm.h)(0x5C440A10)
-I (PID_control.h)(0x5D1AC630)
-I (SPWM_output.h)(0x5D1AC630)
-I (ADC_input.h)(0x5D1AC630)
+I (PID_control.h)(0x5D1ACB6A)
+I (SPWM_output.h)(0x5D1ACB6A)
+I (ADC_input.h)(0x5D1AD00B)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
-I (sp_math.h)(0x5D1AC630)
+I (sp_math.h)(0x5D1ACB6A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 F (.\stm32f10x_it.c)(0x4EBEACB0)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\stm32f10x_it.o --omf_browse ..\obj\stm32f10x_it.crf --depend ..\obj\stm32f10x_it.d)
 I (stm32f10x_it.h)(0x4D99A426)
@@ -106,8 +106,8 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x504F415E)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
-F (.\PWM_input_capture.c)(0x5D1AC630)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\pwm_input_capture.o --omf_browse ..\obj\pwm_input_capture.crf --depend ..\obj\pwm_input_capture.d)
-I (PWM_input_capture.h)(0x5D1AC630)
+F (.\PWM_input_capture.c)(0x5D1ACB6A)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\pwm_input_capture.o --omf_browse ..\obj\pwm_input_capture.crf --depend ..\obj\pwm_input_capture.d)
+I (PWM_input_capture.h)(0x5D1ACB6A)
 I (stm32f10x.h)(0x4D783CB4)
 I (..\CORE\core_cm3.h)(0x4D523B58)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -140,8 +140,8 @@ I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
 I (..\HARDWARE\PWM\pwm.h)(0x5C440A10)
 I (..\SYSTEM\sys\sys.h)(0x550F951C)
 I (..\HARDWARE\TIMER\timer.h)(0x5CE3DA99)
-F (.\PID_control.c)(0x5D1AC630)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\pid_control.o --omf_browse ..\obj\pid_control.crf --depend ..\obj\pid_control.d)
-I (PID_control.h)(0x5D1AC630)
+F (.\PID_control.c)(0x5D1ACB6A)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\pid_control.o --omf_browse ..\obj\pid_control.crf --depend ..\obj\pid_control.d)
+I (PID_control.h)(0x5D1ACB6A)
 I (..\SYSTEM\sys\sys.h)(0x550F951C)
 I (..\USER\stm32f10x.h)(0x4D783CB4)
 I (..\CORE\core_cm3.h)(0x4D523B58)
@@ -171,8 +171,8 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x504F415E)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
-F (.\SPI_DMA.c)(0x5D1AC630)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\spi_dma.o --omf_browse ..\obj\spi_dma.crf --depend ..\obj\spi_dma.d)
-I (SPI_DMA.h)(0x5D1AC630)
+F (.\SPI_DMA.c)(0x5D1ADA4B)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\spi_dma.o --omf_browse ..\obj\spi_dma.crf --depend ..\obj\spi_dma.d)
+I (SPI_DMA.h)(0x5D1ACB6A)
 I (..\STM32F10x_FWLib\inc\stm32f10x_dma.h)(0x4D783BB4)
 I (..\USER\stm32f10x.h)(0x4D783CB4)
 I (..\CORE\core_cm3.h)(0x4D523B58)
@@ -203,8 +203,8 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
 I (..\SYSTEM\sys\sys.h)(0x550F951C)
 I (..\HARDWARE\TIMER\timer.h)(0x5CE3DA99)
-F (.\SPWM_output.c)(0x5D1AC630)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\spwm_output.o --omf_browse ..\obj\spwm_output.crf --depend ..\obj\spwm_output.d)
-I (SPWM_output.h)(0x5D1AC630)
+F (.\SPWM_output.c)(0x5D1ACB6A)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\spwm_output.o --omf_browse ..\obj\spwm_output.crf --depend ..\obj\spwm_output.d)
+I (SPWM_output.h)(0x5D1ACB6A)
 I (..\SYSTEM\sys\sys.h)(0x550F951C)
 I (..\USER\stm32f10x.h)(0x4D783CB4)
 I (..\CORE\core_cm3.h)(0x4D523B58)
@@ -234,8 +234,8 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x504F415E)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
-F (.\ADC_input.c)(0x5D1AC630)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\adc_input.o --omf_browse ..\obj\adc_input.crf --depend ..\obj\adc_input.d)
-I (ADC_input.h)(0x5D1AC630)
+F (.\ADC_input.c)(0x5D1AD977)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\adc_input.o --omf_browse ..\obj\adc_input.crf --depend ..\obj\adc_input.d)
+I (ADC_input.h)(0x5D1AD00B)
 I (..\SYSTEM\sys\sys.h)(0x550F951C)
 I (..\USER\stm32f10x.h)(0x4D783CB4)
 I (..\CORE\core_cm3.h)(0x4D523B58)
@@ -267,8 +267,10 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (..\HARDWARE\LED\led.h)(0x532ACAF6)
-F (.\sp_math.c)(0x5D1AC630)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\sp_math.o --omf_browse ..\obj\sp_math.crf --depend ..\obj\sp_math.d)
-I (sp_math.h)(0x5D1AC630)
+I (..\SYSTEM\usart\usart.h)(0x50517A82)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
+F (.\sp_math.c)(0x5D1ACB6A)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\sp_math.o --omf_browse ..\obj\sp_math.crf --depend ..\obj\sp_math.d)
+I (sp_math.h)(0x5D1ACB6A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5475F2FE)
 I (..\SYSTEM\sys\sys.h)(0x550F951C)
 I (..\USER\stm32f10x.h)(0x4D783CB4)
@@ -398,8 +400,8 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x504F415E)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
 I (..\SYSTEM\delay\delay.h)(0x55CC2E5A)
-F (..\HARDWARE\EXTI\exti.c)(0x5D1AC781)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\exti.o --omf_browse ..\obj\exti.crf --depend ..\obj\exti.d)
-I (..\HARDWARE\EXTI\exti.h)(0x5D1AC630)
+F (..\HARDWARE\EXTI\exti.c)(0x5D1AD20D)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\LCD -I..\HARDWARE\SPI -I..\HARDWARE\KEY -I..\HARDWARE\PWM -I..\HARDWARE\EXTI -I..\HARDWARE\TIMER -I..\HARDWARE\ADC-I C:\Users\ZWMDR\Documents\documents\电源\SPI\SPI发\USER\RTE-I C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\exti.o --omf_browse ..\obj\exti.crf --depend ..\obj\exti.d)
+I (..\HARDWARE\EXTI\exti.h)(0x5D1ACB6A)
 I (..\SYSTEM\sys\sys.h)(0x550F951C)
 I (..\USER\stm32f10x.h)(0x4D783CB4)
 I (..\CORE\core_cm3.h)(0x4D523B58)
@@ -429,7 +431,7 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x504F415E)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
-I (..\USER\SPI_DMA.h)(0x5D1AC630)
+I (..\USER\SPI_DMA.h)(0x5D1ACB6A)
 I (..\HARDWARE\TIMER\timer.h)(0x5CE3DA99)
 I (..\SYSTEM\usart\usart.h)(0x50517A82)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)

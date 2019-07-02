@@ -42,13 +42,14 @@ int main(void)
 	PID vcc_PID,phase_PID;
 	SPWM_InitTypeDef spwm_init_typedef;
 	PWM_capture_InitTypeDef init_typedef1,init_typedef2;
-	ADC_cs_InitTypeDef ADC_cs; 
+	ADC_cs_InitTypeDef ADC_cs;
 	ADC_Channel channels[2];
 	
+	//uart_init(19200);
 	delay_init();	    	 //延时函数初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	LED_Init();		  		 //初始化与LED连接的硬件接口
-	delay_ms(100);
+	delay_ms(200);
 	LED0=0;
 
 	//输入捕获初始化
@@ -68,7 +69,7 @@ int main(void)
 	MY_NVIC_Init(1,0,TIM4_IRQn,2);
 	MY_NVIC_Init(1,0,TIM5_IRQn,2);
 	
-	delay_ms(100);
+	delay_ms(200);
 	LED0=~LED0;
 	
 	//正弦调制输出初始化
@@ -79,13 +80,13 @@ int main(void)
 	spwm_init_typedef.RCC_APB2Periph_GPIOx=RCC_APB2Periph_GPIOC;
 	SPWM_output_Init(&spwm_init_typedef,3600-1,1-1);//20kHz
 	
-	delay_ms(100);
+	delay_ms(200);
 	LED0=~LED0;
 	
 	//ADC采样初始化
 	ADC_cs.channel_num=2;//通道数
 	ADC_cs.Channels=channels;
-	ADC_cs.ScanConvMode=ENABLE;//开启扫描模式
+	ADC_cs.ScanConvMode=1;//开启扫描模式
 	//通道1（连续转换只能使用ADC1）
 	ADC_cs.Channels[0].num=1;
 	ADC_cs.Channels[0].ADC_Channel=ADC_Channel_2;
@@ -99,23 +100,23 @@ int main(void)
 	
 	ADC_continuous_sampling_Init(&ADC_cs,_5kHz);
 	
-	delay_ms(100);
+	delay_ms(200);
 	LED0=~LED0;
 	
 	//PID调控初始化
 	PID_Init(&vcc_PID,0.45,0.1,0.09,0x0FFF);
 	PID_Init(&phase_PID,0.45,0.1,0.09,0x0FFF);
 	
-	delay_ms(100);
+	delay_ms(200);
 	LED0=~LED0;
 	
 	//SPI初始化
-	SPI1_DMA1_Init(1000-1,7200-1,1,1);
+	//SPI1_DMA1_Init(1000-1,7200-1,1,1);
 	
 	DMA_Cmd(DMA1_Channel1,ENABLE);
 	ADC_Cmd(ADC1,ENABLE);
 	
-	delay_ms(100);
+	delay_ms(200);
 	LED0=1;
 	LED1=0;
 	
@@ -128,16 +129,18 @@ int main(void)
 	flag_REF=flag_F=0;
 	Period_REF=Period_F=0;
 	Frequency_REF=Frequency_F=25000;
+	
+	ADC_continuous_sampling_enable();
 
 	while(1)
 	{
-		if(send_flag)
+		if(capture_flag)
 		{
+			//printf("%d\t\n",DMA_SPI_buff_TX[0]);
 			if(DMA_SPI_buff_TX[0]<50000 && DMA_SPI_buff_TX[0]>10000)
 			{
 				TIM6->ARR=(u16)(DMA_SPI_buff_TX[0]*0.18)-1;
 			}
-			send_flag=0;
 			capture_flag=0;
 		}
 		if(ADC_flag)
@@ -148,8 +151,8 @@ int main(void)
 				voltage_scale_rate=1;
 			else if(voltage_scale_rate<0)
 				voltage_scale_rate=0;
-			DMA_Cmd(DMA1_Channel1,ENABLE);
-			TIM_Cmd(TIM2,ENABLE);
+			
+			ADC_continuous_sampling_enable();
 			ADC_flag=0;
 		}
 	}

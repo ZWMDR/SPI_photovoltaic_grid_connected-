@@ -32,3 +32,5 @@
 ..\obj\adc_input.o: ..\STM32F10x_FWLib\inc\misc.h
 ..\obj\adc_input.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\adc_input.o: ..\HARDWARE\LED\led.h
+..\obj\adc_input.o: ..\SYSTEM\usart\usart.h
+..\obj\adc_input.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
