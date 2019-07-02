@@ -131,12 +131,13 @@ int main(void)
 
 	while(1)
 	{
-		if(capture_flag)
+		if(send_flag)
 		{
 			if(DMA_SPI_buff_TX[0]<50000 && DMA_SPI_buff_TX[0]>10000)
 			{
 				TIM6->ARR=(u16)(DMA_SPI_buff_TX[0]*0.18)-1;
 			}
+			send_flag=0;
 			capture_flag=0;
 		}
 		if(ADC_flag)

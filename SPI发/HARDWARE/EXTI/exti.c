@@ -12,7 +12,6 @@ void TIM5_IRQHandler(void)
 	u16 IC1Value;
 	if(TIM_GetITStatus(TIM5,TIM_IT_CC1)==SET)
 	{
-		//LED0=~LED0;
 		t=0;
 		TIM_ClearITPendingBit(TIM5,TIM_IT_CC1);
 		IC1Value = TIM5->CCR1+1;
@@ -33,6 +32,7 @@ void TIM5_IRQHandler(void)
 				
 				if(!capture_flag)
 				{
+					LED0=~LED0;
 					DMA_SPI_buff_TX[0]=Frequency_REF;
 					DMA_SPI_buff_TX[1]=Frequency_F;
 					DMA_SPI_buff_TX[2]=Period_REF;
@@ -70,6 +70,7 @@ void TIM4_IRQHandler(void)
 				Period_F=TIM_GetCounter(TIM3);
 				if((!capture_flag) && (!send_flag))
 				{
+					LED0=~LED0;
 					DMA_SPI_buff_TX[0]=Frequency_REF;
 					DMA_SPI_buff_TX[1]=Frequency_F;
 					DMA_SPI_buff_TX[2]=Period_REF;
