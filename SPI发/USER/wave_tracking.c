@@ -3,9 +3,6 @@
 void PWM_input_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
-	//NVIC_InitTypeDef NVIC_InitStructure;
-	//TIM_ICInitTypeDef TIM_ICInitStructure;
-	//TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	
 	//初始化PWM输入捕获
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
@@ -70,10 +67,5 @@ void PWM_input_Init(void)
 	TIM4->CR1|=0x01;    	//使能定时器4
 	TIM5->CR1|=0x01;    	//使能定时器5
 	
-	flag_REF=0;
-	flag_F=0;
-	Period_REF=0;
-	Period_F=0;
-	Frequency_REF=0;
-	Frequency_F=0;
+	
 }

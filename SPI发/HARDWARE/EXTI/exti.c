@@ -6,28 +6,6 @@
 
 //外部中断初始化函数
 
-void MY_NVIC_PriorityGroupConfig(u8 NVIC_Group)
-{ 
-	u32 temp,temp1;
-	temp1=(~NVIC_Group)&0x07;//取后三位
-	temp1<<=8;
-	temp=SCB->AIRCR;  //读取先前的设置
-	temp&=0X0000F8FF; //清空先前分组
-	temp|=0X05FA0000; //写入钥匙
-	temp|=temp1;	   
-	SCB->AIRCR=temp;  //设置分组	    	  				   
-}
-
-void MY_NVIC_Init(u8 NVIC_PreemptionPriority,u8 NVIC_SubPriority,u8 NVIC_Channel,u8 NVIC_Group)	 
-{
-	u32 temp;
-	MY_NVIC_PriorityGroupConfig(NVIC_Group);//设置分组
-	temp=NVIC_PreemptionPriority<<(4-NVIC_Group);
-	temp|=NVIC_SubPriority&(0x0f>>NVIC_Group);
-	temp&=0xf;								//取低四位
-	NVIC->ISER[NVIC_Channel/32]|=(1<<NVIC_Channel%32);//使能中断位(要清除的话,相反操作就OK)
-	NVIC->IP[NVIC_Channel]|=temp<<4;		//设置响应优先级和抢断优先级
-}
 
 void TIM5_IRQHandler(void)
 {
@@ -55,10 +33,10 @@ void TIM5_IRQHandler(void)
 				
 				if(!send_flag)
 				{
-					DMA_buff_TX[0]=Frequency_REF;
-					DMA_buff_TX[1]=Frequency_F;
-					DMA_buff_TX[2]=Period_REF;
-					DMA_buff_TX[3]=Period_F;
+					DMA_SPI_buff_TX[0]=Frequency_REF;
+					DMA_SPI_buff_TX[1]=Frequency_F;
+					DMA_SPI_buff_TX[2]=Period_REF;
+					DMA_SPI_buff_TX[3]=Period_F;
 					
 					send_flag=1;
 				}
@@ -92,10 +70,10 @@ void TIM4_IRQHandler(void)
 				Period_F=TIM_GetCounter(TIM3);
 				if(!send_flag)
 				{
-					DMA_buff_TX[0]=Frequency_REF;
-					DMA_buff_TX[1]=Frequency_F;
-					DMA_buff_TX[2]=Period_REF;
-					DMA_buff_TX[3]=Period_F;
+					DMA_SPI_buff_TX[0]=Frequency_REF;
+					DMA_SPI_buff_TX[1]=Frequency_F;
+					DMA_SPI_buff_TX[2]=Period_REF;
+					DMA_SPI_buff_TX[3]=Period_F;
 					
 					send_flag=1;
 				}
@@ -105,76 +83,7 @@ void TIM4_IRQHandler(void)
 	}
 }
 
-void TIM6_IRQHandler(void)
-{
-	if (TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
-	{
-		PWM_Set_duty(rate);
-		TIM_ClearITPendingBit(TIM6, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 
-	}
-}
-
-void DMA1_Channel1_IRQHandler(void)//ADC1中断
-{
-	if(DMA_GetITStatus(DMA1_IT_TC1)!=RESET)
-	{
-		LED0=~LED0;
-		ADC_flag=1;
-		
-		DMA_Cmd(DMA1_Channel1,DISABLE);
-		TIM_Cmd(TIM2,DISABLE);
-		
-		DMA_ClearITPendingBit(DMA1_IT_TC1);
-	}
-}
 
 
-/*
-void DMA1_Channel3_IRQHandler(void)//SPI发送完成
-{
-	if (DMA_GetITStatus(DMA1_IT_TC3)!=RESET)
-	{
-		send_flag=0;
-		DMA_Cmd(DMA1_Channel3, DISABLE);
-		
-		DMA_ClearITPendingBit(DMA1_IT_TC3);
-	}
-}
 
-void DMA1_Channel2_IRQHandler(void)//SPI接收完成
-{
-	if (DMA_GetITStatus(DMA1_IT_TC2)!=RESET)
-	{
-		if(DMA_buff_RX[0]<5000 && DMA_buff_RX[0]>2000)
-		{
-			TIM6->ARR=DMA_buff_RX[0];
-		}
-		t+=(s16)DMA_buff_RX[1];
-		if(t>=400)
-			t=0;
-		DMA_Cmd(DMA1_Channel2,DISABLE);
-		DMA1_Channel2->CNDTR=4;
-		DMA_Cmd(DMA1_Channel2,ENABLE);
-		
-		DMA_ClearITPendingBit(DMA1_IT_TC2);
-	}
-}
 
-void TIM2_IRQHandler(void)//SPI发送
-{
-	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
-	{
-		if(!send_flag)
-		{
-			DMA_buff_TX[0]=DMA_buff_TX[1]=0xFFFF;
-			DMA_buff_TX[2]=DMA_buff_TX[3]=0;
-			send_flag=1;
-		}
-
-		DMA1_Channel3->CNDTR=4;
-		DMA_Cmd(DMA1_Channel3, ENABLE);
-		
-		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 
-	}
-}
-*/

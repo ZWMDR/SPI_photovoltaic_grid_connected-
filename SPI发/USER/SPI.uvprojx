@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\LCD;..\HARDWARE\SPI;..\HARDWARE\KEY;..\HARDWARE\PWM;..\HARDWARE\EXTI;..\HARDWARE\TIMER</IncludePath>
+              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\LCD;..\HARDWARE\SPI;..\HARDWARE\KEY;..\HARDWARE\PWM;..\HARDWARE\EXTI;..\HARDWARE\TIMER;..\HARDWARE\ADC</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -424,14 +424,34 @@
               <FilePath>.\system_stm32f10x.c</FilePath>
             </File>
             <File>
-              <FileName>PWM_out.c</FileName>
+              <FileName>PWM_input_capture.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\PWM_out.c</FilePath>
+              <FilePath>.\PWM_input_capture.c</FilePath>
             </File>
             <File>
-              <FileName>wave_tracking.c</FileName>
+              <FileName>PID_control.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\wave_tracking.c</FilePath>
+              <FilePath>.\PID_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>SPI_DMA.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\SPI_DMA.c</FilePath>
+            </File>
+            <File>
+              <FileName>SPWM_output.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\SPWM_output.c</FilePath>
+            </File>
+            <File>
+              <FileName>ADC_input.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ADC_input.c</FilePath>
+            </File>
+            <File>
+              <FileName>sp_math.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sp_math.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -454,11 +474,6 @@
               <FilePath>..\HARDWARE\KEY\key.c</FilePath>
             </File>
             <File>
-              <FileName>spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\SPI\spi.c</FilePath>
-            </File>
-            <File>
               <FileName>exti.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\EXTI\exti.c</FilePath>
@@ -472,6 +487,11 @@
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\TIMER\timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\ADC\adc.c</FilePath>
             </File>
           </Files>
         </Group>

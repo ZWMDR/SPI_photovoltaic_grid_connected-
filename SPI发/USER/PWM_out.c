@@ -11,6 +11,18 @@ void PWM_init(u16 arr,u16 ps)
 }
 void PWM_Set_duty(float rate)
 {
-	TIM_SetCompare2(TIM8,1799+Sin[t]*rate);
+	TIM_SetCompare2(TIM8,1800+Sin[t]*rate);
+	/*
+	if(Sin[t]>=0)
+	{
+		TIM_SetCompare2(TIM8,Sin[t]*rate);
+		TIM_SetCompare1(TIM8,0);
+	}
+	else
+	{
+		TIM_SetCompare1(TIM8,-Sin[t]*rate);
+		TIM_SetCompare2(TIM8,0);
+	}
+	*/
 	t=(t+1)%400;
 }
