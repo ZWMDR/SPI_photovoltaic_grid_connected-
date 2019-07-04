@@ -111,7 +111,7 @@ int main(void)
 	LED0=~LED0;
 	
 	//SPI≥ı ºªØ
-	//SPI1_DMA1_Init(1000-1,7200-1,1,1);
+	SPI1_DMA1_Init(2000-1,7200-1,1,1);
 	
 	DMA_Cmd(DMA1_Channel1,ENABLE);
 	ADC_Cmd(ADC1,ENABLE);
@@ -136,7 +136,6 @@ int main(void)
 	{
 		if(capture_flag)
 		{
-			//printf("%d\t\n",DMA_SPI_buff_TX[0]);
 			if(DMA_SPI_buff_TX[0]<50000 && DMA_SPI_buff_TX[0]>10000)
 			{
 				TIM6->ARR=(u16)(DMA_SPI_buff_TX[0]*0.18)-1;

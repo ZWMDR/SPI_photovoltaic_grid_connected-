@@ -1,171 +1,520 @@
 #include "GUI.h"
 
-float vcc_REF_lst;
-float vcc_F_lst;
-float phase_lst;
+u16 zoom_in[5]={0,10,100,1000,10000};
 
-void info_init(void)
+void GUI_Init(void)
 {
-	BACK_COLOR=WHITE;
-	POINT_COLOR=RED;
-	LCD_ShowString(40,200,200,16,16,"Voltage_REF:     .   V");
-	LCD_ShowString(40,220,200,16,16,"Voltage_F:       .   V");
-	LCD_ShowString(40,240,200,16,16,"Frequency_REF:   .   Hz");
-	LCD_ShowString(40,260,200,16,16,"Frequency_F:     .   Hz");
-	LCD_ShowString(40,280,200,16,16,"Phase:           .   T");
-	
+	LCD_Init();
 	LCD_Fill(0,305,240,320,MAGENTA);
 	POINT_COLOR=WHITE;
 	BACK_COLOR=MAGENTA;
 	LCD_ShowString(68,306,200,12,12,"Designed by ZWMDR");
-	
-	LCD_Fill(0,302,240,304,RED);
-	
-	BACK_COLOR=WHITE;
-	POINT_COLOR=MAGENTA;
 }
 
-void graph_init(u8 mode)
+void GUI_clear(void)
 {
-	switch(mode)
+	LCD_Fill(0,0,240,305,WHITE);
+	LCD_Fill(0,305,240,320,MAGENTA);
+	POINT_COLOR=WHITE;
+	BACK_COLOR=MAGENTA;
+	LCD_ShowString(68,306,200,12,12,"Designed by ZWMDR");
+}
+
+
+void draw_consistant_FullLine(u16 start_xcoord,u16 end_xcoord,u16 ycoord)//横向实线
+{
+	LCD_DrawLine(start_xcoord,ycoord,end_xcoord,ycoord);
+}
+
+void draw_consistant_ImaginaryLine(u16 start_xcoord,u16 end_xcoord,u16 ycoord)//横向虚线
+{
+	u16 i;
+	for(i=start_xcoord;i<end_xcoord;i+=4)
 	{
-		case 0:
+		LCD_DrawLine(i,ycoord,i+2,ycoord);
+	}
+}
+
+void draw_vconsistant_FullLine(u16 xcoord,u16 start_ycoord,u16 end_ycoord)//纵向实线
+{
+	LCD_DrawLine(xcoord,start_ycoord,xcoord,end_ycoord);
+}
+
+void draw_vconsistant_ImaginaryLine(u16 xcoord,u16 start_ycoord,u16 end_ycoord)//纵向虚线
+{
+	u16 i;
+	for(i=start_ycoord;i<end_ycoord;i+=4)
+	{
+		LCD_DrawLine(xcoord,i,xcoord,i+2);
+	}
+}
+
+void draw_arb_FullLine(u16 start_xcoord,u16 end_xcoord,u16 ycoord)//任意实线
+{
+	LCD_DrawLine(start_xcoord,ycoord,end_xcoord,ycoord);
+}
+
+void draw_arb_ImaginaryLine(u16 start_xcoord,u16 end_xcoord,u16 ycoord)//任意虚线
+{
+	
+}
+
+void GUI_WaveWindow_Init(GUI_WW_InitTypeDef *GUI_WW)//初始化波形视窗
+{
+	u16 i;
+	u16 coord;
+	
+	if(GUI_WW->start_xcoord>=GUI_WW->end_xcoord || GUI_WW->start_ycoord>=GUI_WW->end_ycoord)
+		return;
+	
+	//视窗范围填充
+	LCD_Fill(GUI_WW->start_xcoord,GUI_WW->start_ycoord,GUI_WW->end_xcoord,GUI_WW->end_ycoord,GUI_WW->back_color);
+	
+	if(GUI_WW->set_axle_wire)//中轴线
+	{
+		POINT_COLOR=GUI_WW->axle_wire_color;
+		draw_consistant_FullLine(0,240,GUI_WW->axle_wire_ycoord);
+		draw_consistant_FullLine(0,240,GUI_WW->axle_wire_ycoord+1);
+	}
+	if(GUI_WW->vertical_gd->set_gd)//纵向参考线
+	{
+		POINT_COLOR=GUI_WW->vertical_gd->gd_color;
+		if(GUI_WW->vertical_gd->wire_type==0)//实参考线
 		{
-			LCD_Fill(0,190,240,192,RED);
-			LCD_Fill(0,98,240,99,RED);
-			LCD_Fill(0,90,240,91,RED);
-		
-			LCD_Fill(0,0,240,89,LIGHTBLUE);
-			LCD_Fill(0,100,240,189,LIGHTBLUE);
-			LCD_Fill(0,92,240,97,BLUE);
-		
-			POINT_COLOR=YELLOW;
-			LCD_DrawLine(0,GUID_LINE1,240,GUID_LINE1);
-			LCD_DrawLine(0,GUID_LINE2,240,GUID_LINE2);
-			LCD_DrawLine(0,GUID_LINE3,240,GUID_LINE3);
+			coord=GUI_WW->vertical_gd->gd_coord;
+			for(i=0;i<GUI_WW->vertical_gd->gd_num;i++)
+			{
+				draw_consistant_FullLine(GUI_WW->start_xcoord,GUI_WW->end_xcoord,coord);
+				coord+=GUI_WW->vertical_gd->gd_interval;
+			}
+		}
+		else if(GUI_WW->vertical_gd->wire_type==2)//虚参考线
+		{
+			coord=GUI_WW->vertical_gd->gd_coord;
+			for(i=0;i<GUI_WW->vertical_gd->gd_num;i++)
+			{
+				draw_consistant_ImaginaryLine(GUI_WW->start_xcoord,GUI_WW->end_xcoord,coord);
+				coord+=GUI_WW->vertical_gd->gd_interval;
+			}
+		}
+	}
+	
+	if(GUI_WW->horizontal_gd->set_gd)//纵向参考线
+	{
+		POINT_COLOR=GUI_WW->horizontal_gd->gd_color;
+		if(GUI_WW->horizontal_gd->wire_type==0)//实参考线
+		{
+			coord=GUI_WW->horizontal_gd->gd_coord;
+			for(i=0;i<GUI_WW->horizontal_gd->gd_num;i++)
+			{
+				draw_vconsistant_FullLine(coord,GUI_WW->start_ycoord,GUI_WW->end_ycoord);
+				coord+=GUI_WW->horizontal_gd->gd_interval;
+			}
+		}
+		else if(GUI_WW->horizontal_gd->wire_type==2)//虚参考线
+		{
+			coord=GUI_WW->horizontal_gd->gd_coord;
+			for(i=0;i<GUI_WW->horizontal_gd->gd_num;i++)
+			{
+				draw_vconsistant_ImaginaryLine(coord,GUI_WW->start_ycoord,GUI_WW->end_ycoord);
+				coord+=GUI_WW->horizontal_gd->gd_interval;
+			}
+		}
+	}
+	
+	for(i=0;i<GUI_WW->num_lines;i++)
+	{
+		GUI_WW->lines[i].msg.lst_xcoord=GUI_WW->lines[i].msg.xcoord=GUI_WW->end_xcoord;
+		GUI_WW->lines[i].msg.lst_ycoord=GUI_WW->lines[i].msg.ycoord=GUI_WW->end_ycoord;
+	}
+}
+
+void GUI_WaveWindow_refresh(GUI_WW_InitTypeDef *GUI_WW)
+{
+	u16 i;
+	for(i=0;i<GUI_WW->num_lines;i++)
+	{
+		if(GUI_WW->lines[i].msg.show)
+		{
+			//超出视窗范围矫正
+			if(GUI_WW->lines[i].msg.xcoord<GUI_WW->start_xcoord)
+				GUI_WW->lines[i].msg.xcoord=GUI_WW->start_xcoord;
+			else if(GUI_WW->lines[i].msg.xcoord>GUI_WW->end_xcoord)
+				GUI_WW->lines[i].msg.xcoord=GUI_WW->end_xcoord;
 			
-			LCD_DrawLine(0,GUID_LINE4,240,GUID_LINE4);
-			break;
-		}
-		
-		case 1:
-		{
-			LCD_Fill(0,0,240,89,LIGHTBLUE);
-			POINT_COLOR=YELLOW;
-			LCD_DrawLine(0,GUID_LINE1,240,GUID_LINE1);
-			LCD_DrawLine(0,GUID_LINE2,240,GUID_LINE2);
-			LCD_DrawLine(0,GUID_LINE3,240,GUID_LINE3);
-			break;
-		}
-		case 2:
-		{
-			LCD_Fill(0,100,240,189,LIGHTBLUE);
-			POINT_COLOR=YELLOW;
-			LCD_DrawLine(0,GUID_LINE4,240,GUID_LINE4);
-			break;
+			if(GUI_WW->lines[i].msg.ycoord<GUI_WW->start_ycoord)
+				GUI_WW->lines[i].msg.ycoord=GUI_WW->start_ycoord;
+			else if(GUI_WW->lines[i].msg.ycoord>GUI_WW->end_ycoord)
+				GUI_WW->lines[i].msg.ycoord=GUI_WW->end_ycoord;
+			
+			POINT_COLOR=GUI_WW->lines[i].point_color;
+			switch(GUI_WW->lines[i].wave_form)
+			{
+				case 0:
+				{
+					LCD_DrawLine(GUI_WW->lines[i].msg.lst_xcoord,GUI_WW->lines[i].msg.lst_ycoord,GUI_WW->lines[i].msg.xcoord,GUI_WW->lines[i].msg.ycoord);
+					break;
+				}
+				case 1:
+				{
+					LCD_DrawLine(GUI_WW->lines[i].msg.lst_xcoord,GUI_WW->lines[i].msg.lst_ycoord,GUI_WW->lines[i].msg.xcoord,GUI_WW->lines[i].msg.ycoord);
+					LCD_DrawLine(GUI_WW->lines[i].msg.lst_xcoord,GUI_WW->lines[i].msg.lst_ycoord+1,GUI_WW->lines[i].msg.xcoord,GUI_WW->lines[i].msg.ycoord+1);
+					break;
+				}
+				case 2:
+				{
+					
+					break;
+				}
+				case 3:
+				{
+					
+					break;
+				}
+				case 4:
+				{
+					
+					break;
+				}
+				default:
+				{
+					
+				}
+			}
+			GUI_WW->lines[i].msg.lst_xcoord=GUI_WW->lines[i].msg.xcoord;
+			GUI_WW->lines[i].msg.lst_ycoord=GUI_WW->lines[i].msg.ycoord;
+			GUI_WW->lines[i].msg.show=0;
 		}
 	}
 }
 
-void vcc_graph_show(float vcc_REF,float vcc_F)
-{
-	if(x_coord_vcc>0)
-	{
-		POINT_COLOR=BLUE;
-		LCD_DrawLine(x_coord_vcc-1,89*(1-vcc_REF_lst*0.3030303),x_coord_vcc,89*(1-vcc_REF*0.3030303));
-		POINT_COLOR=RED;
-		LCD_DrawLine(x_coord_vcc-1,89*(1-vcc_F_lst*0.3030303),x_coord_vcc,89*(1-vcc_F*0.3030303));
-	}
-	
-	vcc_REF_lst=vcc_REF;
-	vcc_F_lst=vcc_F;
-	
-	if((x_coord_vcc+=2)>=240)
-	{
-		x_coord_vcc=0;
-		graph_init(1);
-	}
-}
 
-void phase_graph_show(float phase)
+void GUI_MsgWindow_Init(GUI_MW_InitTypeDef* GUI_MW)//信息视窗初始化
 {
-	if(x_coord_phs>0)
-	{
-		POINT_COLOR=BLUE;
-		LCD_DrawLine(x_coord_phs-1,GUID_LINE4-90*phase_lst,x_coord_phs,GUID_LINE4-90*phase);
-	}
-	
-	phase_lst=phase;
-	
-	if((x_coord_phs+=2)>=240)
-	{
-		x_coord_phs=0;
-		graph_init(2);
-	}
-}
-
-void info_show(void)
-{
+	u16 i;
+	u16 xcoord;
+	u16 ycoord;
+	u8 size;
 	float temp;
-	int adcx;
+	short adcx;
+	if(GUI_MW->start_xcoord>=GUI_MW->end_xcoord || GUI_MW->start_ycoord>=GUI_MW->end_ycoord)
+		return;
 	
-	if(recv_flag)
+	//视窗范围填充
+	BACK_COLOR=GUI_MW->back_color;
+	LCD_Fill(GUI_MW->start_xcoord,GUI_MW->start_ycoord,GUI_MW->end_xcoord,GUI_MW->end_ycoord,GUI_MW->back_color);
+	
+	//数字内容
+	if(GUI_MW->alignment==0)//靠左对齐
 	{
-		POINT_COLOR=BLUE;
-		
-		temp=frequency_REF;
-		adcx=temp;
-		LCD_ShowxNum(152,240,adcx,3,16,0);
-		temp-=adcx;
-		temp*=1000;
-		LCD_ShowxNum(184,240,temp,3,16,0x80);
-		
-		temp=frequency_F;
-		adcx=temp;
-		LCD_ShowxNum(152,260,adcx,3,16,0);
-		temp-=adcx;
-		temp*=1000;
-		LCD_ShowxNum(184,260,temp,3,16,0x80);
-		
-		temp=phase;
-		if(temp<0)
+		for(i=0;i<GUI_MW->num_num;i++)
 		{
-			temp=-temp;
-			LCD_ShowString(144,280,8,16,16,"-");
+			size=GUI_MW->msgs_num[i].size;
+			xcoord=GUI_MW->start_xcoord;
+			ycoord=GUI_MW->msgs_num[i].ycoord;
+			POINT_COLOR=GUI_MW->header_color;
+			LCD_ShowString(xcoord,ycoord,180,size,size,(u8*)(GUI_MW->msgs_num[i].header));
+			
+			POINT_COLOR=GUI_MW->msg_color;
+			xcoord+=size/2*GUI_MW->msgs_num[i].digits_header;
+			temp=GUI_MW->msgs_num[i].number;
+			adcx=temp;
+			LCD_ShowxNum(xcoord,ycoord,adcx,GUI_MW->msgs_num[i].digits_former,size,0);
+			temp-=adcx;
+			temp*=zoom_in[GUI_MW->msgs_num[i].digits_latter];
+			xcoord+=size/2*(GUI_MW->msgs_num[i].digits_former+1);
+			LCD_ShowxNum(xcoord,ycoord,temp,GUI_MW->msgs_num[i].digits_latter,size,0);
 		}
-		else
-			LCD_ShowString(144,280,8,16,16," ");
-		adcx=temp;
-		LCD_ShowxNum(152,280,adcx,3,16,0);
-		temp-=adcx;
-		temp*=1000;
-		LCD_ShowxNum(184,280,temp,3,16,0x80);
-		
-		phase_graph_show(phase);
-		recv_flag=0;
+	}
+	else if(GUI_MW->alignment==1)//居中对齐
+	{
+		for(i=0;i<GUI_MW->num_num;i++)
+		{
+			xcoord=GUI_MW->axle;
+			ycoord=GUI_MW->msgs_num[i].ycoord;
+			size=GUI_MW->msgs_num[i].size/2;
+			POINT_COLOR=GUI_MW->header_color;
+			LCD_ShowString(xcoord-GUI_MW->msgs_num[i].digits_header*size,ycoord,180,GUI_MW->msgs_num[i].size,GUI_MW->msgs_num[i].size,(u8*)GUI_MW->msgs_num[i].header);
+			
+			POINT_COLOR=GUI_MW->msg_color;
+			temp=GUI_MW->msgs_num[i].number;
+			adcx=temp;
+			LCD_ShowxNum(xcoord,ycoord,adcx,GUI_MW->msgs_num[i].digits_former,GUI_MW->msgs_num[i].size,0);
+			temp-=adcx;
+			temp*=zoom_in[GUI_MW->msgs_num[i].digits_latter];
+			xcoord+=size*(GUI_MW->msgs_num[i].digits_former+1);
+			LCD_ShowxNum(xcoord,ycoord,temp,GUI_MW->msgs_num[i].digits_latter,GUI_MW->msgs_num[i].size,0);
+		}
 	}
 	
-	if(ADC_show_flag)
+	//字符内容
+	if(GUI_MW->alignment==0)//靠左对齐
 	{
-		POINT_COLOR=MAGENTA;
+		for(i=0;i<GUI_MW->str_num;i++)
+		{
+			size=GUI_MW->msgs_str[i].size;
+			xcoord=GUI_MW->start_xcoord;
+			ycoord=GUI_MW->msgs_str[i].ycoord;
+			POINT_COLOR=GUI_MW->header_color;
+			LCD_ShowString(xcoord,ycoord,180,size,size,(u8*)(GUI_MW->msgs_str[i].header));
+			
+			POINT_COLOR=GUI_MW->msg_color;
+			xcoord+=size/2*GUI_MW->msgs_str[i].digits_header;
+			LCD_ShowString(xcoord,ycoord,180,size,size,(u8*)(GUI_MW->msgs_str[i].content));
+		}
+	}
+	else if(GUI_MW->alignment==1)//居中对齐
+	{
+		for(i=0;i<GUI_MW->str_num;i++)
+		{
+			xcoord=GUI_MW->axle;
+			ycoord=GUI_MW->msgs_str[i].ycoord;
+			size=GUI_MW->msgs_str[i].size/2;
+			POINT_COLOR=GUI_MW->header_color;
+			LCD_ShowString(xcoord-GUI_MW->msgs_str[i].digits_header*size,ycoord,180,GUI_MW->msgs_num[i].size,GUI_MW->msgs_num[i].size,(u8*)GUI_MW->msgs_str[i].header);
+			
+			POINT_COLOR=GUI_MW->msg_color;
+			LCD_ShowString(xcoord,ycoord,180,GUI_MW->msgs_num[i].size,GUI_MW->msgs_num[i].size,
+										(u8*)GUI_MW->msgs_str[i].content);
+		}
+	}
+	
+}
 
-		temp=vcc_F;
-		adcx=temp;
-		LCD_ShowxNum(152,200,adcx,3,16,0);
-		temp-=adcx;
-		temp*=1000;
-		LCD_ShowxNum(184,200,temp,3,16,0x80);
-		ADC_flag=0;
-		
-		temp=vcc_F;
-		adcx=temp;
-		LCD_ShowxNum(152,220,adcx,3,16,0);
-		temp-=adcx;
-		temp*=1000;
-		LCD_ShowxNum(184,220,temp,3,16,0x80);
-		ADC_flag=0;
-		
-		vcc_graph_show(vcc_REF,vcc_F);
-		ADC_show_flag=0;
+void GUI_MsgWindow_refresh(GUI_MW_InitTypeDef *GUI_MW)
+{
+	u16 i;
+	u16 xcoord;
+	u16 ycoord;
+	u8 size;
+	float temp;
+	short adcx;
+	
+	//数字内容
+	if(GUI_MW->alignment==0)//靠左对齐
+	{
+		for(i=0;i<GUI_MW->num_num;i++)
+		{
+			size=GUI_MW->msgs_num[i].size;
+			xcoord=GUI_MW->start_xcoord;
+			ycoord=GUI_MW->msgs_num[i].ycoord;
+			
+			POINT_COLOR=GUI_MW->msg_color;
+			xcoord+=size/2*GUI_MW->msgs_num[i].digits_header;
+			temp=GUI_MW->msgs_num[i].number;
+			adcx=temp;
+			LCD_ShowxNum(xcoord,ycoord,adcx,GUI_MW->msgs_num[i].digits_former,size,0);
+			temp-=adcx;
+			temp*=zoom_in[GUI_MW->msgs_num[i].digits_latter];
+			xcoord+=size/2*(GUI_MW->msgs_num[i].digits_former+1);
+			LCD_ShowxNum(xcoord,ycoord,temp,GUI_MW->msgs_num[i].digits_latter,size,0);
+		}
+	}
+	else if(GUI_MW->alignment==1)//居中对齐
+	{
+		for(i=0;i<GUI_MW->num_num;i++)
+		{
+			xcoord=GUI_MW->axle;
+			ycoord=GUI_MW->msgs_num[i].ycoord;
+			size=GUI_MW->msgs_num[i].size/2;
+			
+			POINT_COLOR=GUI_MW->msg_color;
+			temp=GUI_MW->msgs_num[i].number;
+			adcx=temp;
+			LCD_ShowxNum(xcoord,ycoord,adcx,GUI_MW->msgs_num[i].digits_former,GUI_MW->msgs_num[i].size,0);
+			temp-=adcx;
+			temp*=zoom_in[GUI_MW->msgs_num[i].digits_latter];
+			xcoord+=size*(GUI_MW->msgs_num[i].digits_former+1);
+			LCD_ShowxNum(xcoord,ycoord,temp,GUI_MW->msgs_num[i].digits_latter,GUI_MW->msgs_num[i].size,0);
+		}
+	}
+	
+	//字符内容
+	if(GUI_MW->alignment==0)//靠左对齐
+	{
+		for(i=0;i<GUI_MW->str_num;i++)
+		{
+			size=GUI_MW->msgs_str[i].size;
+			xcoord=GUI_MW->start_xcoord;
+			ycoord=GUI_MW->msgs_str[i].ycoord;
+			
+			POINT_COLOR=GUI_MW->msg_color;
+			xcoord+=size/2*GUI_MW->msgs_str[i].digits_header;
+			LCD_ShowString(xcoord,ycoord,180,size,size,(u8*)(GUI_MW->msgs_str[i].content));
+		}
+	}
+	else if(GUI_MW->alignment==1)//居中对齐
+	{
+		for(i=0;i<GUI_MW->str_num;i++)
+		{
+			xcoord=GUI_MW->axle;
+			ycoord=GUI_MW->msgs_str[i].ycoord;
+			size=GUI_MW->msgs_str[i].size/2;
+			
+			POINT_COLOR=GUI_MW->msg_color;
+			LCD_ShowString(xcoord,ycoord,180,GUI_MW->msgs_num[i].size,GUI_MW->msgs_num[i].size,
+										(u8*)GUI_MW->msgs_str[i].content);
+		}
 	}
 }
+
+void GUI_show_frame(u8 frame_mode,u16 frame_color,u16 start_xcoord,u16 start_ycoord,u16 end_xcoord,u16 end_ycoord)
+{
+	POINT_COLOR=frame_color;
+	if(frame_mode==1)
+	{
+		draw_consistant_FullLine(start_xcoord,end_xcoord,start_ycoord);
+		draw_consistant_FullLine(start_xcoord,end_xcoord,end_ycoord);
+		draw_vconsistant_FullLine(start_xcoord,start_ycoord,end_ycoord);
+		draw_vconsistant_FullLine(end_xcoord,start_ycoord,end_ycoord);
+	}
+	else if(frame_mode==11)
+	{
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,start_ycoord);
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,end_ycoord);
+		draw_vconsistant_ImaginaryLine(start_xcoord,start_ycoord,end_ycoord);
+		draw_vconsistant_ImaginaryLine(end_xcoord,start_ycoord,end_ycoord);
+	}
+	else if(frame_mode==2)
+	{
+		draw_consistant_FullLine(start_xcoord,end_xcoord,start_ycoord);
+		draw_consistant_FullLine(start_xcoord,end_xcoord,start_ycoord+1);
+		draw_consistant_FullLine(start_xcoord,end_xcoord,end_ycoord);
+		draw_consistant_FullLine(start_xcoord,end_xcoord,end_ycoord-1);
+		draw_vconsistant_FullLine(start_xcoord,start_ycoord,end_ycoord);
+		draw_vconsistant_FullLine(start_xcoord+1,start_ycoord,end_ycoord);
+		draw_vconsistant_FullLine(end_xcoord,start_ycoord,end_ycoord);
+		draw_vconsistant_FullLine(end_xcoord-1,start_ycoord,end_ycoord);
+	}
+	else if(frame_mode==12)
+	{
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,start_ycoord);
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,start_ycoord+1);
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,end_ycoord);
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,end_ycoord-1);
+		draw_vconsistant_ImaginaryLine(start_xcoord,start_ycoord,end_ycoord);
+		draw_vconsistant_ImaginaryLine(start_xcoord+1,start_ycoord,end_ycoord);
+		draw_vconsistant_ImaginaryLine(end_xcoord,start_ycoord,end_ycoord);
+		draw_vconsistant_ImaginaryLine(end_xcoord-1,start_ycoord,end_ycoord);
+	}
+	else if(frame_mode==3)
+	{
+		draw_consistant_FullLine(start_xcoord,end_xcoord,start_ycoord);
+		draw_consistant_FullLine(start_xcoord,end_xcoord,start_ycoord+1);
+		draw_consistant_FullLine(start_xcoord,end_xcoord,start_ycoord+2);
+		draw_consistant_FullLine(start_xcoord,end_xcoord,end_ycoord);
+		draw_consistant_FullLine(start_xcoord,end_xcoord,end_ycoord-1);
+		draw_consistant_FullLine(start_xcoord,end_xcoord,end_ycoord-2);
+		draw_vconsistant_FullLine(start_xcoord,start_ycoord,end_ycoord);
+		draw_vconsistant_FullLine(start_xcoord+1,start_ycoord,end_ycoord);
+		draw_vconsistant_FullLine(start_xcoord+2,start_ycoord,end_ycoord);
+		draw_vconsistant_FullLine(end_xcoord,start_ycoord,end_ycoord);
+		draw_vconsistant_FullLine(end_xcoord-1,start_ycoord,end_ycoord);
+		draw_vconsistant_FullLine(end_xcoord-2,start_ycoord,end_ycoord);
+	}
+	else if(frame_mode==13)
+	{
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,start_ycoord);
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,start_ycoord+1);
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,start_ycoord+2);
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,end_ycoord);
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,end_ycoord-1);
+		draw_consistant_ImaginaryLine(start_xcoord,end_xcoord,end_ycoord-2);
+		draw_vconsistant_ImaginaryLine(start_xcoord,start_ycoord,end_ycoord);
+		draw_vconsistant_ImaginaryLine(start_xcoord+1,start_ycoord,end_ycoord);
+		draw_vconsistant_ImaginaryLine(start_xcoord+2,start_ycoord,end_ycoord);
+		draw_vconsistant_ImaginaryLine(end_xcoord,start_ycoord,end_ycoord);
+		draw_vconsistant_ImaginaryLine(end_xcoord-1,start_ycoord,end_ycoord);
+		draw_vconsistant_ImaginaryLine(end_xcoord-2,start_ycoord,end_ycoord);
+	}
+}
+
+u8 GUI_Menu_Init(GUI_Menu_InitTypeDef* Menu)//菜单显示初始化
+{
+	u8 i;
+	
+	LCD_Fill(Menu->start_xcoord,Menu->start_ycoord,Menu->end_xcoord,Menu->end_ycoord,Menu->back_color);
+	
+	if(Menu->show_frame)
+		GUI_show_frame(Menu->frame_mode,Menu->frame_color,Menu->start_xcoord,Menu->start_ycoord,Menu->end_xcoord,Menu->end_ycoord);
+	
+	for(i=0;i<Menu->table_num;i++)
+	{
+		if(Menu->catalog_tables[i].xcoord==0)
+		{
+			Menu->catalog_tables[i].xcoord=(Menu->end_xcoord-Menu->start_xcoord-Menu->catalog_tables[i].size/2*Menu->catalog_tables[i].length)/2+Menu->start_xcoord;
+		}
+		if(Menu->catalog_tables[i].ycoord==0)
+		{
+			Menu->catalog_tables[i].ycoord=(Menu->end_ycoord-Menu->start_ycoord)/Menu->table_num*i+Menu->start_ycoord;
+		}
+	}
+	
+	BACK_COLOR=Menu->back_color;
+	POINT_COLOR=Menu->point_color;
+	for(i=0;i<Menu->table_num;i++)
+	{
+		LCD_ShowString(Menu->catalog_tables[i].xcoord,Menu->catalog_tables[i].ycoord,180,Menu->catalog_tables[i].size,Menu->catalog_tables[i].size,(u8*)(Menu->catalog_tables[i].content));
+	}
+	return 0;
+}
+
+u8 GUI_Menu_Select(GUI_Menu_InitTypeDef *Menu,u8 select_status)
+{
+	u8 i;
+	if(select_status>Menu->table_num)
+		return 0;
+	
+	if(select_status>0)
+	{
+		POINT_COLOR=Menu->select_point_color;
+		BACK_COLOR=Menu->select_back_color;
+		LCD_ShowString(Menu->catalog_tables[select_status-1].xcoord,Menu->catalog_tables[select_status-1].ycoord,
+										180,Menu->catalog_tables[select_status-1].size,Menu->catalog_tables[select_status-1].size,
+										(u8*)(Menu->catalog_tables[select_status-1].content));
+	}
+	POINT_COLOR=Menu->point_color;
+	BACK_COLOR=Menu->back_color;
+	for(i=0;i<Menu->table_num;i++)
+	{
+		if(i!=select_status-1)
+		{
+			LCD_ShowString(Menu->catalog_tables[i].xcoord,Menu->catalog_tables[i].ycoord,180,
+										Menu->catalog_tables[i].size,Menu->catalog_tables[i].size,
+										(u8*)(Menu->catalog_tables[i].content));
+		}
+	}
+	return 1;
+}
+
+
+void GUI_InputBox_Init(GUI_IB_InitTypeDef* GUI_IB,u8 select_status)
+{
+	u8 i;
+	u8 num=GUI_IB->digit_fromer+GUI_IB->digit_later;
+	u16 xcoord=GUI_IB->xcoord;
+	LCD_Fill(GUI_IB->start_xcoord,GUI_IB->start_ycoord,GUI_IB->end_xcoord,GUI_IB->end_ycoord,GUI_IB->back_color);
+	if(GUI_IB->show_frame)
+		GUI_show_frame(GUI_IB->frame_mode,GUI_IB->back_color,GUI_IB->start_xcoord,GUI_IB->start_ycoord,GUI_IB->end_xcoord,GUI_IB->end_ycoord);
+	
+	POINT_COLOR=GUI_IB->header_color;
+	LCD_ShowString(xcoord,GUI_IB->ycoord,180,GUI_IB->size,GUI_IB->size,(u8*)(GUI_IB->header));
+	xcoord+=GUI_IB->digit_header*GUI_IB->size/2;
+	for(i=0;i<GUI_IB->digit_fromer;i++)
+	{
+		if(select_status==i)
+		{
+			POINT_COLOR=GUI_IB->select_point_color;
+			BACK_COLOR=GUI_IB->select_back_color;
+		}
+		
+		LCD_ShowNum(xcoord,GUI_IB->ycoord,GUI_IB->digits[i],1,GUI_IB->size);
+		
+		if(select_status==i)
+		{
+			POINT_COLOR=GUI_IB->digits_color;
+			BACK_COLOR=GUI_IB->back_color;
+		}
+	}
+}
+

@@ -99,30 +99,32 @@ void PWM_Set_duty(float rate,u16* t,u8 mode)
 	if(mode==0)//单极性输出
 	{
 		TIM_SetCompare2(TIM8,(1799+Sin[*t])*rate);
-		if(Sin[*t]>=1799)
+		if(Sin[*t]>=0)
 			TIM_SetCompare1(TIM8,0);
 		else
-			TIM_SetCompare1(TIM8,3599);
+			TIM_SetCompare1(TIM8,3600);
 	}
 	else if(mode==1)
 	{
 		if(status==0)
 		{
-			status=1;
 			TIM_SetCompare2(TIM8,(1799+Sin[*t])*rate);
-			if(Sin[*t]>=1799)
+			if(Sin[*t]>=0)
 				TIM_SetCompare1(TIM8,0);
 			else
-				TIM_SetCompare1(TIM8,3599);
+				TIM_SetCompare1(TIM8,3600);
+			if(*t==SINTABLE_LEN-1)
+				status=1;
 		}
 		else
 		{
-			status=0;
 			TIM_SetCompare1(TIM8,(1799+Sin[*t])*rate);
-			if(Sin[*t]>=1799)
+			if(Sin[*t]>=0)
 				TIM_SetCompare2(TIM8,0);
 			else
-				TIM_SetCompare2(TIM8,3599);
+				TIM_SetCompare2(TIM8,3600);
+			if(*t==SINTABLE_LEN-1)
+				status=0;
 		}
 	}
 	else//双极性输出

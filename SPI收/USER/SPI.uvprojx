@@ -424,14 +424,19 @@
               <FilePath>.\system_stm32f10x.c</FilePath>
             </File>
             <File>
+              <FileName>SPI_DMA.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\SPI_DMA.c</FilePath>
+            </File>
+            <File>
               <FileName>GUI.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\GUI.c</FilePath>
             </File>
             <File>
-              <FileName>caculate.c</FileName>
+              <FileName>infrared_remote.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\caculate.c</FilePath>
+              <FilePath>.\infrared_remote.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -454,16 +459,6 @@
               <FilePath>..\HARDWARE\KEY\key.c</FilePath>
             </File>
             <File>
-              <FileName>spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\SPI\spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\FLASH\flash.c</FilePath>
-            </File>
-            <File>
               <FileName>exti.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\EXTI\exti.c</FilePath>
@@ -472,11 +467,6 @@
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\TIMER\timer.c</FilePath>
-            </File>
-            <File>
-              <FileName>adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\ADC\adc.c</FilePath>
             </File>
           </Files>
         </Group>

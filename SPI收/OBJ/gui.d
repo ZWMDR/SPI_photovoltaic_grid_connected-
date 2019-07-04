@@ -32,8 +32,4 @@
 ..\obj\gui.o: ..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h
 ..\obj\gui.o: ..\STM32F10x_FWLib\inc\misc.h
 ..\obj\gui.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\obj\gui.o: ..\HARDWARE\SPI\spi.h
-..\obj\gui.o: ..\SYSTEM\usart\usart.h
-..\obj\gui.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-..\obj\gui.o: caculate.h
-..\obj\gui.o: ..\HARDWARE\ADC\adc.h
+..\obj\gui.o: ..\HARDWARE\LED\led.h

@@ -1,19 +1,16 @@
 #ifndef __CACULATE_H
 #define __CACULATE_H
-#include "spi.h"
-#include "adc.h"
+
+#include "sys.h"
+#include "SPI_DMA.h"
 
 extern u8 recv_flag;
-extern u8 ADC_flag;
 extern u16 Frequency_REF;
 extern u16 Frequency_F;
 extern u16 Period_REF;
 extern u16 Period_F;
-extern u16 DMA_buff_RX[DMA_buff_len_SPI];
-extern u16 DMA_buff_TX[DMA_buff_len_SPI];
-extern u16 DMA_buff[DMA_buff_len];
-extern u16 VCC_REF;
-extern u16 VCC_F;
+extern u16 DMA_buff_RX[DMA_SPI_buff_len];
+extern u16 DMA_buff_TX[DMA_SPI_buff_len];
 
 typedef struct PID
 {
