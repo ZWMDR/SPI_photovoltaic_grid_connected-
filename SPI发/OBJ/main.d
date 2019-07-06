@@ -36,6 +36,8 @@
 ..\obj\main.o: ..\HARDWARE\KEY\key.h
 ..\obj\main.o: SPI_DMA.h
 ..\obj\main.o: ..\HARDWARE\TIMER\timer.h
+..\obj\main.o: sp_math.h
+..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\obj\main.o: ..\HARDWARE\EXTI\exti.h
 ..\obj\main.o: PWM_input_capture.h
 ..\obj\main.o: ..\HARDWARE\PWM\pwm.h
@@ -43,5 +45,3 @@
 ..\obj\main.o: SPWM_output.h
 ..\obj\main.o: ADC_input.h
 ..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\obj\main.o: sp_math.h
-..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

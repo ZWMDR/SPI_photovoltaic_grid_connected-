@@ -491,7 +491,7 @@ u8 GUI_Menu_Select(GUI_Menu_InitTypeDef *Menu,u8 select_status)
 void GUI_InputBox_Init(GUI_IB_InitTypeDef* GUI_IB,u8 select_status)
 {
 	u8 i;
-	u8 num=GUI_IB->digit_fromer+GUI_IB->digit_later;
+	//u8 num=GUI_IB->digit_fromer+GUI_IB->digit_later;
 	u16 xcoord=GUI_IB->xcoord;
 	LCD_Fill(GUI_IB->start_xcoord,GUI_IB->start_ycoord,GUI_IB->end_xcoord,GUI_IB->end_ycoord,GUI_IB->back_color);
 	if(GUI_IB->show_frame)

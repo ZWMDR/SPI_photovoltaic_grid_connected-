@@ -31,6 +31,8 @@
 ..\obj\remote.o: ..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h
 ..\obj\remote.o: ..\STM32F10x_FWLib\inc\misc.h
 ..\obj\remote.o: ..\HARDWARE\LED\led.h
+..\obj\remote.o: ..\USER\sp_math.h
+..\obj\remote.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\obj\remote.o: ..\SYSTEM\delay\delay.h
 ..\obj\remote.o: ..\SYSTEM\usart\usart.h
 ..\obj\remote.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

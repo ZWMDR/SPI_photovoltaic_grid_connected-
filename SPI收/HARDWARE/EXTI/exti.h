@@ -6,8 +6,6 @@
 #include "stm32f10x_exti.h"
 #include "spi.h"
 #include "usart.h"
-#include "adc.h"
-#include "caculate.h"
 
 extern u16 DMA_buff_RX[DMA_buff_len_SPI];
 extern u16 DMA_buff_TX[DMA_buff_len_SPI];
@@ -15,16 +13,7 @@ extern u16 Frequency_REF;
 extern u16 Frequency_F;
 extern u16 Period_REF;
 extern u16 Period_F;
-extern u8 recv_flag;
-extern u8 ADC_flag;
-extern u8 ADC_show_flag;
-extern float frequency_REF;
-extern float frequency_F;
-extern float phase;
-extern float vcc_REF;
-extern float vcc_F;
-extern u16 VCC_REF;
-extern u16 VCC_F;
+
 
 void EXTIX_Init(void);//IO≥ı ºªØ
 void DMA_EXTI_Init(void);

@@ -1,7 +1,7 @@
 #include "ADC_input.h"
 
 
-void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16 frequency)
+void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs)
 {
 	u16 i;
 	ADC_InitTypeDef          ADC_InitStructure;
@@ -17,15 +17,15 @@ void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16 frequency)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1,ENABLE);
 	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
 	
-	TIM_TimeBaseStructure.TIM_Period = (frequency==_5kHz)?199:399;
-	TIM_TimeBaseStructure.TIM_Prescaler = 72-1; //72M/72=1 MHz, 1MHz/200=5kHz
+	TIM_TimeBaseStructure.TIM_Period = (ADC_cs->arr>0)?ADC_cs->arr:19999;
+	TIM_TimeBaseStructure.TIM_Prescaler = (ADC_cs->psc>0)?ADC_cs->psc:71; //72M/72=1 MHz, 1MHz/20000=50Hz
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0x0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM2,&TIM_TimeBaseStructure);
 	
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = (frequency==_5kHz)?99:199;
+	TIM_OCInitStructure.TIM_Pulse = ADC_cs->arr>>1;
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
 	TIM_OC2Init(TIM2,&TIM_OCInitStructure);
 	TIM_InternalClockConfig(TIM2);
@@ -127,8 +127,8 @@ void DMA1_Channel1_IRQHandler(void)//ADC1ÖÐ¶Ï
 	{
 		LED1=~LED1;
 		ADC_flag=1;
-		//printf("%d\r\n",1);
-		ADC_continuous_sampling_disable();
+		//ADC_continuous_sampling_disable();
+		//printf("%d, %d, %d, %d \r\n",DMA_buff[0],DMA_buff[1],DMA_buff[2],DMA_buff[3]);
 		
 		DMA_ClearITPendingBit(DMA1_IT_TC1);
 	}

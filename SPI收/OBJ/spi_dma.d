@@ -32,3 +32,8 @@
 ..\obj\spi_dma.o: ..\STM32F10x_FWLib\inc\misc.h
 ..\obj\spi_dma.o: ..\SYSTEM\sys\sys.h
 ..\obj\spi_dma.o: ..\HARDWARE\TIMER\timer.h
+..\obj\spi_dma.o: ..\SYSTEM\usart\usart.h
+..\obj\spi_dma.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\obj\spi_dma.o: ..\HARDWARE\LED\led.h
+..\obj\spi_dma.o: sp_math.h
+..\obj\spi_dma.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

@@ -32,11 +32,11 @@ void TIM5_IRQHandler(void)
 				
 				if(!capture_flag)
 				{
-					LED0=~LED0;
-					DMA_SPI_buff_TX[0]=Frequency_REF;
-					DMA_SPI_buff_TX[1]=Frequency_F;
-					DMA_SPI_buff_TX[2]=Period_REF;
-					DMA_SPI_buff_TX[3]=Period_F;
+					//LED0=~LED0;
+					SPI_send_buff[1]=Frequency_REF;
+					SPI_send_buff[2]=Frequency_F;
+					SPI_send_buff[3]=Period_REF;
+					SPI_send_buff[4]=Period_F;
 					
 					capture_flag=1;
 				}
@@ -70,11 +70,11 @@ void TIM4_IRQHandler(void)
 				Period_F=TIM_GetCounter(TIM7);
 				if((!capture_flag) && (!send_flag))
 				{
-					LED0=~LED0;
-					DMA_SPI_buff_TX[0]=Frequency_REF;
-					DMA_SPI_buff_TX[1]=Frequency_F;
-					DMA_SPI_buff_TX[2]=Period_REF;
-					DMA_SPI_buff_TX[3]=Period_F;
+					//LED0=~LED0;
+					SPI_send_buff[1]=Frequency_REF;
+					SPI_send_buff[2]=Frequency_F;
+					SPI_send_buff[3]=Period_REF;
+					SPI_send_buff[4]=Period_F;
 					
 					capture_flag=1;
 				}

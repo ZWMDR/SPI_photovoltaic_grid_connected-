@@ -20,11 +20,11 @@ void SPI1_DMA1_Init(u16 arr,u16 psc,u8 master_slaver,u8 open_scheduled_transmiti
 	//SPI初始化
 	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //设置SPI单向或者双向的数据模式:SPI设置为双线双向全双工
 	SPI_InitStructure.SPI_Mode = (master_slaver==1)?SPI_Mode_Master:SPI_Mode_Slave;//设置SPI工作模式:设置为主SPI
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;		//设置SPI的数据大小:SPI发送接收8位帧结构
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;		//设置SPI的数据大小:SPI发送接收16位帧结构
 	SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;		//选择了串行时钟的稳态:时钟悬空高
 	SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;	//数据捕获于第二个时钟沿
 	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;		//NSS信号由硬件（NSS管脚）还是软件（使用SSI位）管理:内部NSS信号有SSI位控制
-	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;		//定义波特率预分频的值:波特率预分频值为256
+	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_64;		//定义波特率预分频的值:波特率预分频值为256
 	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;	//指定数据传输从MSB位还是LSB位开始:数据传输从MSB位开始
 	SPI_InitStructure.SPI_CRCPolynomial = 7;	//CRC值计算的多项式
 	SPI_Init(SPI1, &SPI_InitStructure);  //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
@@ -91,12 +91,13 @@ void SPI1_DMA1_Init(u16 arr,u16 psc,u8 master_slaver,u8 open_scheduled_transmiti
 		TIM_Cmd(TIM2,ENABLE);
 	}
 	
+	SPI_Cmd(SPI1, ENABLE);
 	DMA_Cmd(DMA1_Channel2, ENABLE);
 	DMA_Cmd(DMA1_Channel3, DISABLE);
-	SPI_Cmd(SPI1, ENABLE); //使能SPI外设
+	 //使能SPI外设
 }
 
-void SPI_send(const u16 send_buff[DMA_SPI_buff_len])
+void SPI_send_arr(const u16 send_buff[DMA_SPI_buff_len])
 {
 	//数据装载
 	int i=0;
@@ -109,12 +110,21 @@ void SPI_send(const u16 send_buff[DMA_SPI_buff_len])
 	
 }
 
+void SPI_send(void)
+{
+	DMA1_Channel3->CNDTR=DMA_SPI_buff_len;
+	DMA_Cmd(DMA1_Channel3, ENABLE);
+}
+
 //中断函数
 void DMA1_Channel3_IRQHandler(void)//SPI发送完成
 {
 	if (DMA_GetITStatus(DMA1_IT_TC3)!=RESET)
 	{
 		//do something
+		
+		LED1=~LED1;
+		array_init_u16(DMA_SPI_buff_TX,DMA_SPI_buff_len);
 		
 		DMA_Cmd(DMA1_Channel3, DISABLE);
 		
@@ -126,10 +136,22 @@ void DMA1_Channel2_IRQHandler(void)//SPI接收完成
 {
 	if (DMA_GetITStatus(DMA1_IT_TC2)!=RESET)
 	{
-		//do something
+		
+		printf("recv: %x %x %x %x %x %x %x \r\n",DMA_SPI_buff_RX[0],DMA_SPI_buff_RX[1],DMA_SPI_buff_RX[2],DMA_SPI_buff_RX[3],DMA_SPI_buff_RX[4],DMA_SPI_buff_RX[5],DMA_SPI_buff_RX[6]);
+		if(DMA_SPI_buff_RX[0]==0x0A0A)
+		{
+			LED0=~LED0;
+			Frequency_REF=DMA_SPI_buff_RX[1];
+			Frequency_F=DMA_SPI_buff_RX[2];
+			Period_REF=DMA_SPI_buff_RX[3];
+			Period_F=DMA_SPI_buff_RX[4];
+			Voltage=DMA_SPI_buff_RX[5];
+			Current=DMA_SPI_buff_RX[6];
+			recv_flag=1;
+		}
 		
 		DMA_Cmd(DMA1_Channel2,DISABLE);
-		DMA1_Channel2->CNDTR=4;
+		DMA1_Channel2->CNDTR=DMA_SPI_buff_len;
 		DMA_Cmd(DMA1_Channel2,ENABLE);
 		
 		DMA_ClearITPendingBit(DMA1_IT_TC2);
@@ -142,7 +164,7 @@ void TIM2_IRQHandler(void)//SPI发送
 	{
 		//do something
 
-		DMA1_Channel3->CNDTR=4;
+		DMA1_Channel3->CNDTR=DMA_SPI_buff_len;
 		DMA_Cmd(DMA1_Channel3, ENABLE);
 		
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 

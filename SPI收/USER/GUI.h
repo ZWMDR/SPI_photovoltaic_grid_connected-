@@ -72,9 +72,11 @@ typedef struct GUI_WaveWindow_InitTypeDef//波形窗口参数
 	u16 axle_wire_color;//中轴线颜色
 	
 	//纵向参考线
+	u8 set_vertical_gd;
 	GUI_WW_gd_InitTypeDef *vertical_gd;
 	
 	//横向参考线
+	u8 set_hroizontal_gd;
 	GUI_WW_gd_InitTypeDef *horizontal_gd;
 	
 }GUI_WW_InitTypeDef;

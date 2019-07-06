@@ -44,31 +44,6 @@ void get_vcc_duplex(const u16 *arr,u16 len,u16 *VCC1,u16* VCC2)
 	*VCC2=max2-min2;
 }
 
-float get_average(const u16 *arr,u16 len,u16 start,u16 gap)
-{
-	u16 i;
-	float ave=0;
-	for(i=start;i<len;i+=gap)
-		ave+=arr[i];
-	return ave/len;
-}
-
-void get_average_duplex(const u16* arr,u16 len,u16* average1,u16* average2)
-{
-	u16 i;
-	*average1=0;
-	*average2=0;
-	
-	for(i=0;i<len;i+=2)
-	{
-		*average1+=arr[i];
-		*average2+=arr[i+1];
-	}
-	
-	*average1/=len>>1;
-	*average2/=len>>1;
-}
-
 float find_zero_cur(const u16 *arr,u16 average,u16 len)
 {
 	u16 i;

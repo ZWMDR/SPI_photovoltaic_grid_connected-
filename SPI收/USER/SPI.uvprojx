@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\LCD;..\HARDWARE\FLASH;..\HARDWARE\SPI;..\HARDWARE\KEY;..\HARDWARE\EXTI;..\HARDWARE\TIMER;..\HARDWARE\ADC</IncludePath>
+              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\LCD;..\HARDWARE\FLASH;..\HARDWARE\SPI;..\HARDWARE\KEY;..\HARDWARE\EXTI;..\HARDWARE\TIMER;..\HARDWARE\ADC;..\HARDWARE\REMOTE</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -434,9 +434,14 @@
               <FilePath>.\GUI.c</FilePath>
             </File>
             <File>
-              <FileName>infrared_remote.c</FileName>
+              <FileName>menu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\infrared_remote.c</FilePath>
+              <FilePath>.\menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>sp_math.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\sp_math.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -467,6 +472,11 @@
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\TIMER\timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>remote.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\REMOTE\remote.c</FilePath>
             </File>
           </Files>
         </Group>

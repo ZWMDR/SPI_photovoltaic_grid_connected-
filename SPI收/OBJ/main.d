@@ -36,11 +36,12 @@
 ..\obj\main.o: ..\HARDWARE\KEY\key.h
 ..\obj\main.o: SPI_DMA.h
 ..\obj\main.o: ..\HARDWARE\TIMER\timer.h
+..\obj\main.o: sp_math.h
+..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\obj\main.o: ..\HARDWARE\EXTI\exti.h
 ..\obj\main.o: ..\HARDWARE\SPI\spi.h
 ..\obj\main.o: ..\HARDWARE\LCD\lcd.h
 ..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\obj\main.o: ..\HARDWARE\ADC\adc.h
-..\obj\main.o: ..\USER\caculate.h
 ..\obj\main.o: GUI.h
 ..\obj\main.o: ..\HARDWARE\REMOTE\remote.h
+..\obj\main.o: menu.h

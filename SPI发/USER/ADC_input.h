@@ -6,9 +6,7 @@
 #include "led.h"
 #include "usart.h"
 
-#define DMA_buff_len_ADC 200
-#define _5kHz 5000
-#define _2k5Hz 2500
+#define DMA_buff_len_ADC 4
 
 extern u16 DMA_buff[DMA_buff_len_ADC];
 extern u8 ADC_flag;
@@ -29,6 +27,9 @@ typedef struct ADC_continuous_sampling
 	ADC_Channel *Channels;
 	u8 ScanConvMode;
 	
+	u16 arr;
+	u16 psc;
+	
 }ADC_cs_InitTypeDef;
 
 typedef struct ADC_single_sample
@@ -43,7 +44,7 @@ typedef struct ADC_single_sample
 }ADC_ss_InitTypeDef;
 
 //ADC+DMAÁ¬Ðø×ª»»
-void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16 frequency);
+void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs);
 void ADC_continuous_sampling_enable(void);
 void ADC_continuous_sampling_disable(void);
 void ADC_sampling_enable(ADC_TypeDef* ADCx);

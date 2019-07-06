@@ -4,6 +4,8 @@
 "..\obj\system_stm32f10x.o"
 "..\obj\spi_dma.o"
 "..\obj\gui.o"
+"..\obj\menu.o"
+"..\obj\sp_math.o"
 "..\obj\led.o"
 "..\obj\lcd.o"
 "..\obj\key.o"

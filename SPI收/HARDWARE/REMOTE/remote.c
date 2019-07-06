@@ -199,46 +199,45 @@ void remote_key(void)
 			case 10:
 				menu_status=status=0;
 				key_flag=1;
+				assign_flag=1;
 				break;
 			case 11://上
 				if(menu_status==0)
 				{
-					status=(status==2)?1:2;
+					if(status>0)
+						status--;
+					else
+						status=3;
+					
 					key_flag=1;
 				}
 				break;
 			case 12://下
 				if(menu_status==0)
 				{
-					status=(status==1)?2:1;
+					if(status<3)
+						status++;
+					else
+						status=1;
+					
 					key_flag=1;
 				}
 				break;
 			case 13://左
-				if(menu_status>=10)
+				if(menu_status>=10 && menu_status<20)
 				{
-					menu_status=10;
-					status=status>10?status-1:17;
-					key_flag=1;
+					
 				}
-				else if(menu_status>=20)
+				else if(menu_status>19 && menu_status<30)
 				{
-					menu_status=20;
-					status=status>20?status-1:23;
+					status=status>21?status-1:24;
 					key_flag=1;
 				}
 				break;
 			case 14://右
-				if(menu_status>=10)
+				if(menu_status>19 && menu_status<30)
 				{
-					menu_status=10;
-					status=status<17?status+1:11;
-					key_flag=1;
-				}
-			else if(menu_status>=20 && menu_status<30)
-				{
-					menu_status=20;
-					status=status<23?status+1:21;
+					status=status<24?status+1:21;
 					key_flag=1;
 				}
 				break;
@@ -249,66 +248,58 @@ void remote_key(void)
 					if(status==1)
 					{
 						menu_status=10;
-					status=11;
+						status=10;
 					}
 					else if(status==2)
 					{
 						menu_status=20;
-						status=21;
+						status=20;
 					}
-				}
-				else if(menu_status==10)
-				{
-					menu_status=status;
-					key_flag=1;
-				}
-				else if(menu_status>10 && menu_status<=17)
-				{
-					status=menu_status=menu_status*10;
-					key_flag=1;
-				}
-				
-				break;
-			case 16://返回
-				if(menu_status>=20 &&menu_status<30)
-				{
-					status=2;
-					menu_status=0;
-					key_flag=1;
-				}
-				else if(menu_status>10 && menu_status<20)
-				{
-					status=1;
-					menu_status=0;
-					key_flag=1;
-				}
-				else if(menu_status>100 &&menu_status<200)
-				{
-					status=menu_status/10;
-					menu_status=10;
-				}
-				else
-				{
-					menu_status=0;
-					key_flag=1;
-				}
-				break;
-			default://数字
-				if(menu_status>=10 && menu_status<20)
-				{
-					if(IR_instruct>0 && IR_instruct<8)
+					else if(status==3)
 					{
-						menu_status=status=10+IR_instruct;
-						key_flag=1;
+						menu_status=30;
+						status=30;
 					}
 				}
 				else if(menu_status>=20 && menu_status<30)
 				{
-					if(IR_instruct>0 && IR_instruct<4)
+					//status=menu_status;
+					Set_Voltage=InputBox_assign_u16(digits,4);
+					if(Set_Voltage>=4000)
 					{
-						menu_status=status=20+IR_instruct;
-						key_flag=1;
+						Set_Voltage=3999;
+						digits[0]=3;
+						digits[1]=digits[2]=digits[3]=9;
 					}
+					key_flag=1;
+					assign_flag=1;
+				}
+				
+				break;
+			
+			case 16://返回
+				if(menu_status>=10 && menu_status<40)
+				{
+					status=menu_status/10;
+					menu_status=0;
+					assign_flag=1;
+					key_flag=1;
+				}
+				break;
+			
+			default://数字
+				if(menu_status>=10 && menu_status<20)
+				{
+					
+				}
+				else if(menu_status>=20 && menu_status<30)
+				{
+					if(status==20)
+						status++;
+
+					digits[status-21]=IR_instruct;
+					status=(status<24)?status+1:20;
+					key_flag=1;
 				}
 		}
 		IR_flag=0;

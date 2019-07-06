@@ -4,11 +4,20 @@
 #include "stm32f10x_dma.h"
 #include "sys.h"
 #include "timer.h"
+#include "led.h"
+#include "sp_math.h"
+#include "usart.h"
 
-#define DMA_SPI_buff_len 4
+#define DMA_SPI_buff_len 7
+
 extern u16 DMA_SPI_buff_TX[DMA_SPI_buff_len];
 extern u16 DMA_SPI_buff_RX[DMA_SPI_buff_len];
+extern u16 SPI_send_buff[DMA_SPI_buff_len];
+
 extern u8 send_flag;
+extern u8 recv_flag;
+extern u8 working_mode;
+extern u16 target;
 
 void SPI1_DMA1_Init(u16 arr,u16 psc,u8 master_slaver,u8 open_scheduled_transmition);
 /* -----------------------------------------------------------------------------
