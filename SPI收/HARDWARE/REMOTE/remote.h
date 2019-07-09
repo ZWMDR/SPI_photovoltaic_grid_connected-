@@ -19,6 +19,7 @@ extern u8 IR_instruct;
 extern u8 IR_key;
 extern u8 assign_flag;
 extern u8 digits[4];
+extern u8 digits_MPPT[4];
 extern u16 Set_Voltage;
 
 

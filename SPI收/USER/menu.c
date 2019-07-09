@@ -18,7 +18,15 @@ void LCD_Show_Menu(u8* key_flag,u8 status,u8 menu_status,u8* recv_flag,GUI_WW_In
 			LCD_Show_Clear();
 			if(menu_status==20)
 			{
-				
+				LCD_Show_Wave_Init(GUI_WW);
+			}
+			else if(menu_status==10)
+			{
+				digits_MPPT[0]=2;
+				digits_MPPT[1]=5;
+				digits_MPPT[2]=0;
+				digits_MPPT[3]=0;
+				LCD_Show_Wave_MPPT_Init(GUI_WW);
 			}
 			last_menu_status=menu_status;
 		}
@@ -27,18 +35,14 @@ void LCD_Show_Menu(u8* key_flag,u8 status,u8 menu_status,u8* recv_flag,GUI_WW_In
 		{
 			LCD_Show_Menu_1(status);
 		}
-		else if(menu_status>9 && menu_status<20)
+		else if(menu_status>9 && menu_status<20)//跟踪模式
 		{
-			
+			LCD_Show_InputBox(digits_MPPT,status-10,2,2,"MAX_Voltage","V");
 		}
-		else if(menu_status>19 && menu_status<30)
+		else if(menu_status>19 && menu_status<30)//稳压模式
 		{
-			LCD_Show_InputBox(status-20,2,2,"Voltage","V");
-			if(*recv_flag)
-			{
-				
-				*recv_flag=0;
-			}
+			LCD_Show_InputBox(digits,status-20,2,2,"Voltage","V");
+			
 		}
 		
 		*key_flag=0;
@@ -56,7 +60,7 @@ void LCD_Show_Menu_1(u8 status)
 		{
 			POINT_COLOR=RED;
 			BACK_COLOR=WHITE;
-			LCD_ShowString(45,100,180,24,24,"Tracing Mode");
+			LCD_ShowString(45,100,180,24,24,"MPPT    Mode");
 			LCD_ShowString(45,140,180,24,24,"Voltage Mode");
 			LCD_ShowString(45,180,180,24,24,"Current Mode");
 			break;
@@ -65,7 +69,7 @@ void LCD_Show_Menu_1(u8 status)
 		{
 			POINT_COLOR=RED;
 			BACK_COLOR=YELLOW;
-			LCD_ShowString(45,100,180,24,24,"Tracing Mode");
+			LCD_ShowString(45,100,180,24,24,"MPPT    Mode");
 			BACK_COLOR=WHITE;
 			LCD_ShowString(45,140,180,24,24,"Voltage Mode");
 			LCD_ShowString(45,180,180,24,24,"Current Mode");
@@ -75,7 +79,7 @@ void LCD_Show_Menu_1(u8 status)
 		{
 			POINT_COLOR=RED;
 			BACK_COLOR=WHITE;
-			LCD_ShowString(45,100,180,24,24,"Tracing Mode");
+			LCD_ShowString(45,100,180,24,24,"MPPT    Mode");
 			LCD_ShowString(45,180,180,24,24,"Current Mode");
 			BACK_COLOR=YELLOW;
 			LCD_ShowString(45,140,180,24,24,"Voltage Mode");
@@ -85,7 +89,7 @@ void LCD_Show_Menu_1(u8 status)
 		{
 			POINT_COLOR=RED;
 			BACK_COLOR=WHITE;
-			LCD_ShowString(45,100,180,24,24,"Tracing Mode");
+			LCD_ShowString(45,100,180,24,24,"MPPT    Mode");
 			LCD_ShowString(45,140,180,24,24,"Voltage Mode");
 			BACK_COLOR=YELLOW;
 			LCD_ShowString(45,180,180,24,24,"Current Mode");
@@ -93,7 +97,7 @@ void LCD_Show_Menu_1(u8 status)
 	}
 }
 
-void LCD_Show_InputBox(u8 status,u16 former,u16 latter,char* header,char* ending)
+void LCD_Show_InputBox(u8* digits,u8 status,u16 former,u16 latter,char* header,char* ending)
 {
 	u8 i;
 	u16 num=former+latter;
@@ -101,7 +105,7 @@ void LCD_Show_InputBox(u8 status,u16 former,u16 latter,char* header,char* ending
 	
 	BACK_COLOR=WHITE;
 	POINT_COLOR=RED;
-	LCD_ShowString(45,200,180,24,24,(u8*)header);
+	LCD_ShowString(45,220,180,24,24,(u8*)header);
 	
 	if(assign_flag)
 	{
@@ -110,16 +114,16 @@ void LCD_Show_InputBox(u8 status,u16 former,u16 latter,char* header,char* ending
 		
 		for(i=0;i<num;i++)
 		{
-			LCD_ShowNum(xcoord,240,digits[i],1,24);
+			LCD_ShowNum(xcoord,260,digits[i],1,24);
 			
 			if(i==former-1)
 			{
 				xcoord+=12;
-				LCD_ShowChar(xcoord,240,'.',24,0);
+				LCD_ShowChar(xcoord,260,'.',24,0);
 			}
 			xcoord+=12;
 		}
-		LCD_ShowString(xcoord,240,180,24,24,(u8*)ending);
+		LCD_ShowString(xcoord,260,180,24,24,(u8*)ending);
 		return;
 	}
 	POINT_COLOR=BLACK;
@@ -129,7 +133,7 @@ void LCD_Show_InputBox(u8 status,u16 former,u16 latter,char* header,char* ending
 		{
 			BACK_COLOR=YELLOW;
 		}
-		LCD_ShowNum(xcoord,240,digits[i],1,24);
+		LCD_ShowNum(xcoord,260,digits[i],1,24);
 		if(i+1==status)
 		{
 			BACK_COLOR=WHITE;
@@ -138,10 +142,104 @@ void LCD_Show_InputBox(u8 status,u16 former,u16 latter,char* header,char* ending
 		if(i==former-1)
 		{
 			xcoord+=12;
-			LCD_ShowChar(xcoord,240,'.',24,0);
+			LCD_ShowChar(xcoord,260,'.',24,0);
 		}
 		xcoord+=12;
 	}
-	LCD_ShowString(xcoord,240,180,24,24,(u8*)ending);
+	LCD_ShowString(xcoord,260,180,24,24,(u8*)ending);
+}
+
+
+void LCD_Show_Wave_Init(GUI_WW_InitTypeDef* GUI_WW)
+{
+	GUI_WaveWindow_Init(GUI_WW);
+	POINT_COLOR=RED;
+	BACK_COLOR=LIGHTBLUE;
+	LCD_DrawLine(0,181,240,181);
+	LCD_DrawLine(0,182,240,182);
+	LCD_ShowString(220,47,180,12,12,"45V");
+	LCD_ShowString(220,92,180,12,12,"30V");
+	LCD_ShowString(220,137,180,12,12,"15V");
+				
+	LCD_Fill(10,194,25,196,BROWN);
+	POINT_COLOR=BROWN;
+	BACK_COLOR=WHITE;
+	LCD_ShowString(30,187,180,16,16,"VCC_Target");
+	
+	LCD_Fill(130,194,145,196,MAGENTA);
+	POINT_COLOR=MAGENTA;
+	LCD_ShowString(150,187,180,16,16,"VCC_OutPut");
+	
+	LCD_Fill(0,210,240,212,RED);
+}
+
+void LCD_Show_Wave_MPPT_Init(GUI_WW_InitTypeDef* GUI_WW)
+{
+	GUI_WaveWindow_Init(GUI_WW);
+	POINT_COLOR=RED;
+	BACK_COLOR=LIGHTBLUE;
+	LCD_DrawLine(0,181,240,181);
+	LCD_DrawLine(0,182,240,182);
+	LCD_ShowString(220,47,180,12,12,"45V");
+	LCD_ShowString(220,92,180,12,12,"30V");
+	LCD_ShowString(220,137,180,12,12,"15V");
+				
+	LCD_Fill(10,194,25,196,BROWN);
+	POINT_COLOR=BROWN;
+	BACK_COLOR=WHITE;
+	LCD_ShowString(30,187,180,16,16,"Voltage");
+	
+	LCD_Fill(130,194,145,196,MAGENTA);
+	POINT_COLOR=MAGENTA;
+	LCD_ShowString(150,187,180,16,16,"Current");
+	
+	LCD_Fill(0,210,240,212,RED);
+}
+
+void LCD_Show_Wave(u16 voltage_F,u16 target,u16 voltage_color,u16 target_color,GUI_WW_InitTypeDef* GUI_WW)
+{
+	static u16 last_ycoord_target=180;
+	static u16 last_ycoord_voltage=180;
+	static u8 xcoord=0;
+	
+	u16 ycoord_target;
+	u16 ycoord_voltage;
+	
+	if(voltage_F>=6000)
+		ycoord_voltage=0;
+	else
+		ycoord_voltage=180*(1-(float)voltage_F/6000);
+	
+	if(target>=6000)
+		ycoord_target=0;
+	else
+		ycoord_target=180*(1-(float)target/6000);
+	
+	printf("voltage_F=%d, ycoord=%d\r\n",voltage_F,ycoord_voltage);
+	
+	POINT_COLOR=voltage_color;
+	LCD_DrawLine(xcoord,last_ycoord_voltage,xcoord+1,ycoord_voltage);
+	LCD_DrawLine(xcoord,last_ycoord_voltage+1,xcoord+1,ycoord_voltage+1);
+	
+	POINT_COLOR=target_color;
+	LCD_DrawLine(xcoord,last_ycoord_target,xcoord+1,ycoord_target);
+	LCD_DrawLine(xcoord,last_ycoord_target+1,xcoord+1,ycoord_target+1);
+	
+	if(xcoord<238)
+		xcoord=xcoord+2;
+	else
+	{
+		xcoord=0;
+		GUI_WaveWindow_Init(GUI_WW);
+		POINT_COLOR=RED;
+		BACK_COLOR=LIGHTBLUE;
+		LCD_DrawLine(0,181,240,181);
+		LCD_DrawLine(0,182,240,182);
+		LCD_ShowString(220,47,180,12,12,"45V");
+		LCD_ShowString(220,92,180,12,12,"30V");
+		LCD_ShowString(220,137,180,12,12,"15V");
+	}
+	last_ycoord_voltage=ycoord_voltage;
+	last_ycoord_target=ycoord_target;
 }
 

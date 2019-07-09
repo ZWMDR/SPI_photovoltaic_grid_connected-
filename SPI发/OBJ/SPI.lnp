@@ -8,6 +8,7 @@
 "..\obj\spwm_output.o"
 "..\obj\adc_input.o"
 "..\obj\sp_math.o"
+"..\obj\mppt.o"
 "..\obj\led.o"
 "..\obj\lcd.o"
 "..\obj\key.o"

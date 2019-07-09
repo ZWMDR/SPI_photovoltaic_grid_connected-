@@ -137,16 +137,17 @@ void DMA1_Channel2_IRQHandler(void)//SPI接收完成
 	if (DMA_GetITStatus(DMA1_IT_TC2)!=RESET)
 	{
 		
-		printf("recv: %x %x %x %x %x %x %x \r\n",DMA_SPI_buff_RX[0],DMA_SPI_buff_RX[1],DMA_SPI_buff_RX[2],DMA_SPI_buff_RX[3],DMA_SPI_buff_RX[4],DMA_SPI_buff_RX[5],DMA_SPI_buff_RX[6]);
+		//printf("recv: %x %x %x %x %x %x %x \r\n",DMA_SPI_buff_RX[0],DMA_SPI_buff_RX[1],DMA_SPI_buff_RX[2],DMA_SPI_buff_RX[3],DMA_SPI_buff_RX[4],DMA_SPI_buff_RX[5],DMA_SPI_buff_RX[6]);
 		if(DMA_SPI_buff_RX[0]==0x0A0A)
 		{
+			IWDG_Feed();
 			LED0=~LED0;
 			Frequency_REF=DMA_SPI_buff_RX[1];
 			Frequency_F=DMA_SPI_buff_RX[2];
-			Period_REF=DMA_SPI_buff_RX[3];
-			Period_F=DMA_SPI_buff_RX[4];
-			Voltage=DMA_SPI_buff_RX[5];
-			Current=DMA_SPI_buff_RX[6];
+			//Period_REF=DMA_SPI_buff_RX[3];
+			//Period_F=DMA_SPI_buff_RX[4];
+			Voltage=DMA_SPI_buff_RX[3];
+			Current=DMA_SPI_buff_RX[4];
 			recv_flag=1;
 		}
 		

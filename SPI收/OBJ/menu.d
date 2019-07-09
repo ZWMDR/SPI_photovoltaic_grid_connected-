@@ -34,3 +34,5 @@
 ..\obj\menu.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\menu.o: GUI.h
 ..\obj\menu.o: ..\HARDWARE\LED\led.h
+..\obj\menu.o: ..\SYSTEM\usart\usart.h
+..\obj\menu.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

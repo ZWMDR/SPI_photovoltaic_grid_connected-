@@ -125,10 +125,10 @@ void DMA1_Channel1_IRQHandler(void)//ADC1ÖÐ¶Ï
 {
 	if(DMA_GetITStatus(DMA1_IT_TC1)!=RESET)
 	{
-		LED1=~LED1;
+		//LED1=~LED1;
+		//printf("%d %d\r\n",DMA_buff[0],DMA_buff[2]);
 		ADC_flag=1;
 		//ADC_continuous_sampling_disable();
-		//printf("%d, %d, %d, %d \r\n",DMA_buff[0],DMA_buff[1],DMA_buff[2],DMA_buff[3]);
 		
 		DMA_ClearITPendingBit(DMA1_IT_TC1);
 	}

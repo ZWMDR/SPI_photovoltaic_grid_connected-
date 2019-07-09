@@ -6,7 +6,7 @@
 #include "led.h"
 #include "usart.h"
 
-#define DMA_buff_len_ADC 4
+#define DMA_buff_len_ADC 20
 
 extern u16 DMA_buff[DMA_buff_len_ADC];
 extern u8 ADC_flag;

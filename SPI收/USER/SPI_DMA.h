@@ -7,6 +7,7 @@
 #include "usart.h"
 #include "led.h"
 #include "sp_math.h"
+#include "iwdg.h"
 
 #define DMA_SPI_buff_len 7
 extern u16 DMA_SPI_buff_TX[DMA_SPI_buff_len];

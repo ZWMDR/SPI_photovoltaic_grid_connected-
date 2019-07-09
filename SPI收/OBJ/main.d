@@ -38,6 +38,7 @@
 ..\obj\main.o: ..\HARDWARE\TIMER\timer.h
 ..\obj\main.o: sp_math.h
 ..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\obj\main.o: ..\HARDWARE\IWDG\iwdg.h
 ..\obj\main.o: ..\HARDWARE\EXTI\exti.h
 ..\obj\main.o: ..\HARDWARE\SPI\spi.h
 ..\obj\main.o: ..\HARDWARE\LCD\lcd.h

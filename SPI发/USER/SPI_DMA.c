@@ -91,9 +91,9 @@ void SPI1_DMA1_Init(u16 arr,u16 psc,u8 master_slaver,u8 open_scheduled_transmiti
 		TIM_Cmd(TIM3,ENABLE);
 	}
 	
+	SPI_Cmd(SPI1, ENABLE);
 	DMA_Cmd(DMA1_Channel2, ENABLE);
-	DMA_Cmd(DMA1_Channel3, DISABLE);
-	SPI_Cmd(SPI1, ENABLE); //使能SPI外设
+	DMA_Cmd(DMA1_Channel3, DISABLE);//使能SPI外设
 }
 
 void SPI_send(const u16 send_buff[DMA_SPI_buff_len])
@@ -139,11 +139,12 @@ void DMA1_Channel2_IRQHandler(void)//SPI接收完成
 	if (DMA_GetITStatus(DMA1_IT_TC2)!=RESET)
 	{
 		//do something
-		LED0=~LED0;
-		//printf("SPI: %x %x %d\r\n",DMA_SPI_buff_RX[1],DMA_SPI_buff_RX[2],DMA_SPI_buff_RX[3]);
+		
+		
 		if(DMA_SPI_buff_RX[1]==0x0B0B)
 		{
-			
+			LED0=~LED0;
+			//printf("SPI: %x %d %d\r\n",DMA_SPI_buff_RX[1],DMA_SPI_buff_RX[2],DMA_SPI_buff_RX[3]);
 			if(DMA_SPI_buff_RX[2]<10)
 			{
 				working_mode=0;
@@ -151,6 +152,7 @@ void DMA1_Channel2_IRQHandler(void)//SPI接收完成
 			else if(DMA_SPI_buff_RX[2]<20)
 			{
 				working_mode=1;
+				target=DMA_SPI_buff_RX[3];
 			}
 			else if(DMA_SPI_buff_RX[2]<30)
 			{
@@ -179,7 +181,6 @@ void TIM3_IRQHandler(void)//SPI发送
 	{
 		SPI_send_buff[0]=0x0A0A;
 		
-		//printf("DR:%x\r\n",SPI1->DR);
 		send_flag=1;
 		//do something'
 

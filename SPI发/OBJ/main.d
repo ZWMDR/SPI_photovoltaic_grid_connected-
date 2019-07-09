@@ -45,3 +45,4 @@
 ..\obj\main.o: SPWM_output.h
 ..\obj\main.o: ADC_input.h
 ..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\obj\main.o: MPPT.h

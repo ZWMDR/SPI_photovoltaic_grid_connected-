@@ -249,6 +249,7 @@ void remote_key(void)
 					{
 						menu_status=10;
 						status=10;
+						assign_flag=1;
 					}
 					else if(status==2)
 					{
@@ -261,9 +262,21 @@ void remote_key(void)
 						status=30;
 					}
 				}
+				else if(menu_status>=10 && menu_status<20)
+				{
+					Set_Voltage=InputBox_assign_u16(digits_MPPT,4);
+					if(Set_Voltage>=4000)
+					{
+						Set_Voltage=3999;
+						digits[0]=3;
+						digits[1]=digits[2]=digits[3]=9;
+					}
+					key_flag=1;
+					assign_flag=1;
+				}
 				else if(menu_status>=20 && menu_status<30)
 				{
-					//status=menu_status;
+					status=menu_status;
 					Set_Voltage=InputBox_assign_u16(digits,4);
 					if(Set_Voltage>=4000)
 					{

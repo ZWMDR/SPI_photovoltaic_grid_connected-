@@ -37,3 +37,4 @@
 ..\obj\spi_dma.o: ..\HARDWARE\LED\led.h
 ..\obj\spi_dma.o: sp_math.h
 ..\obj\spi_dma.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\obj\spi_dma.o: ..\HARDWARE\IWDG\iwdg.h

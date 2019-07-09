@@ -4,6 +4,7 @@ void TIM6_Init(u16 arr,u16 psc);
 
 void SPWM_output_Init(SPWM_InitTypeDef *spwm_init_typedef,uint16_t arr,uint16_t psc)
 {
+	
 	GPIO_InitTypeDef         GPIO_InitStructure;
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	TIM_OCInitTypeDef        TIM_OCInitStructure;
@@ -17,6 +18,7 @@ void SPWM_output_Init(SPWM_InitTypeDef *spwm_init_typedef,uint16_t arr,uint16_t 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;  //复用推挽输出
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(spwm_init_typedef->GPIOx, &GPIO_InitStructure);
+	
 	
 	TIM_TimeBaseStructure.TIM_Period = arr; //设置在下一个更新事件装入活动的自动重装载寄存器周期的值	 80K
 	TIM_TimeBaseStructure.TIM_Prescaler =psc; //设置用来作为TIMx时钟频率除数的预分频值  不分频
@@ -60,6 +62,7 @@ void SPWM_output_Init(SPWM_InitTypeDef *spwm_init_typedef,uint16_t arr,uint16_t 
 	
 	TIM_SetCompare1(spwm_init_typedef->TIMx,0);
 	TIM_SetCompare2(spwm_init_typedef->TIMx,0);
+	
 }
 
 void TIM6_Init(u16 arr,u16 psc)
@@ -89,7 +92,7 @@ void TIM6_IRQHandler(void)
 {
 	if (TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
 	{
-		PWM_Set_duty(voltage_scale_rate,&t,2);
+		PWM_Set_duty(voltage_scale_rate,&t,0);
 		TIM_ClearITPendingBit(TIM6, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 
 	}
 }
@@ -133,6 +136,7 @@ void PWM_Set_duty(float rate,u16* t,u8 mode)
 		TIM_SetCompare1(TIM8,0);
 		TIM_SetCompare2(TIM8,1799+Sin[*t]*rate);
 	}
+	
 	*t=((*t)+1)%SINTABLE_LEN;
 }
 
