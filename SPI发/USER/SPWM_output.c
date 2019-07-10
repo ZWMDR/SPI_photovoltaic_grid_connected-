@@ -45,7 +45,6 @@ void SPWM_output_Init(SPWM_InitTypeDef *spwm_init_typedef,uint16_t arr,uint16_t 
 	TIM_BDTRConfig(spwm_init_typedef->TIMx, &TIM_BDTRInitStructure);
 	
 	TIM_OC1Init(spwm_init_typedef->TIMx, &TIM_OCInitStructure);
-	
 	TIM_OC2Init(spwm_init_typedef->TIMx, &TIM_OCInitStructure);  //根据TIM_OCInitStruct中指定的参数初始化外设TIMx
 
 	TIM_CtrlPWMOutputs(spwm_init_typedef->TIMx,ENABLE);	//MOE 主输出使能	
@@ -92,43 +91,37 @@ void TIM6_IRQHandler(void)
 {
 	if (TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
 	{
-		PWM_Set_duty(voltage_scale_rate,&t,0);
+		PWM_Set_duty(0.2,&t,0);
 		TIM_ClearITPendingBit(TIM6, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 
 	}
 }
 
 void PWM_Set_duty(float rate,u16* t,u8 mode)
 {
-	static u8 status=0;
 	if(mode==0)//单极性输出
 	{
-		TIM_SetCompare2(TIM8,1799+Sin[*t]*rate);
 		if(Sin[*t]>=0)
+		{
+			TIM_SetCompare2(TIM8,1799+Sin[*t]*rate);
 			TIM_SetCompare1(TIM8,0);
+		}
 		else
-			TIM_SetCompare1(TIM8,3600);
+		{
+			TIM_SetCompare1(TIM8,1799-Sin[*t]*rate);
+			TIM_SetCompare2(TIM8,0);
+		}
 	}
 	else if(mode==1)//单极性，磨平衡
 	{
-		if(status==0)
+		if(Sin[*t]>=0)
 		{
 			TIM_SetCompare2(TIM8,1799+Sin[*t]*rate);
-			if(Sin[*t]>=0)
-				TIM_SetCompare1(TIM8,0);
-			else
-				TIM_SetCompare1(TIM8,3600);
-			if(*t==SINTABLE_LEN-1)
-				status=1;
+			TIM_SetCompare1(TIM8,0);
 		}
 		else
 		{
 			TIM_SetCompare1(TIM8,1799+Sin[*t]*rate);
-			if(Sin[*t]>=0)
-				TIM_SetCompare2(TIM8,0);
-			else
-				TIM_SetCompare2(TIM8,3600);
-			if(*t==SINTABLE_LEN-1)
-				status=0;
+			TIM_SetCompare2(TIM8,3600);
 		}
 	}
 	else//双极性输出
@@ -139,4 +132,5 @@ void PWM_Set_duty(float rate,u16* t,u8 mode)
 	
 	*t=((*t)+1)%SINTABLE_LEN;
 }
+
 
