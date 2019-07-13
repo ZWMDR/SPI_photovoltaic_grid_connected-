@@ -4,7 +4,6 @@
 #include "delay.h"
 #include "usart.h"
 #include "SPWM_output.h"
-
 //外部中断初始化函数
 
 
@@ -51,8 +50,3 @@ void TIM4_IRQHandler(void)
 		TIM_ClearITPendingBit(TIM4,TIM_IT_CC1);
 	}
 }
-
-
-
-
-

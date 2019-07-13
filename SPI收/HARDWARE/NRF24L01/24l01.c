@@ -130,7 +130,7 @@ u8 NRF24L01_TxPacket(u8 *txbuf)
 	NRF24L01_Write_Reg(NRF_WRITE_REG+STATUS,sta); //清除TX_DS或MAX_RT中断标志
 	if(sta&MAX_TX)//达到最大重发次数
 	{
-		NRF24L01_Write_Reg(FLUSH_TX,0xff);//清除TX FIFO寄存器 
+		NRF24L01_Write_Reg(FLUSH_TX,0xff);//清除TX FIFO寄存器
 		return MAX_TX; 
 	}
 	if(sta&TX_OK)//发送完成

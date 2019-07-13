@@ -1,7 +1,10 @@
 #ifndef __NRF24L01_MODULE_H
 #define __NRF24L01_MODULE_H
+
 #include "sys.h"
 #include "timer.h"
+#include "sp_math.h"
+#include "led.h"
 
 //NRF24L01寄存器操作命令
 #define NRF_READ_REG    0x00  //读配置寄存器,低5位为寄存器地址
@@ -52,17 +55,22 @@
 //24L01发送接收数据宽度定义
 #define TX_ADR_WIDTH    5   	//5字节的地址宽度
 #define RX_ADR_WIDTH    5   	//5字节的地址宽度
-#define TX_PLOAD_WIDTH  32  	//32字节的用户数据宽度
-#define RX_PLOAD_WIDTH  32  	//32字节的用户数据宽度
+#define TX_PLOAD_WIDTH  14  	//32字节的用户数据宽度
+#define RX_PLOAD_WIDTH  14  	//32字节的用户数据宽度
 
-#define DMA_SPI_buff_len 7
+#define DMA_SPI_buff_len 14
+#define SPI_send_buff_len 7
 
-const u8 TX_ADDRESS[TX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //发送地址
-const u8 RX_ADDRESS[RX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //发送地址
+extern u8 DMA_SPI_buff_TX[DMA_SPI_buff_len];
+extern u16 SPI_send_buff[SPI_send_buff_len];
+extern u16 SPI_recv_buff[SPI_send_buff_len];
+extern u8 DMA_SPI_buff_RX[DMA_SPI_buff_len];
 
-extern u16 DMA_SPI_buff_TX[DMA_SPI_buff_len];
-extern u16 DMA_SPI_buff_RX[DMA_SPI_buff_len];
-extern u16 SPI_send_buff[DMA_SPI_buff_len];
+extern u8 send_flag;
+extern u8 recv_flag;
+extern u8 NRF_status;
+extern u8 working_mode;
+extern u16 target;
 
 void NRF24L01_Init(u8 mode,u16 arr,u16 psc);//初始化  
 /*--------------
