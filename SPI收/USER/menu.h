@@ -19,4 +19,6 @@ void LCD_Show_InputBox(u8* digits,u8 status,u16 former,u16 latter,char* header,c
 void LCD_Show_Wave_Init(GUI_WW_InitTypeDef* GUI_WW);
 void LCD_Show_Wave_MPPT_Init(GUI_WW_InitTypeDef* GUI_WW);
 void LCD_Show_Wave(u16 voltage_F,u16 target,u16 voltage_color,u16 target_color,GUI_WW_InitTypeDef* GUI_WW);
+
+void LCD_Show_Msg(u16 Frequency,u16 Current);
 #endif

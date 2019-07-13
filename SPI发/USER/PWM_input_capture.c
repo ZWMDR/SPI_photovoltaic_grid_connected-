@@ -9,7 +9,7 @@ void MY_NVIC_PriorityGroupConfig(u8 NVIC_Group)
 	temp&=0X0000F8FF;
 	temp|=0X05FA0000;
 	temp|=temp1;
-	SCB->AIRCR=temp;    	  				   
+	SCB->AIRCR=temp;
 }
 
 void MY_NVIC_Init(u8 NVIC_PreemptionPriority,u8 NVIC_SubPriority,u8 NVIC_Channel,u8 NVIC_Group)	 

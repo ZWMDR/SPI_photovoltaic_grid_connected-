@@ -453,6 +453,16 @@
               <FileType>1</FileType>
               <FilePath>.\sp_math.c</FilePath>
             </File>
+            <File>
+              <FileName>MPPT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\MPPT.c</FilePath>
+            </File>
+            <File>
+              <FileName>relay_module.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\relay_module.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

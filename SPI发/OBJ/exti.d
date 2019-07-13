@@ -39,3 +39,4 @@
 ..\obj\exti.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\obj\exti.o: ..\HARDWARE\KEY\key.h
 ..\obj\exti.o: ..\SYSTEM\delay\delay.h
+..\obj\exti.o: ..\USER\SPWM_output.h

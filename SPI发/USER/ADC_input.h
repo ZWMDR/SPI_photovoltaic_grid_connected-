@@ -6,9 +6,11 @@
 #include "led.h"
 #include "usart.h"
 
-#define DMA_buff_len_ADC 20
+#define DMA_buff_len_ADC1 20
+#define DMA_BUFF_LEN_ADC_2 100
 
-extern u16 DMA_buff[DMA_buff_len_ADC];
+extern u16 DMA_buff[DMA_buff_len_ADC1];
+extern u16 DMA_buff_2[DMA_BUFF_LEN_ADC_2];
 extern u8 ADC_flag;
 
 typedef struct ADC_Channel
@@ -44,9 +46,14 @@ typedef struct ADC_single_sample
 }ADC_ss_InitTypeDef;
 
 //ADC+DMAÁ¬Ðø×ª»»
-void ADC_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs);
-void ADC_continuous_sampling_enable(void);
-void ADC_continuous_sampling_disable(void);
+void ADC1_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16* arr,u16 buff_len);
+void ADC1_continuous_sampling_enable(void);
+void ADC1_continuous_sampling_disable(void);
+
+void ADC3_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16* arr,u16 buff_len);
+void ADC3_continuous_sampling_enable(void);
+void ADC3_continuous_sampling_disable(void);
+
 void ADC_sampling_enable(ADC_TypeDef* ADCx);
 void ADC_sampling_disable(ADC_TypeDef* ADCx);
 

@@ -29,6 +29,21 @@ void SPI1_DMA1_Init(u16 arr,u16 psc,u8 master_slaver,u8 open_scheduled_transmiti
 	SPI_InitStructure.SPI_CRCPolynomial = 7;	//CRC值计算的多项式
 	SPI_Init(SPI1, &SPI_InitStructure);  //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
 	
+	/*
+	SPI1->CR1=0x0000;
+	SPI1->CR1|=0x05<<3; //64分频
+	SPI1->CR1|=1; //数据采样从第二个时钟边沿开始
+	SPI1->CR1|=1<<1; //空闲状态时SCK保持高电平
+	SPI1->CR1|=1<<2; //配置为主设备
+	SPI1->CR1|=0<<7; //先发送MSB
+	SPI1->CR1|=1<<8; //SSI内部从设备选择
+	SPI1->CR1|=1<<9; //启用软件从设备管理
+	SPI1->CR1|=0<<10; //全双工
+	SPI1->CR1|=1<<11; //数据帧格式为16位
+	SPI1->CR1|=0<<12; //下一个数据来自缓冲区/CRC
+	SPI1->CR1|=1<<13; //启用CRC
+	*/
+	
 	
 	// SPI接收
 	DMA_DeInit(DMA1_Channel2);

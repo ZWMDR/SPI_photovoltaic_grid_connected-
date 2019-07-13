@@ -92,7 +92,7 @@ int main(void)
 	GUI_gd.set_gd=1;
 	
 	//看门狗初始化
-	IWDG_Init(4,0xAFF);
+	//IWDG_Init(4,0xAFF);
 	
 	recv_flag=0;
 	IR_flag=menu_status=status=IR_instruct=0;
@@ -120,14 +120,20 @@ int main(void)
 		
 		if(menu_status>=10 && menu_status<20)
 		{
-			LCD_Show_Wave(Voltage,Current,MAGENTA,BROWN,&GUI_WW);
+			if(recv_flag)
+			{
+				LCD_Show_Wave(Voltage,Current,MAGENTA,BROWN,&GUI_WW);
+				LCD_Show_Msg(Frequency_REF,Current);
+				recv_flag=0;
+			}
 		}
 		else if(menu_status>=20 && menu_status<30)
 		{
 			if(recv_flag)
 			{
-				//printf("%d %d \r\n",Voltage,Set_Voltage);
+				//printf("%d %d \r\n",Voltage,Current);
 				LCD_Show_Wave(Voltage,Set_Voltage,MAGENTA,BROWN,&GUI_WW);
+				LCD_Show_Msg(Frequency_F,Current);
 				recv_flag=0;
 			}
 		}

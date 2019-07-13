@@ -37,11 +37,11 @@ void LCD_Show_Menu(u8* key_flag,u8 status,u8 menu_status,u8* recv_flag,GUI_WW_In
 		}
 		else if(menu_status>9 && menu_status<20)//跟踪模式
 		{
-			LCD_Show_InputBox(digits_MPPT,status-10,2,2,"MAX_Voltage","V");
+			LCD_Show_InputBox(digits_MPPT,status-10,2,2,"MAX_Vpp:","V");
 		}
 		else if(menu_status>19 && menu_status<30)//稳压模式
 		{
-			LCD_Show_InputBox(digits,status-20,2,2,"Voltage","V");
+			LCD_Show_InputBox(digits,status-20,2,2,"Voltage:","V");
 			
 		}
 		
@@ -101,11 +101,11 @@ void LCD_Show_InputBox(u8* digits,u8 status,u16 former,u16 latter,char* header,c
 {
 	u8 i;
 	u16 num=former+latter;
-	u16 xcoord=80;
+	u16 xcoord=130;
 	
 	BACK_COLOR=WHITE;
 	POINT_COLOR=RED;
-	LCD_ShowString(45,220,180,24,24,(u8*)header);
+	LCD_ShowString(25,220,180,24,24,(u8*)header);
 	
 	if(assign_flag)
 	{
@@ -114,16 +114,16 @@ void LCD_Show_InputBox(u8* digits,u8 status,u16 former,u16 latter,char* header,c
 		
 		for(i=0;i<num;i++)
 		{
-			LCD_ShowNum(xcoord,260,digits[i],1,24);
+			LCD_ShowNum(xcoord,220,digits[i],1,24);
 			
 			if(i==former-1)
 			{
 				xcoord+=12;
-				LCD_ShowChar(xcoord,260,'.',24,0);
+				LCD_ShowChar(xcoord,220,'.',24,0);
 			}
 			xcoord+=12;
 		}
-		LCD_ShowString(xcoord,260,180,24,24,(u8*)ending);
+		LCD_ShowString(xcoord,220,180,24,24,(u8*)ending);
 		return;
 	}
 	POINT_COLOR=BLACK;
@@ -133,7 +133,7 @@ void LCD_Show_InputBox(u8* digits,u8 status,u16 former,u16 latter,char* header,c
 		{
 			BACK_COLOR=YELLOW;
 		}
-		LCD_ShowNum(xcoord,260,digits[i],1,24);
+		LCD_ShowNum(xcoord,220,digits[i],1,24);
 		if(i+1==status)
 		{
 			BACK_COLOR=WHITE;
@@ -142,11 +142,11 @@ void LCD_Show_InputBox(u8* digits,u8 status,u16 former,u16 latter,char* header,c
 		if(i==former-1)
 		{
 			xcoord+=12;
-			LCD_ShowChar(xcoord,260,'.',24,0);
+			LCD_ShowChar(xcoord,220,'.',24,0);
 		}
 		xcoord+=12;
 	}
-	LCD_ShowString(xcoord,260,180,24,24,(u8*)ending);
+	LCD_ShowString(xcoord,220,180,24,24,(u8*)ending);
 }
 
 
@@ -183,7 +183,7 @@ void LCD_Show_Wave_MPPT_Init(GUI_WW_InitTypeDef* GUI_WW)
 	LCD_ShowString(220,47,180,12,12,"45V");
 	LCD_ShowString(220,92,180,12,12,"30V");
 	LCD_ShowString(220,137,180,12,12,"15V");
-				
+
 	LCD_Fill(10,194,25,196,BROWN);
 	POINT_COLOR=BROWN;
 	BACK_COLOR=WHITE;
@@ -215,7 +215,7 @@ void LCD_Show_Wave(u16 voltage_F,u16 target,u16 voltage_color,u16 target_color,G
 	else
 		ycoord_target=180*(1-(float)target/6000);
 	
-	printf("voltage_F=%d, ycoord=%d\r\n",voltage_F,ycoord_voltage);
+	//printf("voltage_F=%d, ycoord=%d\r\n",voltage_F,ycoord_voltage);
 	
 	POINT_COLOR=voltage_color;
 	LCD_DrawLine(xcoord,last_ycoord_voltage,xcoord+1,ycoord_voltage);
@@ -241,5 +241,31 @@ void LCD_Show_Wave(u16 voltage_F,u16 target,u16 voltage_color,u16 target_color,G
 	}
 	last_ycoord_voltage=ycoord_voltage;
 	last_ycoord_target=ycoord_target;
+}
+
+void LCD_Show_Msg(u16 Frequency,u16 Current)
+{
+	float frequency=2000000.0/Frequency;
+	float current=Current*0.0007461+0.0047563;
+	float temp;
+	short adcx;
+	
+	POINT_COLOR=BLUE;
+	BACK_COLOR=WHITE;
+	LCD_ShowString(40,260,180,12,12,"Frequency:   .  Hz");
+	adcx=frequency;
+	LCD_ShowxNum(100,260,adcx,3,12,0);
+	temp=frequency-adcx;
+	temp*=100;
+	LCD_ShowxNum(124,260,temp,2,12,0x80);
+	
+	LCD_ShowString(40,280,180,12,12,"Current:  .   A");
+	adcx=current;
+	LCD_ShowxNum(88,280,adcx,2,12,0);
+	temp=current-adcx;
+	temp*=1000;
+	LCD_ShowxNum(104,280,temp,3,12,0x80);
+	
+	
 }
 

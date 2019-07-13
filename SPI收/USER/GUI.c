@@ -223,7 +223,7 @@ void GUI_MsgWindow_Init(GUI_MW_InitTypeDef* GUI_MW)//信息视窗初始化
 			temp-=adcx;
 			temp*=zoom_in[GUI_MW->msgs_num[i].digits_latter];
 			xcoord+=size/2*(GUI_MW->msgs_num[i].digits_former+1);
-			LCD_ShowxNum(xcoord,ycoord,temp,GUI_MW->msgs_num[i].digits_latter,size,0);
+			LCD_ShowxNum(xcoord,ycoord,temp,GUI_MW->msgs_num[i].digits_latter,size,0x80);
 		}
 	}
 	else if(GUI_MW->alignment==1)//居中对齐

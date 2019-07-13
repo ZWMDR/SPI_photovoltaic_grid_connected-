@@ -278,10 +278,10 @@ void remote_key(void)
 				{
 					status=menu_status;
 					Set_Voltage=InputBox_assign_u16(digits,4);
-					if(Set_Voltage>=4000)
+					if(Set_Voltage>=6000)
 					{
-						Set_Voltage=3999;
-						digits[0]=3;
+						Set_Voltage=5999;
+						digits[0]=5;
 						digits[1]=digits[2]=digits[3]=9;
 					}
 					key_flag=1;

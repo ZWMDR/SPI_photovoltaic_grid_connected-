@@ -164,3 +164,38 @@ void array_init_u16(u16* arr,u16 len)
 	for(i=0;i<len;i++)
 		arr[i]=0;
 }
+
+u16 Smoothing_moving_average(u16* arr,u8 len,u16 num,u8* i)
+{
+	static u8 full=0;
+	static u32 sum=0;
+	static u16 average=0;
+	
+	arr[*i]=num;
+	sum+=num;
+	
+	if(full)
+	{
+		sum-=arr[*i];
+		sum+=num;
+		arr[*i]=num;
+		*i=(*i+1)%len;
+		return (average=sum/len);
+	}
+	else
+	{
+		sum+=num;
+		arr[*i]=num;
+		if(*i==len-1)
+		{
+			*i=(*i+1)%len;
+			full=1;
+			return (average=sum/len);
+		}
+		else
+		{
+			(*i)++;
+			return (average=sum/(*i));
+		}
+	}
+}

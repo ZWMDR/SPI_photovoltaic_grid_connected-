@@ -1,6 +1,7 @@
 #ifndef __SP_MATH_H
 #define __SP_MATH_H
-#include "math.h"
+
+#include <math.h>
 #include "sys.h"
 
 float abs_f(float num);//取绝对值
@@ -21,8 +22,10 @@ float InputBox_assign_float(u8* arr,u16 num_former,u16 num_latter);
 u16 InputBox_assign_u16(u8* arr,u16 len);
 
 //数组初始化
-
 void array_init_u8(u8* arr,u16 len);
 void array_init_u16(u16* arr,u16 len);
+
+//滤波
+u16 Smoothing_moving_average(u16* arr,u8 len,u16 num,u8* i);//滑动平均滤波
 
 #endif
