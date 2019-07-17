@@ -4,6 +4,7 @@
 
 typedef struct
 {
+	uint32_t RCC_APB2Periph_GPIOx;
 	GPIO_TypeDef *GPIOx;
 	uint16_t Pin;
 	u8 mode;

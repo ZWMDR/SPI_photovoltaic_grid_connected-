@@ -3,11 +3,11 @@
 #include "sys.h"
 #include "usart.h"
 #include "key.h"
-#include "SPI_DMA.h"
 #include "exti.h"
 #include "GUI.h"
 #include "remote.h"
 #include "menu.h"
+#include "24l01.h"
 
 u8 IR_flag;
 u8 key_flag;
@@ -17,10 +17,15 @@ u8 last_menu_status;
 u8 IR_instruct;
 u8 IR_key;
 u8 assign_flag;
+u8 NRF_mode;
 
 u8 recv_flag;
 u8 select_status;
 u8 status;
+
+u8 exception_flag;
+u8 buzzer_count;
+
 u16 Frequency_REF;
 u16 Frequency_F;
 u16 Period_REF;
@@ -30,14 +35,17 @@ u16 Current;
 
 u16 Set_Voltage;
 
-u16 DMA_SPI_buff_RX[DMA_SPI_buff_len];
-u16 DMA_SPI_buff_TX[DMA_SPI_buff_len];
+u8 DMA_SPI_buff_RX[DMA_SPI_buff_len];
+u8 DMA_SPI_buff_TX[DMA_SPI_buff_len];
+u16 SPI_send_buff[SPI_send_buff_len];
+u16 SPI_recv_buff[SPI_send_buff_len];
 
 u8 digits[4];
 u8 digits_MPPT[4];
 
 int main(void)
 {
+	u8 lst_exception_flag;
 	GUI_WW_InitTypeDef GUI_WW;
 	//GUI_WW_InitTypeDef GUI_WW_MPPT;
 	GUI_WW_gd_InitTypeDef GUI_gd;
@@ -68,8 +76,10 @@ int main(void)
 	KEY_Init();
 	
 	//SPI初始化
-	//delay_ms(1000);
-	SPI1_DMA1_Init(2000-1,7200-1,0,0);
+	//SPI1_DMA1_Init(2000-1,7200-1,0,0);
+	NRF24L01_Init();
+	NRF24L01_RX_Mode();
+	NRF_mode=0;
 	
 	//红外初始化
 	Remote_Init();
@@ -103,18 +113,26 @@ int main(void)
 	
 	array_init_u8(digits,4);
 	
-	
 	while(1)
 	{
 		remote_key();
 		LCD_Show_Menu(&key_flag,status,menu_status,&recv_flag,&GUI_WW);
 		
+		if(NRF_mode==0)
+		{
+			recv_flag=NRF_recv();
+		}
+		if(recv_flag)
+		{
+			printf("%x %d %d, %d %d\r\n",SPI_recv_buff[0],SPI_recv_buff[1],SPI_recv_buff[2],SPI_recv_buff[3],SPI_recv_buff[4]);
+		}
+		
 		if(assign_flag)
 		{
-			DMA_SPI_buff_TX[0]=0x0B0B;
-			DMA_SPI_buff_TX[1]=menu_status;
-			DMA_SPI_buff_TX[2]=Set_Voltage;
-			SPI_send();
+			SPI_send_buff[0]=0x0B0B;
+			SPI_send_buff[1]=menu_status;
+			SPI_send_buff[2]=Set_Voltage;
+			NRF_send(SPI_send_buff,SPI_send_buff_len);
 			assign_flag=0;
 		}
 		
@@ -122,8 +140,22 @@ int main(void)
 		{
 			if(recv_flag)
 			{
-				LCD_Show_Wave(Voltage,Current,MAGENTA,BROWN,&GUI_WW);
-				LCD_Show_Msg(Frequency_REF,Current);
+				if(exception_flag)
+				{
+					lst_exception_flag=1;
+					LCD_Show_Exception(buzzer_count);
+				}
+				else
+				{
+					if(lst_exception_flag)
+					{
+						LCD_Show_Wave_MPPT_Init(&GUI_WW);
+						LCD_Show_InputBox(digits,status-20,2,2,"Voltage:","V");
+						lst_exception_flag=0;
+					}
+					LCD_Show_Wave(Voltage,Current,MAGENTA,BROWN,&GUI_WW);
+					LCD_Show_Msg(Frequency_REF,Current);
+				}
 				recv_flag=0;
 			}
 		}
@@ -131,9 +163,23 @@ int main(void)
 		{
 			if(recv_flag)
 			{
-				//printf("%d %d \r\n",Voltage,Current);
-				LCD_Show_Wave(Voltage,Set_Voltage,MAGENTA,BROWN,&GUI_WW);
-				LCD_Show_Msg(Frequency_F,Current);
+				if(exception_flag)//异常状态显示
+				{
+					lst_exception_flag=1;
+					LCD_Show_Exception(buzzer_count);
+				}
+				else
+				{
+					if(lst_exception_flag)//显示恢复
+					{
+						LCD_Show_Clear();
+						LCD_Show_Wave_MPPT_Init(&GUI_WW);
+						LCD_Show_InputBox(digits,status-20,2,2,"Voltage:","V");
+						lst_exception_flag=0;
+					}
+					LCD_Show_Wave(Voltage,Set_Voltage,MAGENTA,BROWN,&GUI_WW);
+					LCD_Show_Msg(Frequency_F,Current);
+				}
 				recv_flag=0;
 			}
 		}

@@ -39,7 +39,7 @@ void SPI1_SetSpeed(u8 SpeedSet)
 void NRF24L01_Init(void)
 {  
 	GPIO_InitTypeDef GPIO_InitStructure;
-	SPI_InitTypeDef  SPI_InitStructure; 
+	SPI_InitTypeDef  SPI_InitStructure;
 	
  	RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOC, ENABLE );	
 	RCC_APB2PeriphClockCmd(	RCC_APB2Periph_GPIOA|RCC_APB2Periph_SPI1, ENABLE );
@@ -67,8 +67,7 @@ void NRF24L01_Init(void)
 
  	GPIO_SetBits(GPIOA,GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7);
 
-	GPIO_SetBits(GPIOA,GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4);
-	GPIO_SetBits(GPIOC,GPIO_Pin_0);
+	GPIO_SetBits(GPIOA,GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4);
 	
 	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //设置SPI单向或者双向的数据模式:SPI设置为双线双向全双工
 	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;		//设置SPI工作模式:设置为主SPI
@@ -94,8 +93,8 @@ u8 NRF24L01_Check(void)
 	SPI1_SetSpeed(SPI_BaudRatePrescaler_8); //spi速度为9Mhz（24L01的最大SPI时钟为10Mhz）   	 
 	NRF24L01_Write_Buf(NRF_WRITE_REG+TX_ADDR,buf,5);//写入5个字节的地址.	
 	NRF24L01_Read_Buf(TX_ADDR,buf,5); //读出写入的地址  
-	for(i=0;i<5;i++)if(buf[i]!=0XA5)break;	 							   
-	if(i!=5)return 1;//检测24L01错误	
+	for(i=0;i<5;i++)if(buf[i]!=0XA5)break;
+	if(i!=5)return 1;//检测24L01错误
 	return 0;		 //检测到24L01
 }	 	 
 //SPI写寄存器
@@ -189,7 +188,7 @@ u8 NRF24L01_RxPacket(u8 *rxbuf)
 		return 0; 
 	}
 	return 1;//没收到任何数据
-}
+}					    
 //该函数初始化NRF24L01到RX模式
 //设置RX地址,写RX数据宽度,选择RF频道,波特率和LNA HCURR
 //当CE变高后,即进入RX模式,并可以接收数据了		   
@@ -210,9 +209,9 @@ void NRF24L01_RX_Mode(void)
 //设置TX地址,写TX数据宽度,设置RX自动应答的地址,填充TX发送数据,选择RF频道,波特率和LNA HCURR
 //PWR_UP,CRC使能
 //当CE变高后,即进入RX模式,并可以接收数据了		   
-//CE为高大于10us,则启动发送.
+//CE为高大于10us,则启动发送.	 
 void NRF24L01_TX_Mode(void)
-{
+{														 
 	NRF24L01_CE=0;
   	NRF24L01_Write_Buf(NRF_WRITE_REG+TX_ADDR,(u8*)TX_ADDRESS,TX_ADR_WIDTH);//写TX节点地址 
   	NRF24L01_Write_Buf(NRF_WRITE_REG+RX_ADDR_P0,(u8*)RX_ADDRESS,RX_ADR_WIDTH); //设置TX节点地址,主要为了使能ACK	  
@@ -232,24 +231,32 @@ u8 NRF_recv(void)
 	u8 i;
 	if(NRF24L01_RxPacket(DMA_SPI_buff_RX)==0)
 	{
-		LED0=~LED0;
 		for(i=0;i<SPI_send_buff_len;i++)
 			SPI_recv_buff[i]=DMA_SPI_buff_RX[2*i]<<8|DMA_SPI_buff_RX[2*i+1];
 		
-		printf("%x %d\r\n",SPI_recv_buff[5],SPI_recv_buff[6]);
-		if(SPI_recv_buff[0]==0x0A0A)
+		//printf("SPI: %x %d %d\r\n",SPI_recv_buff[0],SPI_recv_buff[1],SPI_recv_buff[2]);
+		if(SPI_recv_buff[0]==0x0B0B)
 		{
-			Frequency_REF=SPI_recv_buff[1];
-			Frequency_F=SPI_recv_buff[2];
-			Voltage=SPI_recv_buff[3];
-			Current=SPI_recv_buff[4];
-			if(SPI_recv_buff[5]==0xAAAA)
+			LED0=~LED0;
+			if(SPI_recv_buff[1]<10)
 			{
-				exception_flag=1;
-				buzzer_count=SPI_recv_buff[6]>>1;
+				working_mode=0;
 			}
-			else
-				exception_flag=0;
+			else if(SPI_recv_buff[1]<20)
+			{
+				working_mode=1;
+				target=SPI_recv_buff[2];
+			}
+			else if(SPI_recv_buff[1]<30)
+			{
+				working_mode=2;
+				target=SPI_recv_buff[2];
+			}
+			else if(SPI_recv_buff[1]<40)
+			{
+				working_mode=3;
+				target=SPI_recv_buff[2];
+			}
 			return 1;
 		}
 	}
@@ -260,7 +267,6 @@ u8 NRF_send(u16* arr,u16 len)
 {
 	u8 i;
 	u8 res;
-	NRF_mode=1;
 	NRF24L01_TX_Mode();
 	
 	for(i=0;i<SPI_send_buff_len;i++)
@@ -270,8 +276,6 @@ u8 NRF_send(u16* arr,u16 len)
 	}
 	res=NRF24L01_TxPacket(DMA_SPI_buff_TX);
 	NRF24L01_RX_Mode();
-	NRF_mode=0;
-	
 	if(res==TX_OK)
 	{
 		LED1=~LED1;
@@ -280,6 +284,7 @@ u8 NRF_send(u16* arr,u16 len)
 	else
 		return 0;
 }
+
 
 
 

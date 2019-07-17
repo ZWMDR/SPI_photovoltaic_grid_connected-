@@ -18,9 +18,9 @@ void TIM5_IRQHandler(void)
 		if(IC1Value != 0)
 		{
 			Frequency_REF = IC1Value;
-			SPI_send_buff[1]=Frequency_REF;
+			//printf("Frequency_REF=%d\r\n",Frequency_REF);
+			//SPI_send_buff[1]=Frequency_REF;
 			flag_REF=1;
-			LED1=~LED1;
 
 			TIM_SetCounter(TIM7,0);
 			TIM_Cmd(TIM7,ENABLE);
@@ -39,7 +39,7 @@ void TIM4_IRQHandler(void)
 		if(IC1Value != 0)
 		{
 			Frequency_F = IC1Value;
-			SPI_send_buff[2]=Frequency_F;
+			//SPI_send_buff[2]=Frequency_F;
 			flag_F=1;
 
 			TIM_Cmd(TIM7,DISABLE);
@@ -52,7 +52,30 @@ void TIM4_IRQHandler(void)
 	}
 }
 
-
+void TIM1_UP_IRQHandler(void)
+{
+	u8 i;
+	if(TIM_GetITStatus(TIM1,TIM_IT_Update)!=RESET)
+	{
+		NRF_mode=1;
+		SPI_send_buff[0]=0x0A0A;
+		SPI_send_buff[1]=Frequency_REF;
+		SPI_send_buff[2]=Frequency_F;
+		//printf("before: %x %d %d\r\n",SPI_send_buff[0],Frequency_REF,Frequency_F);
+		NRF24L01_TX_Mode();
+		//LED0=~LED0;
+		for(i=0;i<SPI_send_buff_len;i++)//高位在前，低位在后
+		{
+			DMA_SPI_buff_TX[2*i]=(SPI_send_buff[i]>>8)&0x00FF;
+			DMA_SPI_buff_TX[2*i+1]=SPI_send_buff[i]&0x00FF;
+		}
+		NRF24L01_TxPacket(DMA_SPI_buff_TX);
+		NRF24L01_RX_Mode();
+		NRF_mode=0;
+		
+		TIM_ClearITPendingBit(TIM1,TIM_IT_Update);
+	}
+}
 
 
 

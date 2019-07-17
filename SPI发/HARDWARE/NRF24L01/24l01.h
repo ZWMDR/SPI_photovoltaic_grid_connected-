@@ -2,6 +2,7 @@
 #define __24L01_H	 		  
 #include "sys.h"   
 #include "led.h"
+#include "usart.h"
 
 #define DMA_SPI_buff_len 14
 #define SPI_send_buff_len 7
@@ -11,16 +12,9 @@ extern u8 DMA_SPI_buff_RX[DMA_SPI_buff_len];
 extern u16 SPI_send_buff[SPI_send_buff_len];
 extern u16 SPI_recv_buff[SPI_send_buff_len];
 
-extern u16 Frequency_REF;
-extern u16 Frequency_F;
-extern u16 Period_REF;
-extern u16 Period_F;
-extern u16 Voltage;
-extern u16 Current;
 extern u8 NRF_mode;
-
-extern u8 exception_flag;
-extern u8 buzzer_count;
+extern u8 working_mode;
+extern u16 target;
 
 //NRF24L01寄存器操作命令
 #define NRF_READ_REG    0x00  //读配置寄存器,低5位为寄存器地址
@@ -85,7 +79,6 @@ u8 NRF24L01_Write_Reg(u8 reg, u8 value);//写寄存器
 u8 NRF24L01_Check(void);//检查24L01是否存在
 u8 NRF24L01_TxPacket(u8 *txbuf);//发送一个包的数据
 u8 NRF24L01_RxPacket(u8 *rxbuf);//接收一个包的数据
-
 
 u8 NRF_recv(void);
 u8 NRF_send(u16* arr,u16 len);

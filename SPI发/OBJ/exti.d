@@ -30,13 +30,10 @@
 ..\obj\exti.o: ..\STM32F10x_FWLib\inc\stm32f10x_usart.h
 ..\obj\exti.o: ..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h
 ..\obj\exti.o: ..\STM32F10x_FWLib\inc\misc.h
-..\obj\exti.o: ..\USER\SPI_DMA.h
-..\obj\exti.o: ..\HARDWARE\TIMER\timer.h
-..\obj\exti.o: ..\HARDWARE\LED\led.h
-..\obj\exti.o: ..\USER\sp_math.h
-..\obj\exti.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\obj\exti.o: ..\SYSTEM\usart\usart.h
 ..\obj\exti.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\obj\exti.o: ..\HARDWARE\NRF24L01\24l01.h
+..\obj\exti.o: ..\HARDWARE\LED\led.h
 ..\obj\exti.o: ..\HARDWARE\KEY\key.h
 ..\obj\exti.o: ..\SYSTEM\delay\delay.h
 ..\obj\exti.o: ..\USER\SPWM_output.h

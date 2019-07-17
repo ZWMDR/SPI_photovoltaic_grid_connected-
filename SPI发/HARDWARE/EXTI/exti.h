@@ -5,12 +5,14 @@
 #include "stm32f10x.h"
 #include "stm32f10x_dma.h"
 #include "stm32f10x_exti.h"
-#include "SPI_DMA.h"
 #include "usart.h"
+#include "24l01.h"
 
-extern u16 DMA_SPI_buff_RX[DMA_SPI_buff_len];
-extern u16 DMA_SPI_buff_TX[DMA_SPI_buff_len];
-extern u16 SPI_send_buff[DMA_SPI_buff_len];
+extern u8 DMA_SPI_buff_TX[DMA_SPI_buff_len];
+extern u8 DMA_SPI_buff_RX[DMA_SPI_buff_len];
+extern u16 SPI_send_buff[SPI_send_buff_len];
+extern u16 SPI_recv_buff[SPI_send_buff_len];
+
 extern u16 Frequency_REF;
 extern u16 Frequency_F;
 extern u16 Period_REF;

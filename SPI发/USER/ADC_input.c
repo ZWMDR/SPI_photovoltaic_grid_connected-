@@ -13,7 +13,7 @@ void ADC1_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16* arr,u16 buff_
 	
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1,ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1,ENABLE);
 	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
 	
@@ -74,7 +74,7 @@ void ADC1_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16* arr,u16 buff_
 	
 	GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;		//模拟输入引脚
-	GPIO_Init(GPIOA,&GPIO_InitStructure);
+	GPIO_Init(GPIOB,&GPIO_InitStructure);
 	ADC_DMACmd(ADC1,ENABLE);
 	
 	//ADC校准
@@ -226,7 +226,7 @@ void DMA1_Channel1_IRQHandler(void)//ADC1中断
 	{
 		//LED0=~LED0;
 		ADC_flag=1;
-		ADC1_continuous_sampling_disable();
+		//ADC1_continuous_sampling_disable();
 		
 		DMA_ClearITPendingBit(DMA1_IT_TC1);
 	}

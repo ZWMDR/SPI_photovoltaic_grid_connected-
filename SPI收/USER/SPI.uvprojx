@@ -10,6 +10,7 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+      <pCCUsed>5050106::V5.05 update 1 (build 106)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F103RC</Device>
@@ -333,7 +334,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\LCD;..\HARDWARE\FLASH;..\HARDWARE\SPI;..\HARDWARE\KEY;..\HARDWARE\EXTI;..\HARDWARE\TIMER;..\HARDWARE\ADC;..\HARDWARE\REMOTE;..\HARDWARE\IWDG</IncludePath>
+              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\LCD;..\HARDWARE\FLASH;..\HARDWARE\SPI;..\HARDWARE\KEY;..\HARDWARE\EXTI;..\HARDWARE\TIMER;..\HARDWARE\ADC;..\HARDWARE\REMOTE;..\HARDWARE\IWDG;..\HARDWARE\NRF24L01</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -393,11 +394,6 @@
               <FilePath>.\system_stm32f10x.c</FilePath>
             </File>
             <File>
-              <FileName>SPI_DMA.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\SPI_DMA.c</FilePath>
-            </File>
-            <File>
               <FileName>GUI.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\GUI.c</FilePath>
@@ -451,6 +447,11 @@
               <FileName>iwdg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\IWDG\iwdg.c</FilePath>
+            </File>
+            <File>
+              <FileName>24l01.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\NRF24L01\24l01.c</FilePath>
             </File>
           </Files>
         </Group>

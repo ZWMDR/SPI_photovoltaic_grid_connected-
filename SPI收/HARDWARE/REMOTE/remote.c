@@ -34,7 +34,6 @@ void Remote_Init(void)
  	GPIO_Init(GPIOA, &GPIO_InitStructure);
  	GPIO_SetBits(GPIOA,GPIO_Pin_1);	//初始化GPIOA1
 	
-						  
  	TIM_TimeBaseStructure.TIM_Period = 10000; //设定计数器自动重装值 最大10ms溢出  
 	TIM_TimeBaseStructure.TIM_Prescaler =(72-1); 	//预分频器,1M的计数频率,1us加1.	   
 	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1; //设置时钟分割:TDTS = Tck_tim

@@ -265,7 +265,17 @@ void LCD_Show_Msg(u16 Frequency,u16 Current)
 	temp=current-adcx;
 	temp*=1000;
 	LCD_ShowxNum(104,280,temp,3,12,0x80);
-	
-	
+}
+
+void LCD_Show_Exception(u8 count)
+{
+	if(count==5)
+		LCD_Fill(0,100,240,240,RED);
+	BACK_COLOR=RED;
+	POINT_COLOR=YELLOW;
+	LCD_ShowString(30,120,180,24,24,"EXCEPTION:");
+	LCD_ShowString(30,150,240,24,24,"Current Overload!");
+	LCD_ShowString(30,190,200,16,16,"Retry   Seconds Later...");
+	LCD_ShowNum(78,190,count,1,16);
 }
 

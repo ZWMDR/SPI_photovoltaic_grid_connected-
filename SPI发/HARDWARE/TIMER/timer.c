@@ -1,7 +1,7 @@
 #include "timer.h"
 #include "led.h"
 
-/*
+
 void TIM3_Int_Init(u16 arr,u16 psc)
 {
     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
@@ -25,19 +25,32 @@ void TIM3_Int_Init(u16 arr,u16 psc)
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;  //从优先级3级
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道被使能
 	NVIC_Init(&NVIC_InitStructure);  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
-	TIM_Cmd(TIM3, ENABLE);  //使能TIMx外设
+	TIM_ARRPreloadConfig(TIM3,ENABLE);
+	//TIM_Cmd(TIM3, ENABLE);  //使能TIMx外设
 }
 
 void TIM3_IRQHandler(void)   //TIM3中断
 {
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源 
 	{
-		TIM_ClearITPendingBit(TIM3, TIM_IT_Update  );  //清除TIMx的中断待处理位:TIM 中断源 
-		LED0=!LED0;
+		if(buzzer_count>0)
+		{
+			LED1=~LED1;
+			buzzer_count--;
+			if(buzzer_status==0)
+				buzzer_status=1;
+			else if(buzzer_status==1)
+				buzzer_status=0;
+			else if(buzzer_status==10)
+				buzzer_status=11;
+			else if(buzzer_status==11)
+				buzzer_status=10;
+		}
+		
+		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);  //清除TIMx的中断待处理位:TIM 中断源 
 	}
 
 }
-*/
 
 void TIM2_Int_Init(u16 arr,u16 psc)
 {
@@ -62,6 +75,7 @@ void TIM2_Int_Init(u16 arr,u16 psc)
 	TIM_Cmd(TIM2,ENABLE);
 }
 
+/*
 void TIM3_Int_Init(u16 arr,u16 psc)
 {
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
@@ -84,6 +98,7 @@ void TIM3_Int_Init(u16 arr,u16 psc)
 	NVIC_Init(&NVIC_InitStructure);  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
 	
 }
+*/
 
 void TIM4_Int_Init(u16 arr,u16 psc)
 {
@@ -179,7 +194,7 @@ void TIM1_Int_Init(u16 arr,u16 psc)
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	NVIC_InitTypeDef         NVIC_InitStructure;
 
-	RCC_APB1PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE); //时钟使能
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE); //时钟使能
 
 	TIM_TimeBaseStructure.TIM_Period =arr; //设置在下一个更新事件装入活动的自动重装载寄存器周期的值	 计数到5000为500ms
 	TIM_TimeBaseStructure.TIM_Prescaler =psc; //设置用来作为TIMx时钟频率除数的预分频值  10Khz的计数频率  
@@ -194,4 +209,5 @@ void TIM1_Int_Init(u16 arr,u16 psc)
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;  //从优先级3级
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道被使能
 	NVIC_Init(&NVIC_InitStructure);  //根据NVIC_InitStruct中指定的参数初始化外设NVIC寄存器
+	TIM_Cmd(TIM1,ENABLE);
 }
