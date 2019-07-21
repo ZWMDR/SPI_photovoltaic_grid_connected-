@@ -187,11 +187,11 @@ void LCD_Show_Wave_MPPT_Init(GUI_WW_InitTypeDef* GUI_WW)
 	LCD_Fill(10,194,25,196,BROWN);
 	POINT_COLOR=BROWN;
 	BACK_COLOR=WHITE;
-	LCD_ShowString(30,187,180,16,16,"Voltage");
+	LCD_ShowString(30,187,180,16,16,"InPut Vd");
 	
 	LCD_Fill(130,194,145,196,MAGENTA);
 	POINT_COLOR=MAGENTA;
-	LCD_ShowString(150,187,180,16,16,"Current");
+	LCD_ShowString(150,187,180,16,16,"OutPut Vo");
 	
 	LCD_Fill(0,210,240,212,RED);
 }
@@ -205,15 +205,62 @@ void LCD_Show_Wave(u16 voltage_F,u16 target,u16 voltage_color,u16 target_color,G
 	u16 ycoord_target;
 	u16 ycoord_voltage;
 	
-	if(voltage_F>=6000)
+	if(voltage_F>=1450)
 		ycoord_voltage=0;
 	else
-		ycoord_voltage=180*(1-(float)voltage_F/6000);
+		ycoord_voltage=180*(1-((float)voltage_F*0.0413+0.0932)*0.01666667);
 	
 	if(target>=6000)
 		ycoord_target=0;
 	else
-		ycoord_target=180*(1-(float)target/6000);
+		ycoord_target=180*(1-(float)target*0.000166666);
+	
+	//printf("voltage_F=%d, ycoord=%d\r\n",voltage_F,ycoord_voltage);
+	
+	POINT_COLOR=voltage_color;
+	LCD_DrawLine(xcoord,last_ycoord_voltage,xcoord+1,ycoord_voltage);
+	LCD_DrawLine(xcoord,last_ycoord_voltage+1,xcoord+1,ycoord_voltage+1);
+	
+	POINT_COLOR=target_color;
+	LCD_DrawLine(xcoord,last_ycoord_target,xcoord+1,ycoord_target);
+	LCD_DrawLine(xcoord,last_ycoord_target+1,xcoord+1,ycoord_target+1);
+	
+	if(xcoord<238)
+		xcoord=xcoord+2;
+	else
+	{
+		xcoord=0;
+		GUI_WaveWindow_Init(GUI_WW);
+		POINT_COLOR=RED;
+		BACK_COLOR=LIGHTBLUE;
+		LCD_DrawLine(0,181,240,181);
+		LCD_DrawLine(0,182,240,182);
+		LCD_ShowString(220,47,180,12,12,"45V");
+		LCD_ShowString(220,92,180,12,12,"30V");
+		LCD_ShowString(220,137,180,12,12,"15V");
+	}
+	last_ycoord_voltage=ycoord_voltage;
+	last_ycoord_target=ycoord_target;
+}
+
+void LCD_Show_Wave_MPPT(u16 voltage_F,u16 target,u16 voltage_color,u16 target_color,GUI_WW_InitTypeDef* GUI_WW)
+{
+	static u16 last_ycoord_target=180;
+	static u16 last_ycoord_voltage=180;
+	static u8 xcoord=0;
+	
+	u16 ycoord_target;
+	u16 ycoord_voltage;
+	
+	if(voltage_F>=1450)
+		ycoord_voltage=0;
+	else
+		ycoord_voltage=180*(1-((float)voltage_F*0.0413+0.0932)*0.01666667);
+	
+	if(target>=6000)
+		ycoord_target=0;
+	else
+		ycoord_target=180*(1-(float)target*0.0001666);
 	
 	//printf("voltage_F=%d, ycoord=%d\r\n",voltage_F,ycoord_voltage);
 	
@@ -267,15 +314,24 @@ void LCD_Show_Msg(u16 Frequency,u16 Current)
 	LCD_ShowxNum(104,280,temp,3,12,0x80);
 }
 
-void LCD_Show_Exception(u8 count)
+
+
+void LCD_Show_Exception(u8 count, char*msg)
 {
 	if(count==5)
+	{
 		LCD_Fill(0,100,240,240,RED);
+		BACK_COLOR=RED;
+		POINT_COLOR=YELLOW;
+		LCD_ShowString(30,120,180,24,24,"EXCEPTION:");
+		LCD_ShowString(30,150,240,24,24,(u8*)msg);
+		LCD_ShowString(30,190,200,16,16,"Retry   Seconds Later...");
+	}
 	BACK_COLOR=RED;
 	POINT_COLOR=YELLOW;
-	LCD_ShowString(30,120,180,24,24,"EXCEPTION:");
-	LCD_ShowString(30,150,240,24,24,"Current Overload!");
-	LCD_ShowString(30,190,200,16,16,"Retry   Seconds Later...");
+	
 	LCD_ShowNum(78,190,count,1,16);
 }
+
+
 

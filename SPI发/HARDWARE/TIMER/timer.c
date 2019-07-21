@@ -35,7 +35,6 @@ void TIM3_IRQHandler(void)   //TIM3ÖÐ¶Ï
 	{
 		if(buzzer_count>0)
 		{
-			LED1=~LED1;
 			buzzer_count--;
 			if(buzzer_status==0)
 				buzzer_status=1;

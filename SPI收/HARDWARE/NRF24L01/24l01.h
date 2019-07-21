@@ -17,6 +17,7 @@ extern u16 Period_REF;
 extern u16 Period_F;
 extern u16 Voltage;
 extern u16 Current;
+extern u16 Power;
 extern u8 NRF_mode;
 
 extern u8 exception_flag;

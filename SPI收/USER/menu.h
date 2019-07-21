@@ -23,5 +23,5 @@ void LCD_Show_Wave_MPPT_Init(GUI_WW_InitTypeDef* GUI_WW);
 void LCD_Show_Wave(u16 voltage_F,u16 target,u16 voltage_color,u16 target_color,GUI_WW_InitTypeDef* GUI_WW);
 
 void LCD_Show_Msg(u16 Frequency,u16 Current);
-void LCD_Show_Exception(u8 count);
+void LCD_Show_Exception(u8 count, char*msg);
 #endif

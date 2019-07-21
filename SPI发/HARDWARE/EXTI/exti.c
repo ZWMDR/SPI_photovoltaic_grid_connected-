@@ -13,15 +13,14 @@ void TIM5_IRQHandler(void)
 	u16 IC1Value;
 	if(TIM_GetITStatus(TIM5,TIM_IT_CC1)==SET)
 	{
-		t=4;
-		IC1Value = TIM5->CCR1+1;
+		t=3;
+		IC1Value = TIM5->CCR1-2;
 		if(IC1Value != 0)
 		{
 			Frequency_REF = IC1Value;
-			//printf("Frequency_REF=%d\r\n",Frequency_REF);
-			//SPI_send_buff[1]=Frequency_REF;
 			flag_REF=1;
 
+			TIM_Cmd(TIM7,DISABLE);
 			TIM_SetCounter(TIM7,0);
 			TIM_Cmd(TIM7,ENABLE);
 		}
@@ -35,11 +34,10 @@ void TIM4_IRQHandler(void)
 	u16 IC1Value;
 	if(TIM_GetITStatus(TIM4,TIM_IT_CC1)==SET)
 	{
-		IC1Value = TIM4->CCR1+1;
+		IC1Value = TIM4->CCR1-2;
 		if(IC1Value != 0)
 		{
 			Frequency_F = IC1Value;
-			//SPI_send_buff[2]=Frequency_F;
 			flag_F=1;
 
 			TIM_Cmd(TIM7,DISABLE);
@@ -59,7 +57,7 @@ void TIM1_UP_IRQHandler(void)
 	{
 		NRF_mode=1;
 		SPI_send_buff[0]=0x0A0A;
-		SPI_send_buff[1]=Frequency_REF;
+		//SPI_send_buff[1]=Frequency_REF;
 		SPI_send_buff[2]=Frequency_F;
 		//printf("before: %x %d %d\r\n",SPI_send_buff[0],Frequency_REF,Frequency_F);
 		NRF24L01_TX_Mode();

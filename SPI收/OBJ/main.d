@@ -44,3 +44,4 @@
 ..\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ..\obj\main.o: menu.h
 ..\obj\main.o: ..\HARDWARE\NRF24L01\24l01.h
+..\obj\main.o: ..\HARDWARE\IWDG\iwdg.h

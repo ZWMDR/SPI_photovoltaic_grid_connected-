@@ -6,7 +6,7 @@
 #include "led.h"
 #include "usart.h"
 
-#define DMA_buff_len_ADC1 20
+#define DMA_buff_len_ADC1 40
 #define DMA_BUFF_LEN_ADC_2 100
 
 extern u16 DMA_buff[DMA_buff_len_ADC1];
@@ -17,6 +17,7 @@ typedef struct ADC_Channel
 {
 	uint8_t num;
 	uint8_t ADC_Channel;
+	GPIO_TypeDef* GPIOx;
 	uint16_t Pin;
 	uint8_t ADC_SampleTime;
 	
@@ -28,6 +29,7 @@ typedef struct ADC_continuous_sampling
 	u8 channel_num;
 	ADC_Channel *Channels;
 	u8 ScanConvMode;
+	uint32_t RCC_APB2Periph_GPIOx;
 	
 	u16 arr;
 	u16 psc;

@@ -15,6 +15,7 @@ void relay_module_Init(relay_module_InitTypeDef* module)
 		GPIO_SetBits(module->GPIOx,module->Pin);
 	else
 		GPIO_ResetBits(module->GPIOx,module->Pin);
+	module->status=0;
 }
 
 void relay_module_Open(relay_module_InitTypeDef* module)
@@ -23,6 +24,8 @@ void relay_module_Open(relay_module_InitTypeDef* module)
 		GPIO_ResetBits(module->GPIOx,module->Pin);
 	else
 		GPIO_SetBits(module->GPIOx,module->Pin);
+	
+	module->status=1;
 }
 
 void relay_module_Close(relay_module_InitTypeDef* module)
@@ -31,4 +34,5 @@ void relay_module_Close(relay_module_InitTypeDef* module)
 		GPIO_SetBits(module->GPIOx,module->Pin);
 	else
 		GPIO_ResetBits(module->GPIOx,module->Pin);
+	module->status=0;
 }

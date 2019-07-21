@@ -44,13 +44,17 @@ void get_vcc_duplex(const u16 *arr,u16 len,u16 *VCC1,u16* VCC2)
 	*VCC2=max2-min2;
 }
 
-float get_average(const u16 *arr,u16 len,u16 start,u16 gap)
+u16 get_average(const u16 *arr,u16 len,u16 start,u16 gap)
 {
 	u16 i;
-	float ave=0;
+	u16 count=0;
+	u32 ave=0;
 	for(i=start;i<len;i+=gap)
+	{
 		ave+=arr[i];
-	return ave/len;
+		count++;
+	}
+	return ave/count;
 }
 
 void get_average_duplex(const u16* arr,u16 len,u16* average1,u16* average2)

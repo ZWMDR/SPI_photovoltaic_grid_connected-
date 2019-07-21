@@ -225,7 +225,8 @@ void remote_key(void)
 			case 13://×ó
 				if(menu_status>=10 && menu_status<20)
 				{
-					
+					status=status>11?status-1:14;
+					key_flag=1;
 				}
 				else if(menu_status>19 && menu_status<30)
 				{
@@ -234,6 +235,11 @@ void remote_key(void)
 				}
 				break;
 			case 14://ÓÒ
+				if(menu_status>9 && menu_status<20)
+				{
+					status=status<14?status+1:11;
+					key_flag=1;
+				}
 				if(menu_status>19 && menu_status<30)
 				{
 					status=status<24?status+1:21;
@@ -248,7 +254,6 @@ void remote_key(void)
 					{
 						menu_status=10;
 						status=10;
-						assign_flag=1;
 					}
 					else if(status==2)
 					{
@@ -264,11 +269,11 @@ void remote_key(void)
 				else if(menu_status>=10 && menu_status<20)
 				{
 					Set_Voltage=InputBox_assign_u16(digits_MPPT,4);
-					if(Set_Voltage>=4000)
+					if(Set_Voltage>=6000)
 					{
-						Set_Voltage=3999;
-						digits[0]=3;
-						digits[1]=digits[2]=digits[3]=9;
+						Set_Voltage=5999;
+						digits_MPPT[0]=5;
+						digits_MPPT[1]=digits_MPPT[2]=digits_MPPT[3]=9;
 					}
 					key_flag=1;
 					assign_flag=1;
@@ -302,7 +307,12 @@ void remote_key(void)
 			default://Êı×Ö
 				if(menu_status>=10 && menu_status<20)
 				{
+					if(status==10)
+						status++;
 					
+					digits_MPPT[status-11]=IR_instruct;
+					status=status<24?status+1:20;
+					key_flag=1;
 				}
 				else if(menu_status>=20 && menu_status<30)
 				{

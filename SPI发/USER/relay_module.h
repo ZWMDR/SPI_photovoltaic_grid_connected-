@@ -8,6 +8,7 @@ typedef struct
 	GPIO_TypeDef *GPIOx;
 	uint16_t Pin;
 	u8 mode;
+	u8 status;
 	
 }relay_module_InitTypeDef;
 

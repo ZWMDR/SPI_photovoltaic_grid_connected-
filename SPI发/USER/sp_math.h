@@ -9,8 +9,8 @@ u16 get_vcc(const u16 *arr,u16 len,u16 start,u16 gap,float scale_rate);
 //获取一组数据中的峰峰值
 void get_vcc_duplex(const u16 *arr,u16 len,u16 *VCC1,u16* VCC2);//获取两路峰峰值
 float find_zero_cur(const u16 *arr,u16 average,u16 len);//找到正弦波零点(斜率大于0)，手动输入均值
-
-float get_average(const u16 *arr,u16 len,u16 start,u16 gap);
+//获取平均值
+u16 get_average(const u16 *arr,u16 len,u16 start,u16 gap);
 void get_average_duplex(const u16* arr,u16 len,u16* average1,u16* average2);
 
 double RMS_sinusoid(const u16 *arr,u16 len,u16 average,float rate);

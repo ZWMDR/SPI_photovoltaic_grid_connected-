@@ -119,12 +119,40 @@ void PWM_Set_duty(float rate,u16* t,u8 mode)
 	{
 		if(Sin[*t]>=0)
 		{
-			TIM_SetCompare3(TIM8,Sin[*t]*rate);
+			if(rate<0.5)
+			{
+				if(*t==1 || *t==198)
+				{
+					TIM_SetCompare3(TIM8,Sin[*t]*rate*1.5);
+				}
+				else if(*t==2 || *t==197)
+				{
+					TIM_SetCompare3(TIM8,Sin[*t]*rate*1.2);
+				}
+				else
+					TIM_SetCompare3(TIM8,Sin[*t]*rate);
+			}
+			else
+				TIM_SetCompare3(TIM8,Sin[*t]*rate);
 			TIM_SetCompare2(TIM8,0);
 		}
 		else
 		{
-			TIM_SetCompare2(TIM8,-Sin[*t]*rate);
+			if(rate<0.5)
+			{
+				if(*t==201 || *t==398)
+				{
+					TIM_SetCompare2(TIM8,-Sin[*t]*rate*1.5);
+				}
+				else if(*t==202 || *t==397)
+				{
+					TIM_SetCompare2(TIM8,-Sin[*t]*rate*1.2);
+				}
+				else
+					TIM_SetCompare2(TIM8,-Sin[*t]*rate);
+			}
+			else
+				TIM_SetCompare2(TIM8,-Sin[*t]*rate);
 			TIM_SetCompare3(TIM8,0);
 		}
 	}

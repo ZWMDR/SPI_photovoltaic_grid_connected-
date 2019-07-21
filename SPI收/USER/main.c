@@ -8,6 +8,7 @@
 #include "remote.h"
 #include "menu.h"
 #include "24l01.h"
+#include "iwdg.h"
 
 u8 IR_flag;
 u8 key_flag;
@@ -32,6 +33,8 @@ u16 Period_REF;
 u16 Period_F;
 u16 Voltage;
 u16 Current;
+
+u16 Power;
 
 u16 Set_Voltage;
 
@@ -102,7 +105,7 @@ int main(void)
 	GUI_gd.set_gd=1;
 	
 	//看门狗初始化
-	//IWDG_Init(4,0xAFF);
+	IWDG_Init(4,0xCFF);
 	
 	recv_flag=0;
 	IR_flag=menu_status=status=IR_instruct=0;
@@ -124,7 +127,9 @@ int main(void)
 		}
 		if(recv_flag)
 		{
-			printf("%x %d %d, %d %d\r\n",SPI_recv_buff[0],SPI_recv_buff[1],SPI_recv_buff[2],SPI_recv_buff[3],SPI_recv_buff[4]);
+			IWDG_Feed();
+			//printf("%d \r\n",SPI_recv_buff[3]);
+			//printf("%x %d %d, %d %d\r\n",SPI_recv_buff[0],SPI_recv_buff[1],SPI_recv_buff[2],SPI_recv_buff[3],SPI_recv_buff[4]);
 		}
 		
 		if(assign_flag)
@@ -136,41 +141,49 @@ int main(void)
 			assign_flag=0;
 		}
 		
-		if(menu_status>=10 && menu_status<20)
+		if(menu_status>=10 && menu_status<20)//MPPT模式
 		{
 			if(recv_flag)
 			{
 				if(exception_flag)
 				{
-					lst_exception_flag=1;
-					LCD_Show_Exception(buzzer_count);
+					lst_exception_flag=exception_flag;
+					if(exception_flag==1)
+						LCD_Show_Exception(buzzer_count,"Over Current!");
+					else if(exception_flag==2)
+						LCD_Show_Exception(buzzer_count,"Under Voltage!");
 				}
 				else
 				{
 					if(lst_exception_flag)
 					{
+						LCD_Show_Clear();
 						LCD_Show_Wave_MPPT_Init(&GUI_WW);
 						LCD_Show_InputBox(digits,status-20,2,2,"Voltage:","V");
 						lst_exception_flag=0;
 					}
-					LCD_Show_Wave(Voltage,Current,MAGENTA,BROWN,&GUI_WW);
-					LCD_Show_Msg(Frequency_REF,Current);
+					printf("%d %d\r\n",Voltage,Power);
+					//LCD_Show_Wave(Voltage,Power,MAGENTA,BROWN,&GUI_WW);
+					LCD_Show_Msg(Frequency_F,Current);
 				}
 				recv_flag=0;
 			}
 		}
-		else if(menu_status>=20 && menu_status<30)
+		else if(menu_status>=20 && menu_status<30)//稳压模式
 		{
 			if(recv_flag)
 			{
 				if(exception_flag)//异常状态显示
 				{
-					lst_exception_flag=1;
-					LCD_Show_Exception(buzzer_count);
+					lst_exception_flag=exception_flag;
+					if(exception_flag==1)
+						LCD_Show_Exception(buzzer_count,"Over Current!");
+					else if(exception_flag==2)
+						LCD_Show_Exception(buzzer_count,"Under Voltage!");
 				}
 				else
 				{
-					if(lst_exception_flag)//显示恢复
+					if(lst_exception_flag>0)//显示恢复
 					{
 						LCD_Show_Clear();
 						LCD_Show_Wave_MPPT_Init(&GUI_WW);

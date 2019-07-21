@@ -236,20 +236,29 @@ u8 NRF_recv(void)
 		for(i=0;i<SPI_send_buff_len;i++)
 			SPI_recv_buff[i]=DMA_SPI_buff_RX[2*i]<<8|DMA_SPI_buff_RX[2*i+1];
 		
-		printf("%x %d\r\n",SPI_recv_buff[5],SPI_recv_buff[6]);
+		//printf("%x %d\r\n",SPI_recv_buff[5],SPI_recv_buff[6]);
 		if(SPI_recv_buff[0]==0x0A0A)
 		{
-			Frequency_REF=SPI_recv_buff[1];
+			Power=SPI_recv_buff[1];
 			Frequency_F=SPI_recv_buff[2];
 			Voltage=SPI_recv_buff[3];
 			Current=SPI_recv_buff[4];
+			
 			if(SPI_recv_buff[5]==0xAAAA)
 			{
 				exception_flag=1;
 				buzzer_count=SPI_recv_buff[6]>>1;
 			}
+			else if(SPI_recv_buff[5]==0xAAAB)
+			{
+				exception_flag=2;
+				buzzer_count=SPI_recv_buff[6]>>1;
+			}
 			else
+			{
 				exception_flag=0;
+				buzzer_count=0;
+			}
 			return 1;
 		}
 	}

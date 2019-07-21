@@ -27,14 +27,19 @@ Project File Date:  07/16/2019
 <h2>Output:</h2>
 *** Using Compiler 'V5.05 update 1 (build 106)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
+compiling exti.c...
 compiling main.c...
-main.c(69): warning:  #550-D: variable "relay_module" was set but never used
-  	relay_module_InitTypeDef relay_module;
-main.c: 1 warning, 0 errors
+main.c(409): warning:  #9-D: nested comment is not allowed
+  					/*
+main.c(62): warning:  #550-D: variable "battery_current" was set but never used
+  	float battery_current;
+main.c(78): warning:  #177-D: variable "delta_phase" was declared but never referenced
+  	float delta_phase;
+main.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=26938 RO-data=1294 RW-data=104 ZI-data=2128  
+Program Size: Code=27906 RO-data=1294 RW-data=108 ZI-data=3196  
 FromELF: creating hex file...
-"..\OBJ\SPI.axf" - 0 Error(s), 1 Warning(s).
+"..\OBJ\SPI.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   C:\Users\ZWMDR\Documents\documents\µÁ‘¥\SPI\SPI∑¢\USER\RTE

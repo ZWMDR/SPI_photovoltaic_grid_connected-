@@ -284,10 +284,3 @@ u8 NRF_send(u16* arr,u16 len)
 	else
 		return 0;
 }
-
-
-
-
-
-
-

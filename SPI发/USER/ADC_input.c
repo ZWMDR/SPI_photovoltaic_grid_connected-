@@ -13,7 +13,7 @@ void ADC1_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16* arr,u16 buff_
 	
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1,ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+	RCC_APB2PeriphClockCmd(ADC_cs->RCC_APB2Periph_GPIOx,ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1,ENABLE);
 	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
 	
@@ -64,17 +64,14 @@ void ADC1_continuous_sampling_Init(ADC_cs_InitTypeDef *ADC_cs,u16* arr,u16 buff_
 	
 	for(i=0;i<ADC_cs->channel_num;i++)
 	{
-		if(i==0)
-			GPIO_InitStructure.GPIO_Pin=ADC_cs->Channels[i].Pin;
-		else
-			GPIO_InitStructure.GPIO_Pin|=ADC_cs->Channels[i].Pin;
+		GPIO_InitStructure.GPIO_Pin=ADC_cs->Channels[i].Pin;
+		GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;		//模拟输入引脚
+		GPIO_Init(ADC_cs->Channels[i].GPIOx,&GPIO_InitStructure);
 		
 		ADC_RegularChannelConfig(ADC1,ADC_cs->Channels[i].ADC_Channel,ADC_cs->Channels[i].num,ADC_cs->Channels[i].ADC_SampleTime);
 	}
 	
-	GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;		//模拟输入引脚
-	GPIO_Init(GPIOB,&GPIO_InitStructure);
 	ADC_DMACmd(ADC1,ENABLE);
 	
 	//ADC校准
